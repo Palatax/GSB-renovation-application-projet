@@ -1,6 +1,6 @@
 <?php
     require_once ('modele/medicament.modele.inc.php');
-   
+    require_once ('modele/praticien.modele.inc.php');
     require_once ('modele/connexion.modele.inc.php');
 
     if(!isset($_REQUEST['uc']) || empty($_REQUEST['uc']))
@@ -43,14 +43,13 @@
         }
         case 'connexion' :
         {   
-                        include("controleur/c_connexion.php");
+            include("controleur/c_connexion.php");
             break; 
         }
         
 
         default :
         {   
-           
             include("vues/v_accueil.php");
             break;
         }

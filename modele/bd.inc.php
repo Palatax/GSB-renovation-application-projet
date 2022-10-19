@@ -5,7 +5,7 @@ session_start();
 function connexionPDO() {
     $login = 'root';
     $mdp = '';
-    $bd = 'calvo_gsb-projet';
+    $bd = 'calvo_gsb-projet-2';
     $serveur = 'localhost';
 
     try {

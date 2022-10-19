@@ -7,22 +7,29 @@ if (!isset($_REQUEST['action']) || empty($_REQUEST['action'])) {
 switch ($action) {
 	case 'formulairePraticien': {
 
-			if (!isset($_SESSION['matricule'])) {
-				header('location: index.php?uc=connexion&action=connexion');
-			} else {
-				$info = getAllInformationCompte($_SESSION['matricule']);
-
-
-
-
-
-				include("vues/v_afficherPraticien.php");
-			}
+			$result = getAllNomPraticien();
+			include("vues/v_formulairePraticien.php");
 			break;
 		}
+	
+	case 'afficherPraticien': {
+		if (isset($_REQUEST['praticien']) && getAllInformationPraticien($_REQUEST['praticien'])) {
+			$pra = $_REQUEST['praticien'];
+			$carac = getAllInformationPraticien($pra);
+			if (empty($carac[7])) {
+				$carac[7] = 'Non défini(e)';
+			}
+			include("vues/v_afficherPraticien.php");
+		} else {
+			$_SESSION['erreur'] = true;
+			header("Location: index.php?uc=praticien&action=formulairePraticien");
+		}
+		break;
+	}
 
 	default: {
-			header('location: index.php?uc=connexion&action=connexion');
+
+			header('Location: index.php?uc=praticien&action=formulairePraticien');
 			break;
 		}
 }
