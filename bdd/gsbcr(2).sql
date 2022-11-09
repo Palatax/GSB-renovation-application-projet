@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3307
--- Généré le : mer. 05 oct. 2022 à 14:59
+-- Généré le : mer. 09 nov. 2022 à 13:29
 -- Version du serveur : 10.6.5-MariaDB
 -- Version de PHP : 8.0.13
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `ag_gsbswiss`
+-- Base de données : `gsbcr`
 --
 
 -- --------------------------------------------------------
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `collaborateur`;
 CREATE TABLE IF NOT EXISTS `collaborateur` (
-  `COL_MATRICULE` varchar(10) COLLATE utf8mb3_bin NOT NULL,
+  `COL_MATRICULE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `COL_NOM` varchar(25) COLLATE utf8mb3_bin DEFAULT NULL,
   `COL_PRENOM` varchar(50) COLLATE utf8mb3_bin DEFAULT NULL,
   `COL_ADRESSE` varchar(50) COLLATE utf8mb3_bin DEFAULT NULL,
@@ -39,87 +39,85 @@ CREATE TABLE IF NOT EXISTS `collaborateur` (
   `HAB_ID` int(11) DEFAULT NULL,
   `LOG_ID` int(11) DEFAULT NULL,
   `SEC_CODE` varchar(1) COLLATE utf8mb3_bin DEFAULT NULL,
-  `REG_CODE` varchar(2) COLLATE utf8mb3_bin DEFAULT NULL,
   PRIMARY KEY (`COL_MATRICULE`),
   UNIQUE KEY `collaborateur_login0_AK` (`LOG_ID`),
   KEY `collaborateur_habilitation0_FK` (`HAB_ID`),
-  KEY `collaborateur_secteur0_FK` (`SEC_CODE`),
-  KEY `collaborateur_region1_FK` (`REG_CODE`)
+  KEY `collaborateur_secteur0_FK` (`SEC_CODE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 --
 -- Déchargement des données de la table `collaborateur`
 --
 
-INSERT INTO `collaborateur` (`COL_MATRICULE`, `COL_NOM`, `COL_PRENOM`, `COL_ADRESSE`, `COL_CP`, `COL_VILLE`, `COL_DATEEMBAUCHE`, `HAB_ID`, `LOG_ID`, `SEC_CODE`, `REG_CODE`) VALUES
-('a131', 'Villechalane', 'Louis', '8 cours Lafontaine', '29000', 'BREST', '1992-12-11 00:00:00', 2, 1, 'E', 'BN'),
-('a17', 'Andre', 'David', '1 r Aimon de Chissée', '38100', 'GRENOBLE', '1991-08-26 00:00:00', 1, 2, NULL, 'RA'),
-('a55', 'Bedos', 'Christian', '1 r Bénédictins', '65000', 'TARBES', '1987-07-17 00:00:00', 2, 3, NULL, 'RO'),
-('a93', 'Tusseau', 'Louis', '22 r Renou', '86000', 'POITIERS', '1999-01-02 00:00:00', 2, 4, NULL, 'PC'),
-('b13', 'Bentot', 'Pascal', '11 av 6 Juin', '67000', 'STRASBOURG', '1996-03-11 00:00:00', NULL, NULL, NULL, NULL),
-('b16', 'Bioret', 'Luc', '1 r Linne', '35000', 'RENNES', '1997-03-21 00:00:00', NULL, NULL, NULL, NULL),
-('b19', 'Bunisset', 'Francis', '10 r Nicolas Chorier', '85000', 'LA ROCHE SUR YON', '1999-01-31 00:00:00', NULL, NULL, NULL, NULL),
-('b25', 'Bunisset', 'Denise', '1 r Lionne', '49100', 'ANGERS', '1994-07-03 00:00:00', NULL, NULL, NULL, NULL),
-('b28', 'Cacheux', 'Bernard', '114 r Authie', '34000', 'MONTPELLIER', '2000-08-02 00:00:00', NULL, NULL, NULL, NULL),
-('b34', 'Cadic', 'Eric', '123 r Caponière', '41000', 'BLOIS', '1993-12-06 00:00:00', NULL, NULL, 'P', NULL),
-('b4', 'Charoze', 'Catherine', '100 pl Géants', '33000', 'BORDEAUX', '1997-09-25 00:00:00', NULL, NULL, NULL, NULL),
-('b50', 'Clepkens', 'Christophe', '12 r Fédérico Garcia Lorca', '13000', 'MARSEILLE', '1998-01-18 00:00:00', NULL, NULL, NULL, NULL),
-('b59', 'Cottin', 'Vincenne', '36 sq Capucins', '5000', 'GAP', '1995-10-21 00:00:00', NULL, NULL, NULL, NULL),
-('c14', 'Daburon', 'François', '13 r Champs Elysées', '6000', 'NICE', '1989-02-01 00:00:00', NULL, NULL, 'S', NULL),
-('c3', 'De', 'Philippe', '13 r Charles Peguy', '10000', 'TROYES', '1992-05-05 00:00:00', NULL, NULL, NULL, NULL),
-('c54', 'Debelle', 'Michel', '181 r Caponière', '88000', 'EPINAL', '1991-04-09 00:00:00', NULL, NULL, NULL, NULL),
-('d13', 'Debelle', 'Jeanne', '134 r Stalingrad', '44000', 'NANTES', '1991-12-05 00:00:00', NULL, NULL, NULL, NULL),
-('d51', 'Debroise', 'Michel', '2 av 6 Juin', '70000', 'VESOUL', '1997-11-18 00:00:00', NULL, NULL, 'E', NULL),
-('e22', 'Desmarquest', 'Nathalie', '14 r Fédérico Garcia Lorca', '54000', 'NANCY', '1989-03-24 00:00:00', NULL, NULL, NULL, NULL),
-('e24', 'Desnost', 'Pierre', '16 r Barral de Montferrat', '55000', 'VERDUN', '1993-05-17 00:00:00', NULL, NULL, 'E', NULL),
-('e39', 'Dudouit', 'Frédéric', '18 quai Xavier Jouvin', '75000', 'PARIS', '1988-04-26 00:00:00', NULL, NULL, NULL, NULL),
-('e49', 'Duncombe', 'Claude', '19 av Alsace Lorraine', '9000', 'FOIX', '1996-02-19 00:00:00', NULL, NULL, NULL, NULL),
-('e5', 'Enault-Pascreau', 'Céline', '25B r Stalingrad', '40000', 'MONT DE MARSAN', '1990-11-27 00:00:00', NULL, NULL, 'S', NULL),
-('e52', 'Eynde', 'Valérie', '3 r Henri Moissan', '76000', 'ROUEN', '1991-10-31 00:00:00', NULL, NULL, NULL, NULL),
-('f21', 'Finck', 'Jacques', 'rte Montreuil Bellay', '74000', 'ANNECY', '1993-06-08 00:00:00', NULL, NULL, NULL, NULL),
-('f39', 'Frémont', 'Fernande', '4 r Jean Giono', '69000', 'LYON', '1997-02-15 00:00:00', NULL, NULL, NULL, NULL),
-('f4', 'Gest', 'Alain', '30 r Authie', '46000', 'FIGEAC', '1994-05-03 00:00:00', NULL, NULL, NULL, NULL),
-('g19', 'Gheysen', 'Galassus', '32 bd Mar Foch', '75000', 'PARIS', '1996-01-18 00:00:00', NULL, NULL, NULL, NULL),
-('g30', 'Girard', 'Yvon', '31 av 6 Juin', '80000', 'AMIENS', '1999-03-27 00:00:00', NULL, NULL, 'N', NULL),
-('g53', 'Gombert', 'Luc', '32 r Emile Gueymard', '56000', 'VANNES', '1985-10-02 00:00:00', NULL, NULL, NULL, NULL),
-('g7', 'Guindon', 'Caroline', '40 r Mar Montgomery', '87000', 'LIMOGES', '1996-01-13 00:00:00', NULL, NULL, NULL, NULL),
-('h13', 'Guindon', 'François', '44 r Picotière', '19000', 'TULLE', '1993-05-08 00:00:00', NULL, NULL, NULL, NULL),
-('h30', 'Igigabel', 'Guy', '33 gal Arlequin', '94000', 'CRETEIL', '1998-04-26 00:00:00', NULL, NULL, NULL, NULL),
-('h35', 'Jourdren', 'Pierre', '34 av Jean Perrot', '15000', 'AURRILLAC', '1993-08-26 00:00:00', NULL, NULL, NULL, NULL),
-('h40', 'Juttard', 'Pierre-Raoul', '34 cours Jean Jaurès', '8000', 'SEDAN', '1992-11-01 00:00:00', NULL, NULL, NULL, NULL),
-('j45', 'Labouré-Morel', 'Saout', '38 cours Berriat', '52000', 'CHAUMONT', '1998-02-25 00:00:00', NULL, NULL, 'N', NULL),
-('j50', 'Landré', 'Philippe', '4 av Gén Laperrine', '59000', 'LILLE', '1992-12-16 00:00:00', NULL, NULL, NULL, NULL),
-('j8', 'Langeard', 'Hugues', '39 av Jean Perrot', '93000', 'BAGNOLET', '1998-06-18 00:00:00', NULL, NULL, 'P', NULL),
-('k4', 'Lanne', 'Bernard', '4 r Bayeux', '30000', 'NIMES', '1996-11-21 00:00:00', NULL, NULL, NULL, NULL),
-('k53', 'Le', 'Noël', '4 av Beauvert', '68000', 'MULHOUSE', '1983-03-23 00:00:00', NULL, NULL, NULL, NULL),
-('l14', 'Le', 'Jean', '39 r Raspail', '53000', 'LAVAL', '1995-02-02 00:00:00', NULL, NULL, NULL, NULL),
-('l23', 'Leclercq', 'Servane', '11 r Quinconce', '18000', 'BOURGES', '1995-06-05 00:00:00', NULL, NULL, NULL, NULL),
-('l46', 'Lecornu', 'Jean-Bernard', '4 bd Mar Foch', '72000', 'LA FERTE BERNARD', '1997-01-24 00:00:00', NULL, NULL, NULL, NULL),
-('l56', 'Lecornu', 'Ludovic', '4 r Abel Servien', '25000', 'BESANCON', '1996-02-27 00:00:00', NULL, NULL, NULL, NULL),
-('m35', 'Lejard', 'Agnès', '4 r Anthoard', '82000', 'MONTAUBAN', '1987-10-06 00:00:00', NULL, NULL, NULL, NULL),
-('m45', 'Lesaulnier', 'Pascal', '47 r Thiers', '57000', 'METZ', '1990-10-13 00:00:00', NULL, NULL, NULL, NULL),
-('n42', 'Letessier', 'Stéphane', '5 chem Capuche', '27000', 'EVREUX', '1996-03-06 00:00:00', NULL, NULL, NULL, NULL),
-('n58', 'Loirat', 'Didier', 'Les Pêchers cité Bourg la Croix', '45000', 'ORLEANS', '1992-08-30 00:00:00', NULL, NULL, NULL, NULL),
-('n59', 'Maffezzoli', 'Thibaud', '5 r Chateaubriand', '2000', 'LAON', '1994-12-19 00:00:00', NULL, NULL, NULL, NULL),
-('o26', 'Mancini', 'Anne', '5 r D\'Agier', '48000', 'MENDE', '1995-01-05 00:00:00', NULL, NULL, NULL, NULL),
-('p32', 'Marcouiller', 'Gérard', '7 pl St Gilles', '91000', 'ISSY LES MOULINEAUX', '1992-12-24 00:00:00', NULL, NULL, NULL, NULL),
-('p40', 'Michel', 'Jean-Claude', '5 r Gabriel Péri', '61000', 'FLERS', '1992-12-14 00:00:00', NULL, NULL, 'O', NULL),
-('p41', 'Montecot', 'Françoise', '6 r Paul Valéry', '17000', 'SAINTES', '1998-07-27 00:00:00', NULL, NULL, NULL, NULL),
-('p42', 'Notini', 'Veronique', '5 r Lieut Chabal', '60000', 'BEAUVAIS', '1994-12-12 00:00:00', NULL, NULL, NULL, NULL),
-('p49', 'Onfroy', 'Den', '5 r Sidonie Jacolin', '37000', 'TOURS', '1977-10-03 00:00:00', NULL, NULL, NULL, NULL),
-('p6', 'Pascreau', 'Charles', '57 bd Mar Foch', '64000', 'PAU', '1997-03-30 00:00:00', NULL, NULL, NULL, NULL),
-('p7', 'Pernot', 'Claude-Noël', '6 r Alexandre 1 de Yougoslavie', '11000', 'NARBONNE', '1990-03-01 00:00:00', NULL, NULL, NULL, NULL),
-('p8', 'Perrier', 'Maître', '6 r Aubert Dubayet', '71000', 'CHALON SUR SAONE', '1991-06-23 00:00:00', NULL, NULL, NULL, NULL),
-('q17', 'Petit', 'Jean-Louis', '7 r Ernest Renan', '50000', 'SAINT LO', '1997-09-06 00:00:00', NULL, NULL, NULL, NULL),
-('r24', 'Piquery', 'Patrick', '9 r Vaucelles', '14000', 'CAEN', '1984-07-29 00:00:00', NULL, NULL, 'O', NULL),
-('r58', 'Quiquandon', 'Joël', '7 r Ernest Renan', '29000', 'QUIMPER', '1990-06-30 00:00:00', NULL, NULL, NULL, NULL),
-('s10', 'Retailleau', 'Josselin', '88Bis r Saumuroise', '39000', 'DOLE', '1995-11-14 00:00:00', NULL, NULL, NULL, NULL),
-('s21', 'Retailleau', 'Pascal', '32 bd Ayrault', '23000', 'MONTLUCON', '1992-09-25 00:00:00', NULL, NULL, NULL, NULL),
-('t43', 'Souron', 'Maryse', '7B r Gay Lussac', '21000', 'DIJON', '1995-03-09 00:00:00', NULL, NULL, NULL, NULL),
-('t47', 'Tiphagne', 'Patrick', '7B r Gay Lussac', '62000', 'ARRAS', '1997-08-29 00:00:00', NULL, NULL, NULL, NULL),
-('t55', 'Tréhet', 'Alain', '7D chem Barral', '12000', 'RODEZ', '1994-11-29 00:00:00', NULL, NULL, NULL, NULL),
-('t60', 'Tusseau', 'Josselin', '63 r Bon Repos', '28000', 'CHARTRES', '1991-03-29 00:00:00', 1, 67, NULL, 'CE'),
-('zzz', 'swiss', 'bourdin', NULL, NULL, NULL, '2003-06-18 00:00:00', NULL, NULL, NULL, NULL);
+INSERT INTO `collaborateur` (`COL_MATRICULE`, `COL_NOM`, `COL_PRENOM`, `COL_ADRESSE`, `COL_CP`, `COL_VILLE`, `COL_DATEEMBAUCHE`, `HAB_ID`, `LOG_ID`, `SEC_CODE`) VALUES
+('a131', 'Villechalane', 'Louis', '8 cours Lafontaine', '29000', 'BREST', '1992-12-11 00:00:00', 2, 1, 'E'),
+('a17', 'Andre', 'David', '1 r Aimon de Chissée', '38100', 'GRENOBLE', '1991-08-26 00:00:00', 1, 2, NULL),
+('a55', 'Bedos', 'Christian', '1 r Bénédictins', '65000', 'TARBES', '1987-07-17 00:00:00', 2, 3, NULL),
+('a93', 'Tusseau', 'Louis', '22 r Renou', '86000', 'POITIERS', '1999-01-02 00:00:00', 2, 4, NULL),
+('b13', 'Bentot', 'Pascal', '11 av 6 Juin', '67000', 'STRASBOURG', '1996-03-11 00:00:00', NULL, NULL, NULL),
+('b16', 'Bioret', 'Luc', '1 r Linne', '35000', 'RENNES', '1997-03-21 00:00:00', NULL, NULL, NULL),
+('b19', 'Bunisset', 'Francis', '10 r Nicolas Chorier', '85000', 'LA ROCHE SUR YON', '1999-01-31 00:00:00', NULL, NULL, NULL),
+('b25', 'Bunisset', 'Denise', '1 r Lionne', '49100', 'ANGERS', '1994-07-03 00:00:00', NULL, NULL, NULL),
+('b28', 'Cacheux', 'Bernard', '114 r Authie', '34000', 'MONTPELLIER', '2000-08-02 00:00:00', NULL, NULL, NULL),
+('b34', 'Cadic', 'Eric', '123 r Caponière', '41000', 'BLOIS', '1993-12-06 00:00:00', NULL, NULL, 'P'),
+('b4', 'Charoze', 'Catherine', '100 pl Géants', '33000', 'BORDEAUX', '1997-09-25 00:00:00', NULL, NULL, NULL),
+('b50', 'Clepkens', 'Christophe', '12 r Fédérico Garcia Lorca', '13000', 'MARSEILLE', '1998-01-18 00:00:00', NULL, NULL, NULL),
+('b59', 'Cottin', 'Vincenne', '36 sq Capucins', '5000', 'GAP', '1995-10-21 00:00:00', NULL, NULL, NULL),
+('c14', 'Daburon', 'François', '13 r Champs Elysées', '6000', 'NICE', '1989-02-01 00:00:00', NULL, NULL, 'S'),
+('c3', 'De', 'Philippe', '13 r Charles Peguy', '10000', 'TROYES', '1992-05-05 00:00:00', NULL, NULL, NULL),
+('c54', 'Debelle', 'Michel', '181 r Caponière', '88000', 'EPINAL', '1991-04-09 00:00:00', NULL, NULL, NULL),
+('d13', 'Debelle', 'Jeanne', '134 r Stalingrad', '44000', 'NANTES', '1991-12-05 00:00:00', NULL, NULL, NULL),
+('d51', 'Debroise', 'Michel', '2 av 6 Juin', '70000', 'VESOUL', '1997-11-18 00:00:00', NULL, NULL, 'E'),
+('e22', 'Desmarquest', 'Nathalie', '14 r Fédérico Garcia Lorca', '54000', 'NANCY', '1989-03-24 00:00:00', NULL, NULL, NULL),
+('e24', 'Desnost', 'Pierre', '16 r Barral de Montferrat', '55000', 'VERDUN', '1993-05-17 00:00:00', NULL, NULL, 'E'),
+('e39', 'Dudouit', 'Frédéric', '18 quai Xavier Jouvin', '75000', 'PARIS', '1988-04-26 00:00:00', NULL, NULL, NULL),
+('e49', 'Duncombe', 'Claude', '19 av Alsace Lorraine', '9000', 'FOIX', '1996-02-19 00:00:00', NULL, NULL, NULL),
+('e5', 'Enault-Pascreau', 'Céline', '25B r Stalingrad', '40000', 'MONT DE MARSAN', '1990-11-27 00:00:00', NULL, NULL, 'S'),
+('e52', 'Eynde', 'Valérie', '3 r Henri Moissan', '76000', 'ROUEN', '1991-10-31 00:00:00', NULL, NULL, NULL),
+('f21', 'Finck', 'Jacques', 'rte Montreuil Bellay', '74000', 'ANNECY', '1993-06-08 00:00:00', NULL, NULL, NULL),
+('f39', 'Frémont', 'Fernande', '4 r Jean Giono', '69000', 'LYON', '1997-02-15 00:00:00', NULL, NULL, NULL),
+('f4', 'Gest', 'Alain', '30 r Authie', '46000', 'FIGEAC', '1994-05-03 00:00:00', NULL, NULL, NULL),
+('g19', 'Gheysen', 'Galassus', '32 bd Mar Foch', '75000', 'PARIS', '1996-01-18 00:00:00', NULL, NULL, NULL),
+('g30', 'Girard', 'Yvon', '31 av 6 Juin', '80000', 'AMIENS', '1999-03-27 00:00:00', NULL, NULL, 'N'),
+('g53', 'Gombert', 'Luc', '32 r Emile Gueymard', '56000', 'VANNES', '1985-10-02 00:00:00', NULL, NULL, NULL),
+('g7', 'Guindon', 'Caroline', '40 r Mar Montgomery', '87000', 'LIMOGES', '1996-01-13 00:00:00', NULL, NULL, NULL),
+('h13', 'Guindon', 'François', '44 r Picotière', '19000', 'TULLE', '1993-05-08 00:00:00', NULL, NULL, NULL),
+('h30', 'Igigabel', 'Guy', '33 gal Arlequin', '94000', 'CRETEIL', '1998-04-26 00:00:00', NULL, NULL, NULL),
+('h35', 'Jourdren', 'Pierre', '34 av Jean Perrot', '15000', 'AURRILLAC', '1993-08-26 00:00:00', NULL, NULL, NULL),
+('h40', 'Juttard', 'Pierre-Raoul', '34 cours Jean Jaurès', '8000', 'SEDAN', '1992-11-01 00:00:00', NULL, NULL, NULL),
+('j45', 'Labouré-Morel', 'Saout', '38 cours Berriat', '52000', 'CHAUMONT', '1998-02-25 00:00:00', NULL, NULL, 'N'),
+('j50', 'Landré', 'Philippe', '4 av Gén Laperrine', '59000', 'LILLE', '1992-12-16 00:00:00', NULL, NULL, NULL),
+('j8', 'Langeard', 'Hugues', '39 av Jean Perrot', '93000', 'BAGNOLET', '1998-06-18 00:00:00', NULL, NULL, 'P'),
+('k4', 'Lanne', 'Bernard', '4 r Bayeux', '30000', 'NIMES', '1996-11-21 00:00:00', NULL, NULL, NULL),
+('k53', 'Le', 'Noël', '4 av Beauvert', '68000', 'MULHOUSE', '1983-03-23 00:00:00', NULL, NULL, NULL),
+('l14', 'Le', 'Jean', '39 r Raspail', '53000', 'LAVAL', '1995-02-02 00:00:00', NULL, NULL, NULL),
+('l23', 'Leclercq', 'Servane', '11 r Quinconce', '18000', 'BOURGES', '1995-06-05 00:00:00', NULL, NULL, NULL),
+('l46', 'Lecornu', 'Jean-Bernard', '4 bd Mar Foch', '72000', 'LA FERTE BERNARD', '1997-01-24 00:00:00', NULL, NULL, NULL),
+('l56', 'Lecornu', 'Ludovic', '4 r Abel Servien', '25000', 'BESANCON', '1996-02-27 00:00:00', NULL, NULL, NULL),
+('m35', 'Lejard', 'Agnès', '4 r Anthoard', '82000', 'MONTAUBAN', '1987-10-06 00:00:00', NULL, NULL, NULL),
+('m45', 'Lesaulnier', 'Pascal', '47 r Thiers', '57000', 'METZ', '1990-10-13 00:00:00', NULL, NULL, NULL),
+('n42', 'Letessier', 'Stéphane', '5 chem Capuche', '27000', 'EVREUX', '1996-03-06 00:00:00', NULL, NULL, NULL),
+('n58', 'Loirat', 'Didier', 'Les Pêchers cité Bourg la Croix', '45000', 'ORLEANS', '1992-08-30 00:00:00', NULL, NULL, NULL),
+('n59', 'Maffezzoli', 'Thibaud', '5 r Chateaubriand', '2000', 'LAON', '1994-12-19 00:00:00', NULL, NULL, NULL),
+('o26', 'Mancini', 'Anne', '5 r D\'Agier', '48000', 'MENDE', '1995-01-05 00:00:00', NULL, NULL, NULL),
+('p32', 'Marcouiller', 'Gérard', '7 pl St Gilles', '91000', 'ISSY LES MOULINEAUX', '1992-12-24 00:00:00', NULL, NULL, NULL),
+('p40', 'Michel', 'Jean-Claude', '5 r Gabriel Péri', '61000', 'FLERS', '1992-12-14 00:00:00', NULL, NULL, 'O'),
+('p41', 'Montecot', 'Françoise', '6 r Paul Valéry', '17000', 'SAINTES', '1998-07-27 00:00:00', NULL, NULL, NULL),
+('p42', 'Notini', 'Veronique', '5 r Lieut Chabal', '60000', 'BEAUVAIS', '1994-12-12 00:00:00', NULL, NULL, NULL),
+('p49', 'Onfroy', 'Den', '5 r Sidonie Jacolin', '37000', 'TOURS', '1977-10-03 00:00:00', NULL, NULL, NULL),
+('p6', 'Pascreau', 'Charles', '57 bd Mar Foch', '64000', 'PAU', '1997-03-30 00:00:00', NULL, NULL, NULL),
+('p7', 'Pernot', 'Claude-Noël', '6 r Alexandre 1 de Yougoslavie', '11000', 'NARBONNE', '1990-03-01 00:00:00', NULL, NULL, NULL),
+('p8', 'Perrier', 'Maître', '6 r Aubert Dubayet', '71000', 'CHALON SUR SAONE', '1991-06-23 00:00:00', NULL, NULL, NULL),
+('q17', 'Petit', 'Jean-Louis', '7 r Ernest Renan', '50000', 'SAINT LO', '1997-09-06 00:00:00', NULL, NULL, NULL),
+('r24', 'Piquery', 'Patrick', '9 r Vaucelles', '14000', 'CAEN', '1984-07-29 00:00:00', NULL, NULL, 'O'),
+('r58', 'Quiquandon', 'Joël', '7 r Ernest Renan', '29000', 'QUIMPER', '1990-06-30 00:00:00', NULL, NULL, NULL),
+('s10', 'Retailleau', 'Josselin', '88Bis r Saumuroise', '39000', 'DOLE', '1995-11-14 00:00:00', NULL, NULL, NULL),
+('s21', 'Retailleau', 'Pascal', '32 bd Ayrault', '23000', 'MONTLUCON', '1992-09-25 00:00:00', NULL, NULL, NULL),
+('t43', 'Souron', 'Maryse', '7B r Gay Lussac', '21000', 'DIJON', '1995-03-09 00:00:00', NULL, NULL, NULL),
+('t47', 'Tiphagne', 'Patrick', '7B r Gay Lussac', '62000', 'ARRAS', '1997-08-29 00:00:00', NULL, NULL, NULL),
+('t55', 'Tréhet', 'Alain', '7D chem Barral', '12000', 'RODEZ', '1994-11-29 00:00:00', NULL, NULL, NULL),
+('t60', 'Tusseau', 'Josselin', '63 r Bon Repos', '28000', 'CHARTRES', '1991-03-29 00:00:00', 1, 67, NULL),
+('zzz', 'swiss', 'bourdin', NULL, NULL, NULL, '2003-06-18 00:00:00', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -259,7 +257,7 @@ INSERT INTO `login` (`LOG_ID`, `LOG_LOGIN`, `LOG_MOTDEPASSE`, `COL_MATRICULE`) V
 
 DROP TABLE IF EXISTS `medicament`;
 CREATE TABLE IF NOT EXISTS `medicament` (
-  `MED_DEPOTLEGAL` varchar(10) COLLATE utf8mb3_bin NOT NULL,
+  `MED_DEPOTLEGAL` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `MED_NOMCOMMERCIAL` varchar(25) COLLATE utf8mb3_bin DEFAULT NULL,
   `MED_COMPOSITION` varchar(255) COLLATE utf8mb3_bin DEFAULT NULL,
   `MED_EFFETS` varchar(255) COLLATE utf8mb3_bin DEFAULT NULL,
@@ -303,6 +301,38 @@ INSERT INTO `medicament` (`MED_DEPOTLEGAL`, `MED_NOMCOMMERCIAL`, `MED_COMPOSITIO
 ('TROXT21', 'TROXADET', 'Paroxétine', 'Ce médicament est utilisé pour traiter la dépression et les troubles obsessionnels compulsifs. Il peut également être utilisé en prévention des crises de panique avec ou sans agoraphobie.', 'Ce médicament est contre-indiqué en cas d\'allergie au produit.', 37.99, 'AIN'),
 ('TXISOL22', 'TOUXISOL Vitamine C', 'Tyrothricine + Acide ascorbique (Vitamine C)', 'Ce médicament est utilisé pour traiter les affections de la bouche et de la gorge.', 'Ce médicament est contre-indiqué en cas d\'allergie à  l\'un des constituants et chez l\'enfant de moins de 6 ans.', 57.99, 'ALO'),
 ('URIEG6', 'URIREGUL', 'Fosfomycine trométamol', 'Ce médicament est utilisé pour traiter les infections urinaires simples chez la femme de moins de 65 ans.', 'La prise de ce médicament est contre-indiquée en cas d\'allergie à  l\'un des constituants et d\'insuffisance rénale.', 42.99, 'AUM');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `motif`
+--
+
+DROP TABLE IF EXISTS `motif`;
+CREATE TABLE IF NOT EXISTS `motif` (
+  `MOTIF_NUM` int(11) NOT NULL,
+  `MOTIF_LIBELLE` varchar(25) COLLATE utf8mb4_bin DEFAULT NULL,
+  `MOTIF_DESCRIPTION` text COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`MOTIF_NUM`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `offrir`
+--
+
+DROP TABLE IF EXISTS `offrir`;
+CREATE TABLE IF NOT EXISTS `offrir` (
+  `RAP_NUM` int(11) NOT NULL,
+  `MED_DEPOTLEGAL` varchar(10) COLLATE utf8mb4_bin NOT NULL,
+  `OFF_QTE` int(11) DEFAULT NULL,
+  `COL_MATRICULE` varchar(10) COLLATE utf8mb4_bin NOT NULL,
+  PRIMARY KEY (`RAP_NUM`,`MED_DEPOTLEGAL`,`COL_MATRICULE`),
+  KEY `Fk_offrir_medicament` (`MED_DEPOTLEGAL`),
+  KEY `Fk_offrir_collaborateur` (`COL_MATRICULE`),
+  KEY `Fk_offrir_rapport` (`RAP_NUM`,`COL_MATRICULE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -467,12 +497,40 @@ CREATE TABLE IF NOT EXISTS `presentation` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `rapport_visite`
+--
+
+DROP TABLE IF EXISTS `rapport_visite`;
+CREATE TABLE IF NOT EXISTS `rapport_visite` (
+  `RAP_NUM` int(11) NOT NULL AUTO_INCREMENT,
+  `RAP_DATE` date DEFAULT NULL,
+  `RAP_BILAN` text COLLATE utf8mb4_bin DEFAULT NULL,
+  `RAP_DATESAISIE` date DEFAULT NULL,
+  `RAP_MOTIF` text COLLATE utf8mb4_bin DEFAULT NULL,
+  `PRA_NUM` int(11) DEFAULT NULL,
+  `MOTIF_NUM` int(11) DEFAULT NULL,
+  `COL_MATRICULE` varchar(10) COLLATE utf8mb4_bin NOT NULL,
+  `MEDICAMENT1` varchar(10) COLLATE utf8mb4_bin DEFAULT NULL,
+  `MEDICAMENT2` varchar(10) COLLATE utf8mb4_bin DEFAULT NULL,
+  `PRA_REMP` int(11) DEFAULT NULL,
+  PRIMARY KEY (`RAP_NUM`,`COL_MATRICULE`) USING BTREE,
+  KEY `Fk_rapport_praticien` (`PRA_NUM`),
+  KEY `Fk_rapport_motif` (`MOTIF_NUM`),
+  KEY `Fk_rapport_collaborateur` (`COL_MATRICULE`),
+  KEY `Fk_rapport_medicament1` (`MEDICAMENT1`),
+  KEY `Fk_rapport_medicament2` (`MEDICAMENT2`),
+  KEY `PRA_REMP` (`PRA_REMP`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `region`
 --
 
 DROP TABLE IF EXISTS `region`;
 CREATE TABLE IF NOT EXISTS `region` (
-  `REG_CODE` varchar(2) COLLATE utf8mb3_bin NOT NULL,
+  `REG_CODE` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `REG_NOM` varchar(50) COLLATE utf8mb3_bin DEFAULT NULL,
   `SEC_CODE` varchar(1) COLLATE utf8mb3_bin NOT NULL,
   PRIMARY KEY (`REG_CODE`),
@@ -597,6 +655,21 @@ INSERT INTO `specialite` (`SPE_CODE`, `SPE_LIBELLE`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `travailler`
+--
+
+DROP TABLE IF EXISTS `travailler`;
+CREATE TABLE IF NOT EXISTS `travailler` (
+  `COL_MATRICULE` varchar(10) COLLATE utf8mb4_bin NOT NULL,
+  `REG_CODE` char(2) COLLATE utf8mb4_bin NOT NULL,
+  `TRA_ROLE` varchar(11) COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`COL_MATRICULE`,`REG_CODE`),
+  KEY `Fk_travailler_region` (`REG_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `type_individu`
 --
 
@@ -637,6 +710,14 @@ INSERT INTO `type_praticien` (`TYP_CODE`, `TYP_LIBELLE`, `TYP_LIEU`) VALUES
 --
 
 --
+-- Contraintes pour la table `collaborateur`
+--
+ALTER TABLE `collaborateur`
+  ADD CONSTRAINT `Fk_collaborateur_habilitation` FOREIGN KEY (`HAB_ID`) REFERENCES `habilitation` (`HAB_ID`),
+  ADD CONSTRAINT `Fk_collaborateur_login` FOREIGN KEY (`LOG_ID`) REFERENCES `login` (`LOG_ID`),
+  ADD CONSTRAINT `Fk_collaborateur_secteur` FOREIGN KEY (`SEC_CODE`) REFERENCES `secteur` (`SEC_CODE`);
+
+--
 -- Contraintes pour la table `formuler`
 --
 ALTER TABLE `formuler`
@@ -663,6 +744,20 @@ ALTER TABLE `medicament`
   ADD CONSTRAINT `medicament_famille0_FK` FOREIGN KEY (`FAM_CODE`) REFERENCES `famille` (`FAM_CODE`);
 
 --
+-- Contraintes pour la table `offrir`
+--
+ALTER TABLE `offrir`
+  ADD CONSTRAINT `Fk_offrir_medicament` FOREIGN KEY (`MED_DEPOTLEGAL`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
+  ADD CONSTRAINT `Fk_offrir_rapport` FOREIGN KEY (`RAP_NUM`,`COL_MATRICULE`) REFERENCES `rapport_visite` (`RAP_NUM`, `COL_MATRICULE`);
+
+--
+-- Contraintes pour la table `posseder`
+--
+ALTER TABLE `posseder`
+  ADD CONSTRAINT `Fk_posseder_praticien` FOREIGN KEY (`PRA_NUM`) REFERENCES `praticien` (`PRA_NUM`),
+  ADD CONSTRAINT `Fk_posseder_specialite` FOREIGN KEY (`SPE_CODE`) REFERENCES `specialite` (`SPE_CODE`);
+
+--
 -- Contraintes pour la table `praticien`
 --
 ALTER TABLE `praticien`
@@ -677,10 +772,28 @@ ALTER TABLE `prescrire`
   ADD CONSTRAINT `PRESCRIRE_type_individu0_FK` FOREIGN KEY (`TIN_CODE`) REFERENCES `type_individu` (`TIN_CODE`);
 
 --
+-- Contraintes pour la table `rapport_visite`
+--
+ALTER TABLE `rapport_visite`
+  ADD CONSTRAINT `Fk_rapport_collaborateur` FOREIGN KEY (`COL_MATRICULE`) REFERENCES `collaborateur` (`COL_MATRICULE`),
+  ADD CONSTRAINT `Fk_rapport_medicament1` FOREIGN KEY (`MEDICAMENT1`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
+  ADD CONSTRAINT `Fk_rapport_medicament2` FOREIGN KEY (`MEDICAMENT2`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
+  ADD CONSTRAINT `Fk_rapport_motif` FOREIGN KEY (`MOTIF_NUM`) REFERENCES `motif` (`MOTIF_NUM`),
+  ADD CONSTRAINT `Fk_rapport_praticien` FOREIGN KEY (`PRA_NUM`) REFERENCES `praticien` (`PRA_NUM`),
+  ADD CONSTRAINT `PRA_REMP` FOREIGN KEY (`PRA_REMP`) REFERENCES `praticien` (`PRA_NUM`);
+
+--
 -- Contraintes pour la table `region`
 --
 ALTER TABLE `region`
   ADD CONSTRAINT `region_secteur0_FK` FOREIGN KEY (`SEC_CODE`) REFERENCES `secteur` (`SEC_CODE`);
+
+--
+-- Contraintes pour la table `travailler`
+--
+ALTER TABLE `travailler`
+  ADD CONSTRAINT `Fk_travailler_collaborateur` FOREIGN KEY (`COL_MATRICULE`) REFERENCES `collaborateur` (`COL_MATRICULE`),
+  ADD CONSTRAINT `Fk_travailler_region` FOREIGN KEY (`REG_CODE`) REFERENCES `region` (`REG_CODE`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
