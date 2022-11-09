@@ -14,19 +14,21 @@ switch ($action) {
 
 	case 'affichermedoc': {
 
-			if (isset($_REQUEST['medicament']) && getAllInformationMedicamentDepot($_REQUEST['medicament'])) {
-				$med = $_REQUEST['medicament'];
-				$carac = getAllInformationMedicamentDepot($med);
-				if (empty($carac[7])) {
-					$carac[7] = 'Non défini(e)';
-				}
-				include("vues/v_afficherMedicament.php");
-			} else {
-				$_SESSION['erreur'] = true;
-				header("Location: index.php?uc=medicaments&action=formulairemedoc");
+		if (isset($_REQUEST['medicament']) && getAllInformationMedicamentDepot($_REQUEST['medicament'])) 
+		{
+			$med = $_REQUEST['medicament'];
+			
+			$carac = getAllInformationMedicamentDepot($med);
+			if (empty($carac[7])) {
+				$carac[7] = 'Non défini(e)';
 			}
-			break;
+			include("vues/v_afficherMedicament.php");
+		} else {
+			$_SESSION['erreur'] = "medic-true";
+			header("Location: index.php?uc=medicaments&action=formulairemedoc");
 		}
+		break;
+	}
 
 	default: {
 
