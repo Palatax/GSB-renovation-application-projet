@@ -7,7 +7,7 @@ include_once 'bd.inc.php';
 
         try{
             $monPdo = connexionPDO();
-            $req = 'SELECT PRA_NOM, PRA_PRENOM FROM praticien ORDER BY PRA_PRENOM';
+            $req = 'SELECT PRA_NUM, PRA_NOM, PRA_PRENOM FROM praticien ORDER BY PRA_PRENOM';
             $res = $monPdo->query($req);
             $result = $res->fetchAll();
             return $result;
