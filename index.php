@@ -9,8 +9,8 @@
     else{
         $uc = $_REQUEST['uc'];
     }
-?>    
-<?php
+
+
     if(empty($_SESSION['login'])){
         include("vues/v_headerDeconnexion.php");
     }else{
