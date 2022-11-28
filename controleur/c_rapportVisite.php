@@ -13,11 +13,15 @@ if(isset($_SESSION['login']))
             $motifs = getMotifs();
             $medicaments = getAllNomMedicament();
             $praticiens = getAllNomPraticien();
-            $date = date('d/m/Y', time());
+            $date = date('Y-m-d', time());
 
             echo $numRapport;
             
             include('vues/v_saisieRapport.php');
+        }
+        case 'confirmerRapport':
+        {
+
         }
         case 'mesrapports' :
         {

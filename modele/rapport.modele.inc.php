@@ -34,8 +34,6 @@ function getRapportNum($colMatricule)
         $res->execute();
 
         $result = $res->fetch(PDO::FETCH_ASSOC);
-        
-        var_dump($result);
 
         $rapNum = 0;
 
