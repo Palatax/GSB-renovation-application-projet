@@ -6,6 +6,17 @@ if(isset($_SESSION['login']))
     
     switch($action)
     {
+        case 'choixRedaction':
+        {
+            if(count(getRapports()) > 1)
+            {
+                include('vues/v_choixRedaction.php');
+            }
+            else 
+            {
+                header('Location:index.php?uc=rapportdevisite&action=redigerrapport');
+            }
+        }
         case 'redigerrapport' :
         {
             $matricule = $_SESSION['matricule'];
@@ -22,6 +33,10 @@ if(isset($_SESSION['login']))
         case 'confirmerRapport':
         {
 
+        }
+        case 'modifierRapport':
+        {
+            
         }
         case 'mesrapports' :
         {
