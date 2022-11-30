@@ -1,0 +1,5 @@
+Code Région du rapport
+
+avec departement du praticien et table departement où le code Région est indiqué
+
+

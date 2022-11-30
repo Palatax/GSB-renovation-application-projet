@@ -46,8 +46,11 @@
             include("controleur/c_connexion.php");
             break; 
         }
-        
-
+        case 'rapportdevisite' :
+        {
+            include("controleur/c_rapportVisite.php");
+            break;
+        }
         default :
         {   
             include("vues/v_accueil.php");
