@@ -18,8 +18,8 @@
     
                             <div class="form-group">
                                 <label for="praticien">Praticien concerné <abbr>*</abbr> :</label>
-                                <select class="form-select w-75" id="praticien" name="praticien" required>
-                                    <option>-Choisissez un praticien-</option>
+                                <select class="form-select w-75" id="praticien" name="praticien">
+                                    <option value="">-Choisissez un praticien-</option>
             
                                     <?php
                                         foreach($praticiens as $praticien)
@@ -32,12 +32,12 @@
     
                             <div class="form-group">
                                 <label for="dateSaisie">Date de saisie <abbr>*</abbr> :</label>
-                                <input id="dateSaisie" name="dateSaisie" type="date" value="<?= $date ?>" required>
+                                <input id="dateSaisie" name="dateSaisie" type="date" value="<?= $date ?>">
                             </div>
     
                             <div class="form-group">
                                 <label for="bilan">Bilan du rapport <abbr>*</abbr> :</label>
-                                <textarea class="form-control w-75" id="bilan" name="bilan" required></textarea>
+                                <textarea class="form-control w-75" id="bilan" name="bilan"></textarea>
                             </div>
                         </div>
     
@@ -49,8 +49,8 @@
         
                             <div class="form-group motif-group">
                                 <label for="motifNormal">Motif <abbr>*</abbr> : </label>
-                                <select class="w-75 form-select" id="motifNormal" name="motifNormal" required>
-                                    <option>-Choisissez un motif-</option>
+                                <select class="w-75 form-select" id="motifNormal" name="motifNormal">
+                                    <option value="">-Choisissez un motif-</option>
             
                                     <?php
                                         foreach($motifs as $motif)
@@ -64,7 +64,7 @@
                             <div class="form-group">
                                 <label for="medicament1">1er médicament présenté:</label>
                                 <select class="form-select" id="medicament1" name="medicament1">
-                                    <option>-Choisissez un médicament-</option>
+                                    <option value="">-Choisissez un médicament-</option>
         
                                     <?php
                                         foreach($medicaments as $medicament)
@@ -84,7 +84,7 @@
                     </div>
 
                     <div class="bouton-quitter">
-                        <input class="w-25 btn btn-info text-light valider" type="button"  value="Valider le rapport">
+                        <input class="w-25 btn btn-info text-light valider" type="submit"  value="Valider le rapport">
 
                         <input class="w-25 btn btn-info text-light valider" type="button" onclick="history.go(-1)" value="Retour">
                     </div>

@@ -36,13 +36,12 @@ function getRapports()
                        MEDICAMENT1,
                        MEDICAMENT2,
                        PRA_REMP
-                FROM rapport_visite
-                WHERE COL_MATRICULE = :COL_MATRICULE';
+                FROM rapport_visite';
 
         $res = $monPdo->prepare($req);
         $res->execute();
         $result = $res->fetchAll(PDO::FETCH_ASSOC);
-var_dump($result);
+
         return $result;
     }
     catch (PDOException $e)
@@ -83,15 +82,47 @@ function getRapportNum($colMatricule)
     }
 }
 
-function ajouterRapport()
+function ajouterRapport($numRapport, $matrCol, $dateVis, $praticien, $motif, $dateSaisie, $bilan, $medicament1, $definitif)
 {
     try
     {
         $monPdo = connexionPDO();
 
-        $req = '';
+        $req = 'INSERT INTO rapport_visite (
+            RAP_NUM, 
+            COL_MATRICULE, 
+            RAP_DATE, 
+            PRA_NUM, 
+            RAP_MOTIF,
+            RAP_DATESAISIE, 
+            RAP_BILAN, 
+            MEDICAMENT1,
+            DEFINITIF
+        ) VALUES 
+        (
+            :RAP_NUM, 
+            :COL_MATRICULE, 
+            :RAP_DATE, 
+            :PRA_NUM, 
+            :RAP_MOTIF,
+            :RAP_DATESAISIE, 
+            :RAP_BILAN, 
+            :MEDICAMENT1,
+            :DEFINITIF
+        )';
 
         $res = $monPdo->prepare($req);
+        $res->bindValue(':RAP_NUM', $numRapport);
+        $res->bindValue(':COL_MATRICULE', $matrCol);
+        $res->bindValue(':RAP_DATE', $dateVis);
+        $res->bindValue(':PRA_NUM', $praticien);
+        $res->bindValue(':RAP_MOTIF', $motif);
+        $res->bindValue(':RAP_DATESAISIE', $dateSaisie);
+        $res->bindValue(':RAP_BILAN', $bilan);
+        $res->bindValue(':MEDICAMENT1', $medicament1);
+        $res->bindValue(':DEFINITIF', $definitif);
+
+        $res->execute();
     }
     catch (PDOException $e)
     {
