@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3307
--- Généré le : mer. 23 nov. 2022 à 15:59
+-- Généré le : ven. 02 déc. 2022 à 10:36
 -- Version du serveur : 10.6.5-MariaDB
 -- Version de PHP : 8.0.13
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `gsbcr`
+-- Base de données : `calvo_gsb`
 --
 
 -- --------------------------------------------------------
@@ -118,6 +118,120 @@ INSERT INTO `collaborateur` (`COL_MATRICULE`, `COL_NOM`, `COL_PRENOM`, `COL_ADRE
 ('t55', 'Tréhet', 'Alain', '7D chem Barral', '12000', 'RODEZ', '1994-11-29 00:00:00', NULL, NULL, NULL),
 ('t60', 'Tusseau', 'Josselin', '63 r Bon Repos', '28000', 'CHARTRES', '1991-03-29 00:00:00', 1, 67, NULL),
 ('zzz', 'swiss', 'bourdin', NULL, NULL, NULL, '2003-06-18 00:00:00', NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `departement`
+--
+
+DROP TABLE IF EXISTS `departement`;
+CREATE TABLE IF NOT EXISTS `departement` (
+  `NoDEPT` int(11) NOT NULL,
+  `Departement` varchar(30) NOT NULL,
+  `REG_CODE` varchar(2) NOT NULL,
+  PRIMARY KEY (`NoDEPT`),
+  KEY `REG_CODE` (`REG_CODE`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déchargement des données de la table `departement`
+--
+
+INSERT INTO `departement` (`NoDEPT`, `Departement`, `REG_CODE`) VALUES
+(1, 'Ain', 'RA'),
+(2, 'Aisne', 'PI'),
+(3, 'Allier', 'AU'),
+(4, 'Alpes-de-Haute-Provence', 'PA'),
+(5, 'Hautes-Alpes', 'PA'),
+(6, 'Alpes-Maritimes', 'PA'),
+(7, 'Ardeche', 'RA'),
+(8, 'Ardennes', 'CA'),
+(9, 'Ariege', 'LG'),
+(10, 'Aube', 'AL'),
+(11, 'Aude', 'RO'),
+(12, 'Aveyron', 'RO'),
+(13, 'Bouches-du-Rhone', 'PA'),
+(14, 'Calvados', 'HN'),
+(15, 'Cantal', 'AU'),
+(16, 'Charente', 'PC'),
+(17, 'Charente-Maritime', 'PC'),
+(18, 'Cher', 'CE'),
+(19, 'Correze', 'AQ'),
+(22, 'Cotes-du-Nord', 'BG'),
+(23, 'Creuse', 'AQ'),
+(24, 'Dordogne', 'AQ'),
+(25, 'Doubs', 'FC'),
+(26, 'Drome', 'RA'),
+(27, 'Eure', 'BN'),
+(28, 'Eure-et-Loir', 'CE'),
+(29, 'Finistere', 'BG'),
+(30, 'Gard', 'MP'),
+(31, 'Haute-Garonne', 'MP'),
+(32, 'Gers', 'MP'),
+(33, 'Gironde', 'AQ'),
+(34, 'Herault', 'RO'),
+(35, 'Ille-et-Vilaine', 'BG'),
+(36, 'Indre', 'CE'),
+(37, 'Indre-et-Loire', 'CE'),
+(38, 'Isere', 'AU'),
+(39, 'Jura', 'FC'),
+(40, 'Landes', 'AQ'),
+(41, 'Loir-et-Cher', 'CE'),
+(42, 'Loire', 'AU'),
+(43, 'Haute-Loire', 'RA'),
+(44, 'Loire-Atlantique', 'PL'),
+(45, 'Loiret', 'CE'),
+(46, 'Lot', 'LG'),
+(47, 'Lot-et-Garonne', 'PC'),
+(48, 'Lozere', 'MP'),
+(49, 'Maine-et-Loire', 'PL'),
+(50, 'Manche', 'HN'),
+(51, 'Marne', 'CA'),
+(52, 'Haute-Marne', 'AL'),
+(53, 'Mayenne', 'PL'),
+(54, 'Meurthe-et-Moselle', 'CA'),
+(55, 'Meuse', 'CA'),
+(56, 'Morbihan', 'BG'),
+(57, 'Moselle', 'CA'),
+(58, 'Nievre', 'BO'),
+(59, 'Nord', 'NP'),
+(60, 'Oise', 'PI'),
+(61, 'Orne', 'BN'),
+(62, 'Pas-de-Calais', 'NP'),
+(63, 'Puy-de-Dome', 'RA'),
+(64, 'Pyrenees-Atlantiques', 'PC'),
+(65, 'Hautes-Pyrenees', 'MP'),
+(66, 'Pyrenees-Orientales', 'MP'),
+(67, 'Bas-Rhin', 'AL'),
+(68, 'Haut-Rhin', 'AL'),
+(69, 'Rhone', 'RA'),
+(70, 'Haute-Saone', 'FC'),
+(71, 'Saone-et-Loire', 'BO'),
+(72, 'Sarthe', 'PL'),
+(73, 'Savoie', 'RA'),
+(74, 'Haute-Savoie', 'AU'),
+(75, 'Paris', 'IF'),
+(76, 'Seine-Maritime', 'BN'),
+(77, 'Seine-et-Marne', 'IF'),
+(78, 'Yvelines', 'IF'),
+(79, 'Deux-Sevres', 'AQ'),
+(80, 'Somme', 'PI'),
+(81, 'Tarn', 'MP'),
+(82, 'Tarn-et-Garonne', 'MP'),
+(83, 'Var', 'PA'),
+(84, 'Vaucluse', 'PA'),
+(85, 'Vendee', 'PL'),
+(86, 'Vienne', 'PC'),
+(87, 'Haute-Vienne', 'AQ'),
+(88, 'Vosges', 'CA'),
+(89, 'Yonne', 'BO'),
+(90, 'Territoire-de-Belfort', 'BO'),
+(91, 'Essonne', 'IF'),
+(92, 'Hauts-de-Seine', 'IF'),
+(93, 'Seine-St-Denis', 'IF'),
+(94, 'Val-de-Marne', 'IF'),
+(95, 'Val-d-Oise', 'IF');
 
 -- --------------------------------------------------------
 
@@ -315,6 +429,13 @@ CREATE TABLE IF NOT EXISTS `motif` (
   `MOTIF_DESCRIPTION` text COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`MOTIF_NUM`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+--
+-- Déchargement des données de la table `motif`
+--
+
+INSERT INTO `motif` (`MOTIF_NUM`, `MOTIF_LIBELLE`, `MOTIF_DESCRIPTION`) VALUES
+(1, 'visite hébdomadaire', 'visite périodique sur une base hébdomadaire visant à rafraîchir l\'esprit du praticien');
 
 -- --------------------------------------------------------
 
@@ -520,7 +641,16 @@ CREATE TABLE IF NOT EXISTS `rapport_visite` (
   KEY `Fk_rapport_medicament1` (`MEDICAMENT1`),
   KEY `Fk_rapport_medicament2` (`MEDICAMENT2`),
   KEY `PRA_REMP` (`PRA_REMP`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+--
+-- Déchargement des données de la table `rapport_visite`
+--
+
+INSERT INTO `rapport_visite` (`RAP_NUM`, `RAP_DATE`, `RAP_BILAN`, `RAP_DATESAISIE`, `RAP_MOTIF`, `PRA_NUM`, `MOTIF_NUM`, `COL_MATRICULE`, `MEDICAMENT1`, `MEDICAMENT2`, `PRA_REMP`) VALUES
+(1, '2022-11-29', 'Blah blah blah rapport rapport', '2022-12-30', NULL, 1, 1, 'a131', '3MYC7', 'ADIMOL9', NULL),
+(2, '2000-12-12', 'le bilan est bien', '2001-01-14', NULL, 1, 1, 'a131', 'AMOPIL7', 'AMOX45', NULL),
+(3, '2000-12-12', 'le bilan est pas bien', '2001-01-14', NULL, 2, 1, 'b50', 'BACTIG10', 'CLAZER6', NULL);
 
 -- --------------------------------------------------------
 
@@ -667,6 +797,14 @@ CREATE TABLE IF NOT EXISTS `travailler` (
   KEY `Fk_travailler_region` (`REG_CODE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
+--
+-- Déchargement des données de la table `travailler`
+--
+
+INSERT INTO `travailler` (`COL_MATRICULE`, `REG_CODE`, `TRA_ROLE`) VALUES
+('1', 'BG', NULL),
+('2', 'AU', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -716,84 +854,6 @@ ALTER TABLE `collaborateur`
   ADD CONSTRAINT `Fk_collaborateur_habilitation` FOREIGN KEY (`HAB_ID`) REFERENCES `habilitation` (`HAB_ID`),
   ADD CONSTRAINT `Fk_collaborateur_login` FOREIGN KEY (`LOG_ID`) REFERENCES `login` (`LOG_ID`),
   ADD CONSTRAINT `Fk_collaborateur_secteur` FOREIGN KEY (`SEC_CODE`) REFERENCES `secteur` (`SEC_CODE`);
-
---
--- Contraintes pour la table `formuler`
---
-ALTER TABLE `formuler`
-  ADD CONSTRAINT `FORMULER_medicament0_FK` FOREIGN KEY (`MED_DEPOTLEGAL`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
-  ADD CONSTRAINT `FORMULER_presentation1_FK` FOREIGN KEY (`PRE_CODE`) REFERENCES `presentation` (`PRE_CODE`);
-
---
--- Contraintes pour la table `interagir`
---
-ALTER TABLE `interagir`
-  ADD CONSTRAINT `INTERAGIR_medicament0_FK` FOREIGN KEY (`MED_DEPOTLEGAL`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
-  ADD CONSTRAINT `INTERAGIR_medicament1_FK` FOREIGN KEY (`MED_DEPOTLEGAL_medicament`) REFERENCES `medicament` (`MED_DEPOTLEGAL`);
-
---
--- Contraintes pour la table `login`
---
-ALTER TABLE `login`
-  ADD CONSTRAINT `login_collaborateur0_FK` FOREIGN KEY (`COL_MATRICULE`) REFERENCES `collaborateur` (`COL_MATRICULE`);
-
---
--- Contraintes pour la table `medicament`
---
-ALTER TABLE `medicament`
-  ADD CONSTRAINT `medicament_famille0_FK` FOREIGN KEY (`FAM_CODE`) REFERENCES `famille` (`FAM_CODE`);
-
---
--- Contraintes pour la table `offrir`
---
-ALTER TABLE `offrir`
-  ADD CONSTRAINT `Fk_offrir_medicament` FOREIGN KEY (`MED_DEPOTLEGAL`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
-  ADD CONSTRAINT `Fk_offrir_rapport` FOREIGN KEY (`RAP_NUM`,`COL_MATRICULE`) REFERENCES `rapport_visite` (`RAP_NUM`, `COL_MATRICULE`);
-
---
--- Contraintes pour la table `posseder`
---
-ALTER TABLE `posseder`
-  ADD CONSTRAINT `Fk_posseder_praticien` FOREIGN KEY (`PRA_NUM`) REFERENCES `praticien` (`PRA_NUM`),
-  ADD CONSTRAINT `Fk_posseder_specialite` FOREIGN KEY (`SPE_CODE`) REFERENCES `specialite` (`SPE_CODE`);
-
---
--- Contraintes pour la table `praticien`
---
-ALTER TABLE `praticien`
-  ADD CONSTRAINT `Fk_praticien_typepraticien` FOREIGN KEY (`TYP_CODE`) REFERENCES `type_praticien` (`TYP_CODE`);
-
---
--- Contraintes pour la table `prescrire`
---
-ALTER TABLE `prescrire`
-  ADD CONSTRAINT `PRESCRIRE_dosage1_FK` FOREIGN KEY (`DOS_CODE`) REFERENCES `dosage` (`DOS_CODE`),
-  ADD CONSTRAINT `PRESCRIRE_medicament2_FK` FOREIGN KEY (`MED_DEPOTLEGAL`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
-  ADD CONSTRAINT `PRESCRIRE_type_individu0_FK` FOREIGN KEY (`TIN_CODE`) REFERENCES `type_individu` (`TIN_CODE`);
-
---
--- Contraintes pour la table `rapport_visite`
---
-ALTER TABLE `rapport_visite`
-  ADD CONSTRAINT `Fk_rapport_collaborateur` FOREIGN KEY (`COL_MATRICULE`) REFERENCES `collaborateur` (`COL_MATRICULE`),
-  ADD CONSTRAINT `Fk_rapport_medicament1` FOREIGN KEY (`MEDICAMENT1`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
-  ADD CONSTRAINT `Fk_rapport_medicament2` FOREIGN KEY (`MEDICAMENT2`) REFERENCES `medicament` (`MED_DEPOTLEGAL`),
-  ADD CONSTRAINT `Fk_rapport_motif` FOREIGN KEY (`MOTIF_NUM`) REFERENCES `motif` (`MOTIF_NUM`),
-  ADD CONSTRAINT `Fk_rapport_praticien` FOREIGN KEY (`PRA_NUM`) REFERENCES `praticien` (`PRA_NUM`),
-  ADD CONSTRAINT `PRA_REMP` FOREIGN KEY (`PRA_REMP`) REFERENCES `praticien` (`PRA_NUM`);
-
---
--- Contraintes pour la table `region`
---
-ALTER TABLE `region`
-  ADD CONSTRAINT `region_secteur0_FK` FOREIGN KEY (`SEC_CODE`) REFERENCES `secteur` (`SEC_CODE`);
-
---
--- Contraintes pour la table `travailler`
---
-ALTER TABLE `travailler`
-  ADD CONSTRAINT `Fk_travailler_collaborateur` FOREIGN KEY (`COL_MATRICULE`) REFERENCES `collaborateur` (`COL_MATRICULE`),
-  ADD CONSTRAINT `Fk_travailler_region` FOREIGN KEY (`REG_CODE`) REFERENCES `region` (`REG_CODE`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

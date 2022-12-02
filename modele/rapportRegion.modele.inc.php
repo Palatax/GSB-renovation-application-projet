@@ -8,8 +8,8 @@ include_once 'bd.inc.php';
 
         try{
             $monPdo = connexionPDO();
-            
-            $req = '';
+
+            $req = 'SELECT RAP_NUM,RAP_BILAN,RAP_DATESAISIE,';
 
             $res = $monPdo->query($req);
             $result = $res->fetchAll();
