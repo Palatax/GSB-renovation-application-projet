@@ -47,9 +47,11 @@
             include("controleur/c_connexion.php");
             break; 
         }
-        case 'rapportdevisite':
+        
+        case 'rapportdevisite' :
         {
-            include('controleur/c_rapportVisite.php');
+            include("controleur/c_rapportVisite.php");
+            break;
         }
 
         default :

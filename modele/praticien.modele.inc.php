@@ -17,15 +17,29 @@ include_once 'bd.inc.php';
             die();
         }
     }
-   function getAllInformationPraticien($depot){
+
+   function getAllInformationPraticien($praticien){
 
         try{
             $monPdo = connexionPDO();
-            $req = 'SELECT p.PRA_NUM, p.PRA_NOM as \'nom\', p.PRA_PRENOM as \'prenom\', p.PRA_ADRESSE as \'adresse\', p.PRA_CP as \'codePostal\', p.PRA_VILLE as \'ville\', p.PRA_COEFNOTORIETE as \'coefNot\', p.TYP_CODE as \'typeCode\', t.TYP_LIBELLE as \'typeLib\' FROM praticien p INNER JOIN type_praticien t ON t.TYP_CODE = p.TYP_CODE;';
+            
+            $req = 'SELECT p.PRA_NOM as \'nom\', 
+                           p.PRA_PRENOM as \'prenom\', 
+                           p.PRA_ADRESSE as \'adresse\', 
+                           p.PRA_CP as \'codePostal\', 
+                           p.PRA_VILLE as \'ville\', 
+                           p.PRA_COEFNOTORIETE as \'coefNot\', 
+                           p.TYP_CODE as \'typeCode\', 
+                           t.TYP_LIBELLE as \'typeLib\' 
+                    FROM praticien p 
+                    INNER JOIN type_praticien t 
+                    ON t.TYP_CODE = p.TYP_CODE 
+                    WHERE PRA_NUM = "'.$praticien.'"';
+
             $res = $monPdo->query($req);
             $result = $res->fetch();    
             return $result;
-        } 
+        }
         catch (PDOException $e){
             print "Erreur !: " . $e->getMessage();
             die();

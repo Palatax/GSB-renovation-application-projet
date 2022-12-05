@@ -151,7 +151,16 @@ if(isset($_SESSION['login']))
         }
         case 'rapportregion' :
         {
+            include("vues/v_formulaireRapportRegion.php");
             break;
         }
-    }
+        case 'confirmerRapportRegion':
+        {
+          include("vues/v_afficherRapportRegion.php");
+          break;
+        }
+        default:
+          header('Location: index.php?uc=accueil');
+          break;
+        }
 }

@@ -292,3 +292,8 @@ textarea {
 .fit {
 	width: fit-content;
 }
+
+
+.red {
+	color: red;
+}

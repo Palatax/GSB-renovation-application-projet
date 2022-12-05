@@ -13,15 +13,18 @@ switch ($action) {
 		}
 	
 	case 'afficherPraticien': {
+
 		if (isset($_REQUEST['praticien']) && getAllInformationPraticien($_REQUEST['praticien'])) {
 			$pra = $_REQUEST['praticien'];
+
 			$carac = getAllInformationPraticien($pra);
+
 			if (empty($carac[7])) {
 				$carac[7] = 'Non défini(e)';
 			}
 			include("vues/v_afficherPraticien.php");
 		} else {
-			$_SESSION['erreur'] = true;
+			$_SESSION['erreur'] = "prati-true";
 			header("Location: index.php?uc=praticien&action=formulairePraticien");
 		}
 		break;
