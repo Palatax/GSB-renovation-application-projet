@@ -2,14 +2,15 @@
     require_once ('modele/medicament.modele.inc.php');
     require_once ('modele/praticien.modele.inc.php');
     require_once ('modele/connexion.modele.inc.php');
+    require_once ('modele/rapport.modele.inc.php');
 
     if(!isset($_REQUEST['uc']) || empty($_REQUEST['uc']))
         $uc = 'accueil';
     else{
         $uc = $_REQUEST['uc'];
     }
-?>    
-<?php
+
+
     if(empty($_SESSION['login'])){
         include("vues/v_headerDeconnexion.php");
     }else{
@@ -46,11 +47,13 @@
             include("controleur/c_connexion.php");
             break; 
         }
+        
         case 'rapportdevisite' :
         {
             include("controleur/c_rapportVisite.php");
             break;
         }
+
         default :
         {   
             include("vues/v_accueil.php");

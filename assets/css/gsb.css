@@ -318,3 +318,51 @@ footer a.text-light:hover {
 	background-color: #aaaaaa;
 	border-radius: 8px;
 }
+abbr {
+	color: red;
+}
+.bouton-quitter {
+	display: flex;
+}
+.champs-rapport {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	height: 400;
+}
+.partie-gauche, .partie-droite {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 50%;
+}
+.center {
+	text-align: center;
+}
+.form-rapport-container {
+	width: 725px;
+	height: 700px;
+}
+.bloc-center {
+	width: 150px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.motif-group {
+	display: flex;
+	vertical-align: middle;
+}
+.rapport {
+	display: flex;
+	width: 220px;
+	height: 300px;
+	margin: 10px;
+	border-radius: 10px;
+}
+.choice {
+	width: 500px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 200px;
+	margin-bottom: 200px;
+}

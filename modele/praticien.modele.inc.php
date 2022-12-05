@@ -4,7 +4,6 @@ include_once 'bd.inc.php';
 
 
     function getAllNomPraticien(){
-
         try{
             $monPdo = connexionPDO();
             $req = 'SELECT PRA_NUM, PRA_NOM, PRA_PRENOM FROM praticien ORDER BY PRA_PRENOM';
@@ -23,6 +22,7 @@ include_once 'bd.inc.php';
 
         try{
             $monPdo = connexionPDO();
+            
             $req = 'SELECT p.PRA_NOM as \'nom\', 
                            p.PRA_PRENOM as \'prenom\', 
                            p.PRA_ADRESSE as \'adresse\', 
@@ -35,16 +35,17 @@ include_once 'bd.inc.php';
                     INNER JOIN type_praticien t 
                     ON t.TYP_CODE = p.TYP_CODE 
                     WHERE PRA_NUM = "'.$praticien.'"';
+
             $res = $monPdo->query($req);
             $result = $res->fetch();    
             return $result;
-        } 
-
+        }
         catch (PDOException $e){
             print "Erreur !: " . $e->getMessage();
             die();
         }
     }
+
    /* function getAllInformationPraticienNom($nom){
 
         try{

@@ -6,14 +6,14 @@ if (!isset($_REQUEST['action']) || empty($_REQUEST['action'])) {
 }
 switch ($action) {
 	case 'connexion': {
-
-			if (isset($_SESSION['login'])) {
-				header('Location: index.php?uc=connexion&action=profil');
-			} else {
-				include("vues/v_connexion.php");
-			}
-			break;
+		
+		if (isset($_SESSION['login'])) {
+			header('Location: index.php?uc=connexion&action=profil');
+		} else {
+			include("vues/v_connexion.php");
 		}
+		break;
+	}
 
 	case 'deconnexion': {
 
