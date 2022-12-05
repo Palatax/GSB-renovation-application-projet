@@ -6,7 +6,7 @@
         </div>
         <div class="row align-items-center justify-content-center">
             <div class="form-rapport-container col-12 col-sm-8 col-lg-6 col-xl-55 col-xxl-4 py-lg-5 py-3">
-                <form class="form-rapport form-signin formulaire m-auto" action="index.php?uc=rapportdevisite&action=confirmerRapport" method="post">
+                <form class="form-rapport form-signin formulaire m-auto" action="<?= $url ?>" method="post">
                     <p><abbr>*</abbr> Champs obligatoires</p>
 
                     <h2 class="center form-signin-heading">Rapport de visite</h2>
@@ -22,29 +22,33 @@
                                     <option value="">-Choisissez un praticien-</option>
             
                                     <?php
-                                        foreach($praticiens as $praticien)
-                                        {
-                                            echo '<option value=.'.$praticien['PRA_NUM'].'>'.$praticien['PRA_NOM'].' '.$praticien['PRA_PRENOM'].'</option>';
-                                        }
+                                    foreach($praticiens as $pra)
+                                    {
+                                    ?>        
+                                        <option value=<?= $pra['PRA_NUM'] ?> <?php if($pra['PRA_NUM'] == $praticien) echo 'selected' ?>>
+                                            <?= $pra['PRA_NOM'].' '.$pra['PRA_PRENOM'] ?>
+                                        </option>
+                                    <?php 
+                                    }
                                     ?>
                                 </select>
                             </div>
     
                             <div class="form-group">
                                 <label for="dateSaisie">Date de saisie <abbr>*</abbr> :</label>
-                                <input id="dateSaisie" name="dateSaisie" type="date" value="<?= $date ?>">
+                                <input id="dateSaisie" name="dateSaisie" type="date" value="<?= $dateSaisie ?>">
                             </div>
     
                             <div class="form-group">
                                 <label for="bilan">Bilan du rapport <abbr>*</abbr> :</label>
-                                <textarea class="form-control w-75" id="bilan" name="bilan"></textarea>
+                                <textarea class="form-control w-75" id="bilan" name="bilan"><?= $bilan ?></textarea>
                             </div>
                         </div>
     
                         <div class="partie-droite">
                             <div class="form-group">
                                 <label for="dateVisite">Date de visite <abbr>*</abbr> :</label>
-                                <input id="dateVisite" name="dateVisite" type="date" />
+                                <input value="<?= $dateVisite ?>" id="dateVisite" name="dateVisite" type="date" />
                             </div>
         
                             <div class="form-group motif-group">
@@ -67,10 +71,16 @@
                                     <option value="">-Choisissez un médicament-</option>
         
                                     <?php
-                                        foreach($medicaments as $medicament)
-                                        {
-                                            echo '<option value='.$medicament['MED_DEPOTLEGAL'].'>'.$medicament['MED_NOMCOMMERCIAL'].'</option>';
-                                        }
+                                    foreach($medicaments as $medicament)
+                                    {
+                                    ?>
+                                        <option value="<?= $medicament['MED_DEPOTLEGAL'] ?>" 
+                                            <?php if($medicament['MED_DEPOTLEGAL'] == $medicament1) echo 'selected'?>
+                                        >
+                                            <?= $medicament['MED_NOMCOMMERCIAL'] ?>
+                                        </option>
+                                    <?php
+                                    }
                                     ?>
                                 </select>
                             </div>

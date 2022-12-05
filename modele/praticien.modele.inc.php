@@ -4,7 +4,6 @@ include_once 'bd.inc.php';
 
 
     function getAllNomPraticien(){
-
         try{
             $monPdo = connexionPDO();
             $req = 'SELECT PRA_NUM, PRA_NOM, PRA_PRENOM FROM praticien ORDER BY PRA_PRENOM';
@@ -27,12 +26,12 @@ include_once 'bd.inc.php';
             $result = $res->fetch();    
             return $result;
         } 
-    
         catch (PDOException $e){
             print "Erreur !: " . $e->getMessage();
             die();
         }
     }
+
    /* function getAllInformationPraticienNom($nom){
 
         try{

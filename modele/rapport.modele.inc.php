@@ -51,6 +51,40 @@ function getRapports()
     }
 }
 
+function getRapport($id, $matricule)
+{
+    try
+    {
+        $monPdo = connexionPDO();
+        $req = 'SELECT RAP_DATE, 
+                       RAP_BILAN, 
+                       RAP_DATESAISIE, 
+                       RAP_MOTIF,
+                       PRA_NUM,
+                       MOTIF_NUM,
+                       MEDICAMENT1,
+                       MEDICAMENT2,
+                       PRA_REMP
+                FROM rapport_visite
+                WHERE RAP_NUM = :RAP_NUM
+                AND COL_MATRICULE = :COL_MATRICULE';
+
+        $res = $monPdo->prepare($req);
+        $res->bindValue(':RAP_NUM', $id, PDO::PARAM_INT);
+        $res->bindValue(':COL_MATRICULE', $matricule, PDO::PARAM_STR);
+
+        $res->execute();
+        $result = $res->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+    catch (PDOException $e)
+    {
+        print "Erreur !: " . $e->getMessage();
+        die();
+    }
+}
+
 function getRapportNum($colMatricule)
 {
     try
@@ -121,6 +155,46 @@ function ajouterRapport($numRapport, $matrCol, $dateVis, $praticien, $motif, $da
         $res->bindValue(':RAP_BILAN', $bilan);
         $res->bindValue(':MEDICAMENT1', $medicament1);
         $res->bindValue(':DEFINITIF', $definitif);
+
+        $res->execute();
+    }
+    catch (PDOException $e)
+    {
+        print "Erreur !: " . $e->getMessage();
+        die();
+    }
+}
+
+function modifierRapport($numRapport, $matrCol, $dateVis, $praticien, $motif, $dateSaisie, $bilan, $medicament1, $definitif)
+{
+    try
+    {
+        $monPdo = connexionPDO();
+
+        $req = 'UPDATE rapport_visite
+                SET RAP_DATE = :RAP_DATE,
+                    PRA_NUM = :PRA_NUM,
+                    RAP_MOTIF = :RAP_MOTIF,
+                    RAP_DATESAISIE = :RAP_DATESAISIE,
+                    RAP_BILAN = :RAP_BILAN,
+                    MEDICAMENT1 = :MEDICAMENT1,
+                    DEFINITIF = :DEFINITIF
+                WHERE RAP_NUM = :RAP_NUM
+                AND COL_MATRICULE = :COL_MATRICULE';
+
+        $res = $monPdo->prepare($req);
+
+        $res->bindValue(':RAP_DATE', $dateVis);
+        $res->bindValue(':PRA_NUM', $praticien);
+        $res->bindValue(':RAP_MOTIF', $motif);
+        $res->bindValue(':RAP_DATESAISIE', $dateSaisie);
+        $res->bindValue(':RAP_BILAN', $bilan);
+        $res->bindValue(':MEDICAMENT1', $medicament1);
+        $res->bindValue(':DEFINITIF', $definitif);
+        $res->bindValue(':RAP_NUM', $numRapport);
+        $res->bindValue(':COL_MATRICULE', $matrCol);
+
+        var_dump($res);
 
         $res->execute();
     }
