@@ -1,10 +1,13 @@
 function addMotifAutre(mot) {
-	if ($(mot).val() == 9) {
+	if (mot === 'autre') {
+		document.getElementById('divmotifautre').hidden = false;
+
 		$("#divmotifautre").append(
 			'<textarea required name="motif-autre" id="motif-autre" placeholder="Veuillez saisir le motif autre" class="form-control m-0 mt-2"></textarea>'
 		);
 		$("#motif-autre").focus();
 	} else {
+		document.getElementById('divmotifautre').hidden = true;
 		$("#motif-autre").remove();
 	}
 }

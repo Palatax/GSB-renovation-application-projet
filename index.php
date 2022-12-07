@@ -3,6 +3,7 @@
     require_once ('modele/praticien.modele.inc.php');
     require_once ('modele/connexion.modele.inc.php');
     require_once ('modele/rapport.modele.inc.php');
+    require_once('modele/fonctions.inc.php');
 
     if(!isset($_REQUEST['uc']) || empty($_REQUEST['uc']))
         $uc = 'accueil';

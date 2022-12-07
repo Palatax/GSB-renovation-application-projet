@@ -27,10 +27,6 @@ if(isset($_SESSION['login']))
             $medicaments = getAllNomMedicament();
             $praticiens = getAllNomPraticien();
             $dateSaisie = date('Y-m-d', time());
-            $dateVisite = '';
-            $bilan = '';
-            $praticien = '';
-            $medicament1 = '';
 
             $url = 'index.php?uc=rapportdevisite&action=confirmerRapport';
             
@@ -40,6 +36,12 @@ if(isset($_SESSION['login']))
         }
         case 'confirmerRapport':
         {
+            var_dump($_POST);
+
+            $motifs = getMotifs();
+            $medicaments = getAllNomMedicament();
+            $praticiens = getAllNomPraticien();
+
             $matricule = $_SESSION['matricule'];
             $numRapport = getRapportNum($matricule);
             $praticien = $_POST['praticien'];
@@ -48,12 +50,11 @@ if(isset($_SESSION['login']))
             $dateVisite = $_POST['dateVisite'];
             $medicament1 = $_POST['medicament1'];
             $motif = $_POST['motifNormal'];
+            $motifAutre = '';
+            if(isset($_POST['motif-autre'])) $motifAutre = $_POST['motif-autre'];
             $saisieDefinitive = 0;
 
             // Mise à null des valeurs non renseignées
-            if($dateSaisie == '') { $dateSaisie = null; }
-            if($dateVisite == '') { $dateVisite = null; }
-            if($praticien == '') { $praticien = null; }
             if($medicament1 == '') { $medicament1 = null; }
 
             if(isset($_POST['saisieDefinitive']))
@@ -61,17 +62,28 @@ if(isset($_SESSION['login']))
                 $saisieDefinitive = 1;
             }
 
-            ajouterRapport(
-                $numRapport, 
-                $matricule, 
-                $dateVisite, 
-                $praticien, 
-                $motif, 
-                $dateSaisie, 
-                $bilan, 
-                $medicament1, 
-                $saisieDefinitive
-            );
+            $erreurs = getErreurs($praticien, $dateVisite, $dateSaisie, $motif, $motifAutre, $bilan);
+
+            if(empty($erreurs))
+            {
+                ajouterRapport(
+                    $numRapport, 
+                    $matricule, 
+                    $dateVisite, 
+                    $praticien, 
+                    $motif, 
+                    $dateSaisie, 
+                    $bilan, 
+                    $medicament1, 
+                    $saisieDefinitive
+                );
+            }
+            else 
+            {
+                $url = 'index.php?uc=rapportdevisite&action=confirmerRapport';
+            
+                include('vues/v_saisieRapport.php');
+            }
 
             break;
         }
@@ -162,5 +174,5 @@ if(isset($_SESSION['login']))
         default:
           header('Location: index.php?uc=accueil');
           break;
-        }
+    }
 }

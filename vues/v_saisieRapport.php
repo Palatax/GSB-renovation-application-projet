@@ -6,6 +6,13 @@
         </div>
         <div class="row align-items-center justify-content-center">
             <div class="form-rapport-container col-12 col-sm-8 col-lg-6 col-xl-55 col-xxl-4 py-lg-5 py-3">
+                <?php
+                    if(!empty($erreurs))
+                    {
+                        include('vues/v_afficherErreurs.php');
+                    }
+                ?>
+
                 <form class="form-rapport form-signin formulaire m-auto" action="<?= $url ?>" method="post">
                     <p><abbr>*</abbr> Champs obligatoires</p>
 
@@ -25,7 +32,7 @@
                                     foreach($praticiens as $pra)
                                     {
                                     ?>        
-                                        <option value=<?= $pra['PRA_NUM'] ?> <?php if($pra['PRA_NUM'] == $praticien) echo 'selected' ?>>
+                                        <option value=<?= $pra['PRA_NUM'] ?> <?php if(isset($praticien) && $pra['PRA_NUM'] == $praticien) echo 'selected' ?>>
                                             <?= $pra['PRA_NOM'].' '.$pra['PRA_PRENOM'] ?>
                                         </option>
                                     <?php 
@@ -33,6 +40,24 @@
                                     ?>
                                 </select>
                             </div>
+
+							<div class="form-group">
+								<label for="remplacant">Remplaçant</label>
+								<select class="form-select w-75" id="remplacant" name="remplacant">
+									<option value="">Aucun</option>
+
+									<?php
+                                    foreach($praticiens as $pra)
+                                    {
+                                    ?>        
+                                        <option value=<?= $pra['PRA_NUM'] ?> <?php if(isset($praticien) && $pra['PRA_NUM'] == $praticien) echo 'selected' ?>>
+                                            <?= $pra['PRA_NOM'].' '.$pra['PRA_PRENOM'] ?>
+                                        </option>
+                                    <?php 
+                                    }
+                                    ?>
+								</select>
+							</div>
     
                             <div class="form-group">
                                 <label for="dateSaisie">Date de saisie <abbr>*</abbr> :</label>
@@ -41,29 +66,38 @@
     
                             <div class="form-group">
                                 <label for="bilan">Bilan du rapport <abbr>*</abbr> :</label>
-                                <textarea class="form-control w-75" id="bilan" name="bilan"><?= $bilan ?></textarea>
+                                <textarea class="form-control w-75" id="bilan" name="bilan"><?php 
+									if(isset($bilan)) echo htmlspecialchars($bilan); ?></textarea>
                             </div>
                         </div>
     
                         <div class="partie-droite">
                             <div class="form-group">
                                 <label for="dateVisite">Date de visite <abbr>*</abbr> :</label>
-                                <input value="<?= $dateVisite ?>" id="dateVisite" name="dateVisite" type="date" />
+                                <input id="dateVisite" name="dateVisite" type="date" 
+                                    <?php
+                                        if(isset($dateVisite)) echo "value='$dateVisite'";
+                                    ?>
+                                />
                             </div>
         
                             <div class="form-group motif-group">
                                 <label for="motifNormal">Motif <abbr>*</abbr> : </label>
-                                <select class="w-75 form-select" id="motifNormal" name="motifNormal">
+                                <select class="w-75 form-select" id="motifNormal" name="motifNormal" onchange="addMotifAutre(this.value)">
                                     <option value="">-Choisissez un motif-</option>
             
                                     <?php
                                         foreach($motifs as $motif)
                                         {
-                                            echo '<option value='.$motif['MOTIF_NUM'].'>'.$motif['LIBELLE'].'</option>';
+                                            echo '<option value='.$motif['MOTIF_NUM'].'>'.$motif['MOTIF_LIBELLE'].'</option>';
                                         }
                                     ?>
+
+									<option value="autre">Autre</option>
                                 </select>
                             </div>
+
+                            <div id="divmotifautre" name="divmotifautre" hidden></div>
                             
                             <div class="form-group">
                                 <label for="medicament1">1er médicament présenté:</label>
@@ -75,7 +109,27 @@
                                     {
                                     ?>
                                         <option value="<?= $medicament['MED_DEPOTLEGAL'] ?>" 
-                                            <?php if($medicament['MED_DEPOTLEGAL'] == $medicament1) echo 'selected'?>
+                                            <?php if(isset($medicament1) && $medicament['MED_DEPOTLEGAL'] == $medicament1) echo 'selected'?>
+                                        >
+                                            <?= $medicament['MED_NOMCOMMERCIAL'] ?>
+                                        </option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+
+							<div class="form-group">
+                                <label for="medicament2">2ème médicament présenté:</label>
+                                <select class="form-select" id="medicament2" name="medicament2">
+                                    <option value="">-Choisissez un médicament-</option>
+        
+                                    <?php
+                                    foreach($medicaments as $medicament)
+                                    {
+                                    ?>
+                                        <option value="<?= $medicament['MED_DEPOTLEGAL'] ?>" 
+                                            <?php if(isset($medicament1) && $medicament['MED_DEPOTLEGAL'] == $medicament1) echo 'selected'?>
                                         >
                                             <?= $medicament['MED_NOMCOMMERCIAL'] ?>
                                         </option>

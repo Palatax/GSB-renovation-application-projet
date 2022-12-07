@@ -328,7 +328,7 @@ abbr {
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
-	height: 400;
+	min-height: 500;
 }
 .partie-gauche, .partie-droite {
 	display: flex;
@@ -341,7 +341,7 @@ abbr {
 }
 .form-rapport-container {
 	width: 725px;
-	height: 700px;
+	height: auto;
 }
 .bloc-center {
 	width: 150px;

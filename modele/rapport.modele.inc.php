@@ -10,7 +10,7 @@ function getMotifs()
         $req = 'SELECT MOTIF_NUM, MOTIF_LIBELLE
                 FROM motif';
         $res = $monPdo->query($req);
-        $result = $res->fetchAll();
+        $result = $res->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
     catch (PDOException $e)
@@ -193,8 +193,6 @@ function modifierRapport($numRapport, $matrCol, $dateVis, $praticien, $motif, $d
         $res->bindValue(':DEFINITIF', $definitif);
         $res->bindValue(':RAP_NUM', $numRapport);
         $res->bindValue(':COL_MATRICULE', $matrCol);
-
-        var_dump($res);
 
         $res->execute();
     }
