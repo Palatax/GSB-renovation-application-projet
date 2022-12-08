@@ -101,7 +101,8 @@ function getRapportsNonDef($matricule)
                        MEDICAMENT2,
                        PRA_REMP
                 FROM rapport_visite
-                WHERE COL_MATRICULE = :COL_MATRICULE';
+                WHERE COL_MATRICULE = :COL_MATRICULE
+                AND DEFINITIF = 0';
 
         $res = $monPdo->prepare($req);
         $res->bindValue(':COL_MATRICULE', $matricule, PDO::PARAM_STR);
@@ -160,7 +161,7 @@ function ajouterRapport($numRapport, $matrCol, $dateVis, $praticien, $motif, $da
             COL_MATRICULE, 
             RAP_DATE, 
             PRA_NUM, 
-            RAP_MOTIF,
+            MOTIF_NUM,
             RAP_DATESAISIE, 
             RAP_BILAN, 
             MEDICAMENT1,
@@ -171,7 +172,7 @@ function ajouterRapport($numRapport, $matrCol, $dateVis, $praticien, $motif, $da
             :COL_MATRICULE, 
             :RAP_DATE, 
             :PRA_NUM, 
-            :RAP_MOTIF,
+            :MOTIF_NUM,
             :RAP_DATESAISIE, 
             :RAP_BILAN, 
             :MEDICAMENT1,
@@ -183,7 +184,7 @@ function ajouterRapport($numRapport, $matrCol, $dateVis, $praticien, $motif, $da
         $res->bindValue(':COL_MATRICULE', $matrCol);
         $res->bindValue(':RAP_DATE', $dateVis);
         $res->bindValue(':PRA_NUM', $praticien);
-        $res->bindValue(':RAP_MOTIF', $motif);
+        $res->bindValue(':MOTIF_NUM', $motif);
         $res->bindValue(':RAP_DATESAISIE', $dateSaisie);
         $res->bindValue(':RAP_BILAN', $bilan);
         $res->bindValue(':MEDICAMENT1', $medicament1);
@@ -207,7 +208,7 @@ function modifierRapport($numRapport, $matrCol, $dateVis, $praticien, $motif, $d
         $req = 'UPDATE rapport_visite
                 SET RAP_DATE = :RAP_DATE,
                     PRA_NUM = :PRA_NUM,
-                    RAP_MOTIF = :RAP_MOTIF,
+                    MOTIF_NUM = :MOTIF_NUM,
                     RAP_DATESAISIE = :RAP_DATESAISIE,
                     RAP_BILAN = :RAP_BILAN,
                     MEDICAMENT1 = :MEDICAMENT1,
@@ -219,7 +220,7 @@ function modifierRapport($numRapport, $matrCol, $dateVis, $praticien, $motif, $d
 
         $res->bindValue(':RAP_DATE', $dateVis);
         $res->bindValue(':PRA_NUM', $praticien);
-        $res->bindValue(':RAP_MOTIF', $motif);
+        $res->bindValue(':MOTIF_NUM', $motif);
         $res->bindValue(':RAP_DATESAISIE', $dateSaisie);
         $res->bindValue(':RAP_BILAN', $bilan);
         $res->bindValue(':MEDICAMENT1', $medicament1);

@@ -10,14 +10,10 @@ if(isset($_SESSION['login']))
         {
             $rapports = getRapportsNonDef($_SESSION['matricule']);
 
-            if(count($rapports) > 0)
-            {
-                include('vues/v_choixRedaction.php');
-            }
-            else 
-            {
+            if(count($rapports) == 0)
                 header('Location:index.php?uc=rapportdevisite&action=redigerrapport');
-            }
+
+            include('vues/v_choixRedaction.php');
 
             break;
         }
@@ -108,6 +104,7 @@ if(isset($_SESSION['login']))
             $praticien = $rapport['PRA_NUM'];
             $medicament1 = $rapport['MEDICAMENT1'];
             $remplacant = $rapport['PRA_REMP'];
+            $motif = $rapport['MOTIF_NUM'];
             
             if($dateSaisie == null) $dateSaisie = date('Y-m-d', time());
 

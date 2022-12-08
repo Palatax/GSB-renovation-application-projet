@@ -87,10 +87,16 @@
                                     <option value="">-Choisissez un motif-</option>
             
                                     <?php
-                                        foreach($motifs as $motif)
-                                        {
-                                            echo '<option value='.$motif['MOTIF_NUM'].'>'.$motif['MOTIF_LIBELLE'].'</option>';
-                                        }
+                                    foreach($motifs as $mot)
+                                    {
+                                    ?>
+                                        <option value='<?= $mot['MOTIF_NUM'] ?>'
+                                            <?php if(isset($motif) && $mot['MOTIF_NUM'] == $motif) echo 'selected'; ?>
+                                        > 
+                                            <?= $mot['MOTIF_LIBELLE'] ?>
+                                        </option>;
+                                    <?php
+                                    }
                                     ?>
 
 									<option value="autre">Autre</option>

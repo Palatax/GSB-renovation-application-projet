@@ -3,7 +3,7 @@ function addMotifAutre(mot) {
 		document.getElementById('divmotifautre').hidden = false;
 
 		$("#divmotifautre").append(
-			'<textarea required name="motif-autre" id="motif-autre" placeholder="Veuillez saisir le motif autre" class="form-control m-0 mt-2"></textarea>'
+			'<textarea name="motif-autre" id="motif-autre" placeholder="Veuillez saisir le motif autre" class="form-control m-0 mt-2"></textarea>'
 		);
 		$("#motif-autre").focus();
 	} else {
@@ -53,7 +53,7 @@ function preventMed() {
 
 	if(def.checked && medicament.value == '')
 	{
-		return confirm('Êtes-vous sûr péter des airs ?');
+		return confirm('Vous n\'avez pas saisi de médicament, êtes-vous sûr ?');
 	}
 }
 
