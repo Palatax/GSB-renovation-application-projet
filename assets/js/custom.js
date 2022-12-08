@@ -46,6 +46,17 @@ function checkDateSaisieRapport() {
 		return true;
 	}
 }
+
+function preventMed() {
+	let medicament = document.getElementById('medicament1');
+	let def = document.getElementById('saisieDefinitive');
+
+	if(def.checked && medicament.value == '')
+	{
+		return confirm('Êtes-vous sûr péter des airs ?');
+	}
+}
+
 // FONCTION D'AJOUT ECHANTILLON
 // function addEchantillon(ech) {
 // 	if (ech.checked) {

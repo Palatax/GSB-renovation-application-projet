@@ -148,14 +148,10 @@
                     </div>
 
                     <div class="bouton-quitter">
-                        <input class="w-25 btn btn-info text-light valider" type="submit"  value="Valider le rapport">
+                        <input class="w-25 btn btn-info text-light valider" onclick="return preventMed()" type="submit" value="Valider le rapport">
 
                         <input class="w-25 btn btn-info text-light valider" type="button" onclick="history.go(-1)" value="Retour">
                     </div>
-
-                    <!-- <input type="text" class="form-control" name="username" placeholder="Identifiant" autofocus="" />
-                    <input type="password" class="form-control" name="password" placeholder="Mot de passe" />
-                    <input class="btn btn-lg btn-info btn-block text-light" type="submit" name="connexion" value="Connexion"> -->
                 </form>
             </div>
         </div>
