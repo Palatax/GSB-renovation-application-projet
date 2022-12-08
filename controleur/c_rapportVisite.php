@@ -45,6 +45,7 @@ if(isset($_SESSION['login']))
             $matricule = $_SESSION['matricule'];
             $numRapport = getRapportNum($matricule);
             $praticien = $_POST['praticien'];
+            $remplacant = $_POST['remplacant'];
             $dateSaisie = $_POST['dateSaisie'];
             $bilan = $_POST['bilan'];
             $dateVisite = $_POST['dateVisite'];
@@ -106,6 +107,7 @@ if(isset($_SESSION['login']))
             $dateVisite = $rapport['RAP_DATE'];
             $praticien = $rapport['PRA_NUM'];
             $medicament1 = $rapport['MEDICAMENT1'];
+            $remplacant = $rapport['PRA_REMP'];
             
             if($dateSaisie == null) $dateSaisie = date('Y-m-d', time());
 
@@ -117,6 +119,10 @@ if(isset($_SESSION['login']))
         }
         case 'confirmerModification':
         {
+            $motifs = getMotifs();
+            $medicaments = getAllNomMedicament();
+            $praticiens = getAllNomPraticien();
+
             $matricule = $_SESSION['matricule'];
             $numRapport = getRapportNum($matricule) - 1;
             $praticien = $_POST['praticien'];
@@ -125,12 +131,11 @@ if(isset($_SESSION['login']))
             $dateVisite = $_POST['dateVisite'];
             $medicament1 = $_POST['medicament1'];
             $motif = $_POST['motifNormal'];
+            $motifAutre = '';
+            if(isset($_POST['motif-autre'])) $motifAutre = $_POST['motif-autre'];
             $saisieDefinitive = 0;
             
             // Mise à null des valeurs non renseignées
-            if($dateSaisie == '') { $dateSaisie = null; }
-            if($dateVisite == '') { $dateVisite = null; }
-            if($praticien == '') { $praticien = null; }
             if($medicament1 == '') { $medicament1 = null; }
             
             if(isset($_POST['saisieDefinitive']))
@@ -138,17 +143,28 @@ if(isset($_SESSION['login']))
                 $saisieDefinitive = 1;
             }
 
-            modifierRapport(
-                $numRapport, 
-                $matricule, 
-                $dateVisite, 
-                $praticien, 
-                $motif, 
-                $dateSaisie,
-                $bilan, 
-                $medicament1, 
-                $saisieDefinitive
-            );
+            $erreurs = getErreurs($praticien, $dateVisite, $dateSaisie, $motif, $motifAutre, $bilan);
+
+            if(empty($erreurs))
+            {
+                modifierRapport(
+                    $numRapport, 
+                    $matricule, 
+                    $dateVisite, 
+                    $praticien, 
+                    $motif, 
+                    $dateSaisie,
+                    $bilan, 
+                    $medicament1, 
+                    $saisieDefinitive
+                );
+            }
+            else 
+            {
+                $url = 'index.php?uc=rapportdevisite&action=confirmerModification';
+            
+                include('vues/v_saisieRapport.php');
+            }
         }
         case 'mesrapports' :
         {

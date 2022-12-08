@@ -50,7 +50,7 @@
                                     foreach($praticiens as $pra)
                                     {
                                     ?>        
-                                        <option value=<?= $pra['PRA_NUM'] ?> <?php if(isset($praticien) && $pra['PRA_NUM'] == $praticien) echo 'selected' ?>>
+                                        <option value=<?= $pra['PRA_NUM'] ?> <?php if(isset($remplacant) && $pra['PRA_NUM'] == $remplacant) echo 'selected' ?>>
                                             <?= $pra['PRA_NOM'].' '.$pra['PRA_PRENOM'] ?>
                                         </option>
                                     <?php 
