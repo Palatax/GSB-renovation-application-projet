@@ -85,6 +85,39 @@ function getRapport($id, $matricule)
     }
 }
 
+function getRapportsNonDef($matricule)
+{
+    try
+    {
+        $monPdo = connexionPDO();
+        $req = 'SELECT RAP_NUM,
+                       RAP_DATE, 
+                       RAP_BILAN, 
+                       RAP_DATESAISIE, 
+                       RAP_MOTIF,
+                       PRA_NUM,
+                       MOTIF_NUM,
+                       MEDICAMENT1,
+                       MEDICAMENT2,
+                       PRA_REMP
+                FROM rapport_visite
+                WHERE COL_MATRICULE = :COL_MATRICULE';
+
+        $res = $monPdo->prepare($req);
+        $res->bindValue(':COL_MATRICULE', $matricule, PDO::PARAM_STR);
+
+        $res->execute();
+        $result = $res->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+    catch (PDOException $e)
+    {
+        print "Erreur !: " . $e->getMessage();
+        die();
+    }
+}
+
 function getRapportNum($colMatricule)
 {
     try

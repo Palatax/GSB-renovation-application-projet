@@ -8,7 +8,9 @@ if(isset($_SESSION['login']))
     {
         case 'choixRedaction':
         {
-            if(count(getRapports()) > 0)
+            $rapports = getRapportsNonDef($_SESSION['matricule']);
+
+            if(count($rapports) > 0)
             {
                 include('vues/v_choixRedaction.php');
             }
@@ -36,8 +38,6 @@ if(isset($_SESSION['login']))
         }
         case 'confirmerRapport':
         {
-            var_dump($_POST);
-
             $motifs = getMotifs();
             $medicaments = getAllNomMedicament();
             $praticiens = getAllNomPraticien();
@@ -87,20 +87,13 @@ if(isset($_SESSION['login']))
 
             break;
         }
-        case 'choixModifierRapport':
-        {
-            $rapports = getRapports();
-            include('vues/v_choixRapport.php');
-
-            break;
-        }
         case 'modifierRapport':
         {
-            if(!isset($_GET['id']))
+            if(!isset($_POST['rapport']))
                 header('Location:index.php?uc=rapportdevisite&action=choixModifierRapport');
 
             // Récupération des données générales
-            $numRapport = $_GET['id'];
+            $numRapport = $_POST['rapport'];
             $matricule = $_SESSION['matricule'];
             $motifs = getMotifs();
             $medicaments = getAllNomMedicament();
