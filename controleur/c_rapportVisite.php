@@ -46,6 +46,8 @@ if(isset($_SESSION['login']))
             $bilan = $_POST['bilan'];
             $dateVisite = $_POST['dateVisite'];
             $medicament1 = $_POST['medicament1'];
+            $medicament2 = '';
+            if(isset($_POST['medicament2'])) $medicament2 = $_POST['medicament2'];
             $motif = $_POST['motifNormal'];
             $motifAutre = '';
             if(isset($_POST['motif-autre'])) $motifAutre = $_POST['motif-autre'];
@@ -116,6 +118,8 @@ if(isset($_SESSION['login']))
         }
         case 'confirmerModification':
         {
+            var_dump($_POST);
+
             $motifs = getMotifs();
             $medicaments = getAllNomMedicament();
             $praticiens = getAllNomPraticien();
@@ -127,6 +131,8 @@ if(isset($_SESSION['login']))
             $bilan = $_POST['bilan'];
             $dateVisite = $_POST['dateVisite'];
             $medicament1 = $_POST['medicament1'];
+            $medicament2 = '';
+            if(isset($_POST['medicament2'])) $medicament2 = $_POST['medicament2'];
             $motif = $_POST['motifNormal'];
             $motifAutre = '';
             if(isset($_POST['motif-autre'])) $motifAutre = $_POST['motif-autre'];

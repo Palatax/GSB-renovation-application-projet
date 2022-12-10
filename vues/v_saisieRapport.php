@@ -1,3 +1,7 @@
+<script>
+    var medicaments = <?= json_encode($medicaments) ?>;
+</script>
+
 <section class="bg-light">
     <div class="container">
         <div class="structure-hero pt-lg-5 pt-4">
@@ -14,7 +18,7 @@
                 ?>
 
                 <form class="form-rapport form-signin formulaire m-auto" action="<?= $url ?>" method="post">
-                    <p><abbr>*</abbr> Champs obligatoires</p>
+                    <p><abbr>*</abbr>Champs obligatoires</p>
 
                     <h2 class="center form-signin-heading">Rapport de visite</h2>
 
@@ -108,7 +112,7 @@
                             <div class="form-group">
                                 <label for="medicament1">1er médicament présenté:</label>
                                 <select class="form-select" id="medicament1" name="medicament1">
-                                    <option value="">-Choisissez un médicament-</option>
+                                    <option value="">-Aucun-</option>
         
                                     <?php
                                     foreach($medicaments as $medicament)
@@ -128,7 +132,7 @@
 							<div class="form-group">
                                 <label for="medicament2">2ème médicament présenté:</label>
                                 <select class="form-select" id="medicament2" name="medicament2">
-                                    <option value="">-Choisissez un médicament-</option>
+                                    <option value="">-Aucun-</option>
         
                                     <?php
                                     foreach($medicaments as $medicament)
@@ -144,7 +148,16 @@
                                     ?>
                                 </select>
                             </div>
+
+                            <div class="bloc-center form-check form-switch">
+                                <input id="check-echantillon" class="form-check-input" type="checkbox" onchange="addEchantillon(this, medicaments)" >
+                                <label for="check-echantillon">Echantillon</label>
+                            </div>
+
+                            <div id="redigerEtEchantillon" hidden>
+                            </div>
                         </div>
+
                     </fieldset>
                     <br/>
 
@@ -154,7 +167,7 @@
                     </div>
 
                     <div class="bouton-quitter">
-                        <input class="w-25 btn btn-info text-light valider" onclick="return preventMed()" type="submit" value="Valider le rapport">
+                        <input class="w-25 btn btn-info text-light valider" onclick="return warn()" type="submit" value="Valider le rapport">
 
                         <input class="w-25 btn btn-info text-light valider" type="button" onclick="history.go(-1)" value="Retour">
                     </div>
