@@ -12,7 +12,7 @@ function addMotifAutre(mot) {
 	}
 }
 function addMedicament(med) {
-	if ($(med).val() != "default") {
+	if ($(med).val() != "") {
 		$("#medoc-autre").remove();
 		$("#medoc").after(
 			$('<div class="d-flex flex-column" id="medoc-autre">').append(

@@ -97,7 +97,7 @@ if(isset($_SESSION['login']))
             $motifs = getMotifs();
             $medicaments = getAllNomMedicament();
             $praticiens = getAllNomPraticien();
-            
+
             // Récupère les données depuis le rapport à modifier
             $rapport = getRapport($numRapport, $matricule);
             $dateSaisie = $rapport['RAP_DATESAISIE'];

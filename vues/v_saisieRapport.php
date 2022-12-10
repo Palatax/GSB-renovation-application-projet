@@ -109,29 +109,9 @@
 
                             <div id="divmotifautre" name="divmotifautre" hidden></div>
                             
-                            <div class="form-group">
+                            <div id="medoc" class="form-group">
                                 <label for="medicament1">1er médicament présenté:</label>
-                                <select class="form-select" id="medicament1" name="medicament1">
-                                    <option value="">-Aucun-</option>
-        
-                                    <?php
-                                    foreach($medicaments as $medicament)
-                                    {
-                                    ?>
-                                        <option value="<?= $medicament['MED_DEPOTLEGAL'] ?>" 
-                                            <?php if(isset($medicament1) && $medicament['MED_DEPOTLEGAL'] == $medicament1) echo 'selected'?>
-                                        >
-                                            <?= $medicament['MED_NOMCOMMERCIAL'] ?>
-                                        </option>
-                                    <?php
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-
-							<div class="form-group">
-                                <label for="medicament2">2ème médicament présenté:</label>
-                                <select class="form-select" id="medicament2" name="medicament2">
+                                <select class="form-select" id="medicament1" name="medicament1" onchange="addMedicament(this)">
                                     <option value="">-Aucun-</option>
         
                                     <?php
