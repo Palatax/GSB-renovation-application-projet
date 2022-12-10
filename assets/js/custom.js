@@ -64,6 +64,8 @@ function preventMed() {
 
 	if(medicament.value == '')
 		return confirm('Vous n\'avez pas saisi de médicament, êtes-vous sûr ?');
+
+	return true;
 }
 
 function preventEch() {
@@ -71,6 +73,8 @@ function preventEch() {
 
 	if(!ech.checked)
 		return confirm('Vous n\'avez pas saisi d\'échantillon, êtes-vous sûr?');
+
+	return true;
 }
 
 // FONCTION D'AJOUT ECHANTILLON
