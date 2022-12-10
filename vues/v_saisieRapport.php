@@ -111,7 +111,7 @@
                             
                             <div id="medoc" class="form-group">
                                 <label for="medicament1">1er médicament présenté:</label>
-                                <select class="form-select" id="medicament1" name="medicament1" onchange="addMedicament(this)">
+                                <select class="form-select" id="medicament1" name="medicament1" onchange="addMedicament(this, medicaments)">
                                     <option value="">-Aucun-</option>
         
                                     <?php

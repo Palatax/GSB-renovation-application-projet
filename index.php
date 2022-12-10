@@ -71,8 +71,3 @@ catch(PDOException $e)
     print "Erreur !: " . $e->getMessage();
     die();
 }
-catch(Exception $e)
-{
-    print "Erreur !: " . $e->getMessage();
-    die();
-}

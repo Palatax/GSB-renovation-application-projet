@@ -11,7 +11,8 @@ function addMotifAutre(mot) {
 		$("#motif-autre").remove();
 	}
 }
-function addMedicament(med) {
+
+function addMedicament(med, medicaments) {
 	if ($(med).val() != "") {
 		$("#medoc-autre").remove();
 		$("#medoc").after(
@@ -24,9 +25,17 @@ function addMedicament(med) {
 				'<option value="default">- Choisissez un médicament -</option>'
 			)
 		);
-		$(".listemedoc").clone().appendTo("#medicamentproposer2");
-		var val = $(med).val();
-		$("#medicamentproposer2>.listemedoc[value='" + val + "']").remove();
+
+		for(medoc of medicaments)
+		{
+			$("#medicamentproposer2").append(
+				'<option value='+medoc['MED_DEPOTLEGAL']+'>'+medoc['MED_NOMCOMMERCIAL']+'</option>'
+			);
+		}
+		
+		$("#medicamentproposer2").append(
+			'<option value="coucou">uretre</option>'
+		);
 	} else {
 		$("#medoc-autre").remove();
 	}
@@ -79,14 +88,12 @@ function preventEch() {
 
 // FONCTION D'AJOUT ECHANTILLON
 function addEchantillon(ech, medicaments) {
-	console.log(medicaments);
-
 	if (ech.checked) {
 		var i = 1;
 		$("#redigerEtEchantillon").after(
 			'<div class="col-10 d-flex flex-column justify-content-center align-items-center mt-3 mb-5 mx-auto" id="addechantillon"><div id="Echantillon' +
 				i +
-				'" class=" mb-1 d-flex flex-row"><input required min="1" value="1" class="form-control me-1 rounded w-25 text-center" id="nbEchantillon' +
+				'" class=" mb-1 d-flex flex-row"><input name="nbEchantillon[]" required min="1" value="1" class="form-control me-1 rounded w-25 text-center" id="nbEchantillon' +
 				i +
 				'" type="number"><button type="button" id="button" value="' +
 				i +
@@ -94,7 +101,7 @@ function addEchantillon(ech, medicaments) {
 		);
 		$("#Echantillon" + i + "").prepend(
 			$(
-				'<select name="echantillonadd' + i + '" id="echantillonadd' + i + '" class="form-select m-0 me-1" required>'
+				'<select name="echantillonadd[]" id="echantillonadd' + i + '" class="form-select m-0 me-1" required>'
 			).append('<option value="">- Choisissez un échantillon -</option>')
 		);
 
@@ -120,7 +127,7 @@ function addOtherEchantillon() {
 		$("#addechantillon").append(
 			'<div id="Echantillon' +
 				i +
-				'" class=" mb-1 d-flex flex-row"><input required min="1" value="1" class="form-control me-1 rounded w-25 text-center" id="nbEchantillon' +
+				'" class=" mb-1 d-flex flex-row"><input name="nbEchantillon[]" required min="1" value="1" class="form-control me-1 rounded w-25 text-center" id="nbEchantillon' +
 				i +
 				'" type="number"><button type="button" id="button" value="' +
 				i +
@@ -130,7 +137,7 @@ function addOtherEchantillon() {
 		);
 		$("#Echantillon" + i + "").prepend(
 			$(
-				'<select name="echantillonadd' + i + '" id="echantillonadd' + i + '" class="form-select m-0 me-1" required>'
+				'<select name="echantillonadd[]" id="echantillonadd' + i + '" class="form-select m-0 me-1" required>'
 			).append('<option value="">- Choisissez un échantillon -</option>')
 		);
 
