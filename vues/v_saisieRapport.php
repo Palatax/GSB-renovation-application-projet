@@ -20,6 +20,8 @@
                 <form class="form-rapport form-signin formulaire m-auto" action="<?= $url ?>" method="post">
                     <p><abbr>*</abbr>Champs obligatoires</p>
 
+                    <input name="rapport" hidden value="<?= $numRapport ?>" />
+
                     <h2 class="center form-signin-heading">Rapport de visite</h2>
 
                     <fieldset class="champs-rapport">

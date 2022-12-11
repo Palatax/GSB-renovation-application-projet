@@ -34,32 +34,28 @@ if(isset($_SESSION['login']))
         }
         case 'confirmerRapport':
         {
+            // Données à choisir dans le formulaire
             $motifs = getMotifs();
             $medicaments = getAllNomMedicament();
             $praticiens = getAllNomPraticien();
 
-            $matricule = $_SESSION['matricule'];
+            // Données non choisies
+            $matricule = $_POST['rapport'];
             $numRapport = getRapportNum($matricule);
+            
+            // Données obligatoires remplies
             $praticien = $_POST['praticien'];
-            $remplacant = $_POST['remplacant'];
             $dateSaisie = $_POST['dateSaisie'];
             $bilan = $_POST['bilan'];
             $dateVisite = $_POST['dateVisite'];
-            $medicament1 = $_POST['medicament1'];
-            $medicament2 = '';
-            if(isset($_POST['medicament2'])) $medicament2 = $_POST['medicament2'];
             $motif = $_POST['motifNormal'];
-            $motifAutre = '';
-            if(isset($_POST['motif-autre'])) $motifAutre = $_POST['motif-autre'];
-            $saisieDefinitive = 0;
+            isset($_POST['motif-autre']) ? $motifAutre = $_POST['motif-autre'] : $motifAutre = null;
 
-            // Mise à null des valeurs non renseignées
-            if($medicament1 == '') { $medicament1 = null; }
-
-            if(isset($_POST['saisieDefinitive']))
-            {
-                $saisieDefinitive = 1;
-            }
+            // Données non obligatoires remplies
+            $_POST['medicament1'] != '' ? $medicament1 = $_POST['medicament1'] : $medicament1 = null;
+            isset($_POST['medicament2']) ? $medicament2 = $_POST['medicament2'] : $medicament2 = null;
+            isset($_POST['saisieDefinitive']) ? $saisieDefinitive = 1 : $saisieDefinitive = 0;
+            $_POST['remplacant'] != '' ? $remplacant = $_POST['remplacant'] : $remplacant = null;
 
             $erreurs = getErreurs($praticien, $dateVisite, $dateSaisie, $motif, $motifAutre, $bilan);
 
@@ -69,13 +65,20 @@ if(isset($_SESSION['login']))
                     $numRapport, 
                     $matricule, 
                     $dateVisite, 
-                    $praticien, 
+                    $praticien,
+                    $remplacant,
                     $motif, 
                     $dateSaisie, 
                     $bilan, 
-                    $medicament1, 
+                    $medicament1,
+                    $medicament2,
                     $saisieDefinitive
                 );
+
+                if(isset($_POST['echantillonadd']))
+                {
+                    insererEchantillons($numRapport, $_POST['echantillonadd'], $_POST['nbEchantillon'], $matricule);
+                }
             }
             else 
             {
@@ -118,33 +121,28 @@ if(isset($_SESSION['login']))
         }
         case 'confirmerModification':
         {
-            var_dump($_POST);
-
+            // Données à choisir dans le formulaire
             $motifs = getMotifs();
             $medicaments = getAllNomMedicament();
             $praticiens = getAllNomPraticien();
 
+            // Données non choisies
             $matricule = $_SESSION['matricule'];
-            $numRapport = getRapportNum($matricule) - 1;
+            $numRapport = $_POST['rapport'];
+            
+            // Données obligatoires remplies
             $praticien = $_POST['praticien'];
             $dateSaisie = $_POST['dateSaisie'];
             $bilan = $_POST['bilan'];
             $dateVisite = $_POST['dateVisite'];
-            $medicament1 = $_POST['medicament1'];
-            $medicament2 = '';
-            if(isset($_POST['medicament2'])) $medicament2 = $_POST['medicament2'];
             $motif = $_POST['motifNormal'];
-            $motifAutre = '';
-            if(isset($_POST['motif-autre'])) $motifAutre = $_POST['motif-autre'];
-            $saisieDefinitive = 0;
-            
-            // Mise à null des valeurs non renseignées
-            if($medicament1 == '') { $medicament1 = null; }
-            
-            if(isset($_POST['saisieDefinitive']))
-            {
-                $saisieDefinitive = 1;
-            }
+            isset($_POST['motif-autre']) ? $motifAutre = $_POST['motif-autre'] : $motifAutre = null;
+
+            // Données non obligatoires remplies
+            $_POST['medicament1'] != '' ? $medicament1 = $_POST['medicament1'] : $medicament1 = null;
+            isset($_POST['medicament2']) ? $medicament2 = $_POST['medicament2'] : $medicament2 = null;
+            isset($_POST['saisieDefinitive']) ? $saisieDefinitive = 1 : $saisieDefinitive = 0;
+            $_POST['remplacant'] != '' ? $remplacant = $_POST['remplacant'] : $remplacant = null;
 
             $erreurs = getErreurs($praticien, $dateVisite, $dateSaisie, $motif, $motifAutre, $bilan);
 
@@ -154,13 +152,22 @@ if(isset($_SESSION['login']))
                     $numRapport, 
                     $matricule, 
                     $dateVisite, 
-                    $praticien, 
+                    $praticien,
+                    $remplacant,
                     $motif, 
                     $dateSaisie,
                     $bilan, 
-                    $medicament1, 
+                    $medicament1,
+                    $medicament2,
                     $saisieDefinitive
                 );
+
+                supprimerEchantillons($numRapport, $matricule);
+
+                if(isset($_POST['echantillonadd']))
+                {
+                    insererEchantillons($numRapport, $_POST['echantillonadd'], $_POST['nbEchantillon'], $matricule);
+                }
             }
             else 
             {
@@ -180,11 +187,11 @@ if(isset($_SESSION['login']))
         }
         case 'confirmerRapportRegion':
         {
-          include("vues/v_afficherRapportRegion.php");
-          break;
+            include("vues/v_afficherRapportRegion.php");
+            break;
         }
         default:
-          header('Location: index.php?uc=accueil');
-          break;
+            header('Location: index.php?uc=accueil');
+            break;
     }
 }

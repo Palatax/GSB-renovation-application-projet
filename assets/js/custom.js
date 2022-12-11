@@ -17,23 +17,23 @@ function addMedicament(med, medicaments) {
 		$("#medoc-autre").remove();
 		$("#medoc").after(
 			$('<div class="d-flex flex-column" id="medoc-autre">').append(
-				$('<label for="medicamentproposer2" id="labelMedoc">2ème médicament présenté :</label>')
+				$('<label for="medicament2" id="labelMedoc">2ème médicament présenté :</label>')
 			)
 		);
 		$("#labelMedoc").after(
-			$('<select name="medicamentproposer2" id="medicamentproposer2" class="form-select m-0">').append(
+			$('<select name="medicament2" id="medicament2" class="form-select m-0">').append(
 				'<option value="default">- Choisissez un médicament -</option>'
 			)
 		);
 
 		for(medoc of medicaments)
 		{
-			$("#medicamentproposer2").append(
+			$("#medicament2").append(
 				'<option value='+medoc['MED_DEPOTLEGAL']+'>'+medoc['MED_NOMCOMMERCIAL']+'</option>'
 			);
 		}
 		
-		$("#medicamentproposer2").append(
+		$("#medicament2").append(
 			'<option value="coucou">uretre</option>'
 		);
 	} else {
