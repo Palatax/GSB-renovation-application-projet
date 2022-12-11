@@ -1,17 +1,18 @@
 <?php
-    require_once ('modele/medicament.modele.inc.php');
-    require_once ('modele/praticien.modele.inc.php');
-    require_once ('modele/connexion.modele.inc.php');
-    require_once ('modele/rapport.modele.inc.php');
-    require_once('modele/fonctions.inc.php');
+require_once ('modele/medicament.modele.inc.php');
+require_once ('modele/praticien.modele.inc.php');
+require_once ('modele/connexion.modele.inc.php');
+require_once ('modele/rapport.modele.inc.php');
+require_once('modele/fonctions.inc.php');
 
-    if(!isset($_REQUEST['uc']) || empty($_REQUEST['uc']))
-        $uc = 'accueil';
-    else{
-        $uc = $_REQUEST['uc'];
-    }
+if(!isset($_REQUEST['uc']) || empty($_REQUEST['uc']))
+    $uc = 'accueil';
+else{
+    $uc = $_REQUEST['uc'];
+}
 
-
+try 
+{
     if(empty($_SESSION['login'])){
         include("vues/v_headerDeconnexion.php");
     }else{
@@ -61,7 +62,12 @@
             break;
         }
     }
-?>
-<?php include("vues/v_footer.php") ;?>
-</body>
-</html>
+
+    include("vues/v_footer.php") ;
+
+}
+catch(PDOException $e)
+{
+    print "Erreur !: " . $e->getMessage();
+    die();
+}

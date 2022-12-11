@@ -1,3 +1,7 @@
+<script>
+    var medicaments = <?= json_encode($medicaments) ?>;
+</script>
+
 <section class="bg-light">
     <div class="container">
         <div class="structure-hero pt-lg-5 pt-4">
@@ -14,7 +18,9 @@
                 ?>
 
                 <form class="form-rapport form-signin formulaire m-auto" action="<?= $url ?>" method="post">
-                    <p><abbr>*</abbr> Champs obligatoires</p>
+                    <p><abbr>*</abbr>Champs obligatoires</p>
+
+                    <input name="rapport" hidden value="<?= $numRapport ?>" />
 
                     <h2 class="center form-signin-heading">Rapport de visite</h2>
 
@@ -50,7 +56,7 @@
                                     foreach($praticiens as $pra)
                                     {
                                     ?>        
-                                        <option value=<?= $pra['PRA_NUM'] ?> <?php if(isset($praticien) && $pra['PRA_NUM'] == $praticien) echo 'selected' ?>>
+                                        <option value=<?= $pra['PRA_NUM'] ?> <?php if(isset($remplacant) && $pra['PRA_NUM'] == $remplacant) echo 'selected' ?>>
                                             <?= $pra['PRA_NOM'].' '.$pra['PRA_PRENOM'] ?>
                                         </option>
                                     <?php 
@@ -87,22 +93,41 @@
                                     <option value="">-Choisissez un motif-</option>
             
                                     <?php
-                                        foreach($motifs as $motif)
-                                        {
-                                            echo '<option value='.$motif['MOTIF_NUM'].'>'.$motif['MOTIF_LIBELLE'].'</option>';
-                                        }
+                                    foreach($motifs as $mot)
+                                    {
+                                    ?>
+                                        <option value='<?= $mot['MOTIF_NUM'] ?>'
+                                            <?php if(isset($motif) && $mot['MOTIF_NUM'] == $motif) echo 'selected'; ?>
+                                        > 
+                                            <?= $mot['MOTIF_LIBELLE'] ?>
+                                        </option>;
+                                    <?php
+                                    }
                                     ?>
 
-									<option value="autre">Autre</option>
+									<option value="autre" <?php if(isset($motifAutre) && $motifAutre != null) echo 'selected'; ?>>Autre</option>
                                 </select>
                             </div>
 
-                            <div id="divmotifautre" name="divmotifautre" hidden></div>
+                            <?php
+                                if(isset($motifAutre) && $motifAutre != null)
+                                {
+                                    echo '
+                                    <div id="divmotifautre" name="divmotifautre">
+                                        <textarea id="motif-autre" class="form-control m-0 mt-2" name="motif-autre" placeholder="Veuillez saisir le motif autre">'.$motifAutre.'
+                                        </textarea>
+                                    </div>';
+                                }
+                                else 
+                                {
+                                    echo '<div id="divmotifautre" name="divmotifautre" hidden></div>';
+                                }
+                            ?>
                             
-                            <div class="form-group">
+                            <div id="medoc" class="form-group">
                                 <label for="medicament1">1er médicament présenté:</label>
-                                <select class="form-select" id="medicament1" name="medicament1">
-                                    <option value="">-Choisissez un médicament-</option>
+                                <select class="form-select" id="medicament1" name="medicament1" onchange="addMedicament(this, medicaments)">
+                                    <option value="">-Aucun-</option>
         
                                     <?php
                                     foreach($medicaments as $medicament)
@@ -119,26 +144,75 @@
                                 </select>
                             </div>
 
-							<div class="form-group">
-                                <label for="medicament2">2ème médicament présenté:</label>
-                                <select class="form-select" id="medicament2" name="medicament2">
-                                    <option value="">-Choisissez un médicament-</option>
-        
-                                    <?php
-                                    foreach($medicaments as $medicament)
-                                    {
-                                    ?>
-                                        <option value="<?= $medicament['MED_DEPOTLEGAL'] ?>" 
-                                            <?php if(isset($medicament1) && $medicament['MED_DEPOTLEGAL'] == $medicament1) echo 'selected'?>
-                                        >
-                                            <?= $medicament['MED_NOMCOMMERCIAL'] ?>
-                                        </option>
-                                    <?php
-                                    }
-                                    ?>
-                                </select>
+                            <div class="bloc-center form-check form-switch">
+                                <input <?php if(isset($echantillons) && $echantillons) echo "checked"; ?> id="check-echantillon" class="form-check-input" type="checkbox" onchange="addEchantillon(this, medicaments)" >
+                                <label for="check-echantillon">Echantillon</label>
                             </div>
+
+                            <div id="redigerEtEchantillon" hidden>
+                            </div>
+
+                            <?php
+                                if(isset($echantillons) && $echantillons)
+                                {
+                                    echo "<div class=\"col-10 d-flex flex-column justify-content-center align-items-center mt-3 mb-5 mx-auto\" id=\"addechantillon\">";
+
+                                    foreach($echantillons as $key => $ech)
+                                    {
+                                        $echNb = $key + 1;
+
+                                        echo 
+                                        "
+                                            <div id=\"Echantillon$echNb\" class=\" mb-1 d-flex flex-row\">
+                                                <select name=\"echantillonadd[]\" id=\"echantillonadd$echNb\" class=\"form-select m-0 me-1\" required>
+                                                    <option value=\"\">- Choisissez un échantillon -</option>
+                                        ";
+
+                                        foreach($medicaments as $medicament)
+                                        {
+                                        ?>
+                                            <option value="<?= $medicament['MED_DEPOTLEGAL'] ?>" 
+                                                <?php if($medicament['MED_DEPOTLEGAL'] == $ech['MED_DEPOTLEGAL']) echo 'selected'?>
+                                            >
+                                                <?= $medicament['MED_NOMCOMMERCIAL'] ?>
+                                            </option>
+                                        <?php
+                                        }
+
+                                        echo 
+                                        '
+                                                </select>
+                                                <input name="nbEchantillon[]" required min="1" value="'.$ech['OFF_QTE'].'" class="form-control me-1 rounded w-25 text-center" id="nbEchantillon$echNb" type="number">
+                                        ';
+                                        if($key == count($echantillons) - 1)
+                                        {
+                                            echo
+                                            "
+                                            <button type=\"button\" id=\"button\" value=\"$echNb\" onclick=\"addOtherEchantillon();\" class=\"btn btn-outline-secondary\">
+                                                <i class=\"bi bi-plus-lg\"></i>
+                                            </button>
+                                            ";
+                                        }
+                                        if($echNb > 1)
+                                        {
+                                            echo "
+                                                <button type=\"button\" id=\"buttonMinus\" value=\"$echNb\" onclick=\"minusEchantillon(this);\" class=\"btn btn-outline-secondary\">
+                                                    <i class=\"bi bi-dash-lg\"></i>
+                                                </button>
+                                            ";
+                                        }
+
+                                        echo 
+                                        "
+                                            </div>
+                                        ";
+                                    }
+
+                                    echo "</div>";
+                                }
+                            ?>
                         </div>
+
                     </fieldset>
                     <br/>
 
@@ -148,14 +222,10 @@
                     </div>
 
                     <div class="bouton-quitter">
-                        <input class="w-25 btn btn-info text-light valider" type="submit"  value="Valider le rapport">
+                        <input class="w-25 btn btn-info text-light valider" onclick="return warn()" type="submit" value="Valider le rapport">
 
                         <input class="w-25 btn btn-info text-light valider" type="button" onclick="history.go(-1)" value="Retour">
                     </div>
-
-                    <!-- <input type="text" class="form-control" name="username" placeholder="Identifiant" autofocus="" />
-                    <input type="password" class="form-control" name="password" placeholder="Mot de passe" />
-                    <input class="btn btn-lg btn-info btn-block text-light" type="submit" name="connexion" value="Connexion"> -->
                 </form>
             </div>
         </div>

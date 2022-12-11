@@ -11,7 +11,7 @@ function getErreurs($praticien, $dateVis, $dateSaisie, $motif, $motifAutre, $bil
     if($dateSaisie == '')
         $erreurs[] = 'Vous devez choisir une dateDeSaisie';
     if(($motif == '' || $motif == 'autre') && $motifAutre == '')
-        $erreurs[] = 'Vous devez renseigner un motif';
+        $erreurs[] = 'Veuillez saisir un motif';
     if($bilan == '')
         $erreurs[] = 'Vous devez rédiger un bilan';
 

@@ -4,201 +4,251 @@ include_once 'bd.inc.php';
 
 function getMotifs()
 {
-    try
-    {
-        $monPdo = connexionPDO();
-        $req = 'SELECT MOTIF_NUM, MOTIF_LIBELLE
-                FROM motif';
-        $res = $monPdo->query($req);
-        $result = $res->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-    }
-    catch (PDOException $e)
-    {
-        print "Erreur !: " . $e->getMessage();
-        die();
-    }
+    $monPdo = connexionPDO();
+    $req = 'SELECT MOTIF_NUM, MOTIF_LIBELLE
+            FROM motif';
+    $res = $monPdo->query($req);
+    $result = $res->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
 }
 
 function getRapports()
 {
-    try
-    {
-        $monPdo = connexionPDO();
-        $req = 'SELECT RAP_NUM, 
-                       RAP_DATE, 
-                       RAP_BILAN, 
-                       RAP_DATESAISIE, 
-                       RAP_MOTIF,
-                       PRA_NUM,
-                       MOTIF_NUM,
-                       COL_MATRICULE,
-                       MEDICAMENT1,
-                       MEDICAMENT2,
-                       PRA_REMP
-                FROM rapport_visite';
+    $monPdo = connexionPDO();
+    $req = 'SELECT RAP_NUM, 
+                   RAP_DATE, 
+                   RAP_BILAN, 
+                   RAP_DATESAISIE, 
+                   RAP_MOTIF,
+                   PRA_NUM,
+                   MOTIF_NUM,
+                   COL_MATRICULE,
+                   MEDICAMENT1,
+                   MEDICAMENT2,
+                   PRA_REMP
+            FROM rapport_visite';
 
-        $res = $monPdo->prepare($req);
-        $res->execute();
-        $result = $res->fetchAll(PDO::FETCH_ASSOC);
+    $res = $monPdo->prepare($req);
+    $res->execute();
+    $result = $res->fetchAll(PDO::FETCH_ASSOC);
 
-        return $result;
-    }
-    catch (PDOException $e)
-    {
-        print "Erreur !: " . $e->getMessage();
-        die();
-    }
+    return $result;
 }
 
 function getRapport($id, $matricule)
 {
-    try
-    {
-        $monPdo = connexionPDO();
-        $req = 'SELECT RAP_DATE, 
-                       RAP_BILAN, 
-                       RAP_DATESAISIE, 
-                       RAP_MOTIF,
-                       PRA_NUM,
-                       MOTIF_NUM,
-                       MEDICAMENT1,
-                       MEDICAMENT2,
-                       PRA_REMP
-                FROM rapport_visite
-                WHERE RAP_NUM = :RAP_NUM
-                AND COL_MATRICULE = :COL_MATRICULE';
+    $monPdo = connexionPDO();
+    $req = 'SELECT RAP_DATE, 
+                   RAP_BILAN, 
+                   RAP_DATESAISIE, 
+                   RAP_MOTIF,
+                   PRA_NUM,
+                   MOTIF_NUM,
+                   MEDICAMENT1,
+                   MEDICAMENT2,
+                   PRA_REMP
+            FROM rapport_visite
+            WHERE RAP_NUM = :RAP_NUM
+            AND COL_MATRICULE = :COL_MATRICULE';
 
-        $res = $monPdo->prepare($req);
-        $res->bindValue(':RAP_NUM', $id, PDO::PARAM_INT);
-        $res->bindValue(':COL_MATRICULE', $matricule, PDO::PARAM_STR);
+    $res = $monPdo->prepare($req);
+    $res->bindValue(':RAP_NUM', $id, PDO::PARAM_INT);
+    $res->bindValue(':COL_MATRICULE', $matricule, PDO::PARAM_STR);
 
-        $res->execute();
-        $result = $res->fetch(PDO::FETCH_ASSOC);
+    $res->execute();
+    $result = $res->fetch(PDO::FETCH_ASSOC);
 
-        return $result;
-    }
-    catch (PDOException $e)
-    {
-        print "Erreur !: " . $e->getMessage();
-        die();
-    }
+    return $result;
+}
+
+function getRapportsNonDef($matricule)
+{
+    $monPdo = connexionPDO();
+    $req = 'SELECT RAP_NUM,
+                   RAP_DATE, 
+                   RAP_BILAN, 
+                   RAP_DATESAISIE, 
+                   RAP_MOTIF,
+                   PRA_NUM,
+                   MOTIF_NUM,
+                   MEDICAMENT1,
+                   MEDICAMENT2,
+                   PRA_REMP
+            FROM rapport_visite
+            WHERE COL_MATRICULE = :COL_MATRICULE
+            AND DEFINITIF = 0';
+
+    $res = $monPdo->prepare($req);
+    $res->bindValue(':COL_MATRICULE', $matricule, PDO::PARAM_STR);
+
+    $res->execute();
+    $result = $res->fetchAll(PDO::FETCH_ASSOC);
+
+    return $result;
 }
 
 function getRapportNum($colMatricule)
 {
-    try
+    $monPdo = connexionPDO();
+    $req = 'SELECT MAX(RAP_NUM)
+            FROM rapport_visite
+            WHERE COL_MATRICULE = :COL_MATRICULE';
+
+    $res = $monPdo->prepare($req);
+    $res->bindValue(':COL_MATRICULE', $colMatricule);
+    $res->execute();
+
+    $result = $res->fetch(PDO::FETCH_ASSOC);
+
+    $rapNum = 0;
+
+    if($result)
+    {
+        $rapNum = $result['MAX(RAP_NUM)'] + 1;
+    }
+
+    return $rapNum;
+}
+
+function ajouterRapport($numRapport, $matrCol, $dateVis, $praticien, $remplacant, $motif, $motifAutre, $dateSaisie, $bilan, $medicament1, $medicament2, $definitif)
+{
+    $monPdo = connexionPDO();
+
+    $req = 'INSERT INTO rapport_visite (
+        RAP_NUM, 
+        COL_MATRICULE, 
+        RAP_DATE, 
+        PRA_NUM, 
+        MOTIF_NUM,
+        RAP_MOTIF,
+        PRA_REMP,
+        RAP_DATESAISIE, 
+        RAP_BILAN, 
+        MEDICAMENT1,
+        MEDICAMENT2,
+        DEFINITIF
+    ) VALUES 
+    (
+        :RAP_NUM, 
+        :COL_MATRICULE, 
+        :RAP_DATE, 
+        :PRA_NUM,
+        :MOTIF_NUM,
+        :RAP_MOTIF,
+        :PRA_REMP,
+        :RAP_DATESAISIE, 
+        :RAP_BILAN, 
+        :MEDICAMENT1,
+        :MEDICAMENT2,
+        :DEFINITIF
+    )';
+
+    $res = $monPdo->prepare($req);
+    $res->bindValue(':RAP_NUM', $numRapport);
+    $res->bindValue(':COL_MATRICULE', $matrCol);
+    $res->bindValue(':RAP_DATE', $dateVis);
+    $res->bindValue(':PRA_NUM', $praticien);
+    $res->bindValue(':PRA_REMP', $remplacant);
+    $res->bindValue(':MOTIF_NUM', $motif);
+    $res->bindValue(':RAP_MOTIF', $motifAutre);
+    $res->bindValue(':RAP_DATESAISIE', $dateSaisie);
+    $res->bindValue(':RAP_BILAN', $bilan);
+    $res->bindValue(':MEDICAMENT1', $medicament1);
+    $res->bindValue(':MEDICAMENT2', $medicament2);
+    $res->bindValue(':DEFINITIF', $definitif);
+
+    $res->execute();
+}
+
+function modifierRapport($numRapport, $matrCol, $dateVis, $praticien, $remplacant, $motif, $motifAutre, $dateSaisie, $bilan, $medicament1, $medicament2, $definitif)
+{
+    $monPdo = connexionPDO();
+
+    $req = 'UPDATE rapport_visite
+            SET RAP_DATE = :RAP_DATE,
+                PRA_NUM = :PRA_NUM,
+                PRA_REMP = :PRA_REMP,
+                MOTIF_NUM = :MOTIF_NUM,
+                RAP_MOTIF = :RAP_MOTIF,
+                RAP_DATESAISIE = :RAP_DATESAISIE,
+                RAP_BILAN = :RAP_BILAN,
+                MEDICAMENT1 = :MEDICAMENT1,
+                MEDICAMENT2 = :MEDICAMENT2,
+                DEFINITIF = :DEFINITIF
+            WHERE RAP_NUM = :RAP_NUM
+            AND COL_MATRICULE = :COL_MATRICULE';
+
+    $res = $monPdo->prepare($req);
+
+    $res->bindValue(':RAP_DATE', $dateVis);
+    $res->bindValue(':PRA_NUM', $praticien);
+    $res->bindValue(':PRA_REMP', $remplacant);
+    $res->bindValue(':MOTIF_NUM', $motif);
+    $res->bindValue(':RAP_MOTIF', $motifAutre);
+    $res->bindValue(':RAP_DATESAISIE', $dateSaisie);
+    $res->bindValue(':RAP_BILAN', $bilan);
+    $res->bindValue(':MEDICAMENT1', $medicament1);
+    $res->bindValue(':MEDICAMENT2', $medicament2);
+    $res->bindValue(':DEFINITIF', $definitif);
+    $res->bindValue(':RAP_NUM', $numRapport);
+    $res->bindValue(':COL_MATRICULE', $matrCol);
+
+    $res->execute();
+}
+
+function supprimerEchantillons($numRapport, $matricule)
+{
+    $monPdo = connexionPDO();
+    
+    $req = 'DELETE FROM offrir 
+            WHERE RAP_NUM = :RAP_NUM 
+            AND COL_MATRICULE = :COL_MATRICULE';
+    
+    $res = $monPdo->prepare($req);
+
+    $res->bindValue(':RAP_NUM', $numRapport, PDO::PARAM_INT);
+    $res->bindValue(':COL_MATRICULE', $matricule, PDO::PARAM_STR);
+
+    $res->execute();
+}
+
+function insererEchantillons($numRapport, $tabEchantillons, $nbEchantillons, $matricule)
+{
+    for($i = 0; $i < count($tabEchantillons); $i++)
     {
         $monPdo = connexionPDO();
-        $req = 'SELECT MAX(RAP_NUM)
-                FROM rapport_visite
-                WHERE COL_MATRICULE = :COL_MATRICULE';
+
+        $req = 'INSERT INTO offrir VALUES
+                (:RAP_NUM, :MED_DEPOTLEGAL, :OFF_QTE, :COL_MATRICULE)';
 
         $res = $monPdo->prepare($req);
-        $res->bindValue(':COL_MATRICULE', $colMatricule);
+
+        $res->bindValue(':RAP_NUM', $numRapport);
+        $res->bindValue(':MED_DEPOTLEGAL', $tabEchantillons[$i]);
+        $res->bindValue(':OFF_QTE', $nbEchantillons[$i]);
+        $res->bindValue(':COL_MATRICULE', $matricule);
+
         $res->execute();
-
-        $result = $res->fetch(PDO::FETCH_ASSOC);
-
-        $rapNum = 0;
-
-        if($result)
-        {
-            $rapNum = $result['MAX(RAP_NUM)'] + 1;
-        }
-
-        return $rapNum;
-    }
-    catch (PDOException $e)
-    {
-        print "Erreur !: " . $e->getMessage();
-        die();
     }
 }
 
-function ajouterRapport($numRapport, $matrCol, $dateVis, $praticien, $motif, $dateSaisie, $bilan, $medicament1, $definitif)
+function getEchantillons($numRapport, $matricule)
 {
-    try
-    {
-        $monPdo = connexionPDO();
+    $monPdo = connexionPDO();
 
-        $req = 'INSERT INTO rapport_visite (
-            RAP_NUM, 
-            COL_MATRICULE, 
-            RAP_DATE, 
-            PRA_NUM, 
-            RAP_MOTIF,
-            RAP_DATESAISIE, 
-            RAP_BILAN, 
-            MEDICAMENT1,
-            DEFINITIF
-        ) VALUES 
-        (
-            :RAP_NUM, 
-            :COL_MATRICULE, 
-            :RAP_DATE, 
-            :PRA_NUM, 
-            :RAP_MOTIF,
-            :RAP_DATESAISIE, 
-            :RAP_BILAN, 
-            :MEDICAMENT1,
-            :DEFINITIF
-        )';
+    $req = 'SELECT MED_DEPOTLEGAL, OFF_QTE
+            FROM offrir
+            WHERE RAP_NUM = :RAP_NUM
+            AND COL_MATRICULE = :COL_MATRICULE';
+    
+    $res = $monPdo->prepare($req);
 
-        $res = $monPdo->prepare($req);
-        $res->bindValue(':RAP_NUM', $numRapport);
-        $res->bindValue(':COL_MATRICULE', $matrCol);
-        $res->bindValue(':RAP_DATE', $dateVis);
-        $res->bindValue(':PRA_NUM', $praticien);
-        $res->bindValue(':RAP_MOTIF', $motif);
-        $res->bindValue(':RAP_DATESAISIE', $dateSaisie);
-        $res->bindValue(':RAP_BILAN', $bilan);
-        $res->bindValue(':MEDICAMENT1', $medicament1);
-        $res->bindValue(':DEFINITIF', $definitif);
+    $res->bindValue(':RAP_NUM', $numRapport);
+    $res->bindValue(':COL_MATRICULE', $matricule);
 
-        $res->execute();
-    }
-    catch (PDOException $e)
-    {
-        print "Erreur !: " . $e->getMessage();
-        die();
-    }
-}
+    $res->execute();
 
-function modifierRapport($numRapport, $matrCol, $dateVis, $praticien, $motif, $dateSaisie, $bilan, $medicament1, $definitif)
-{
-    try
-    {
-        $monPdo = connexionPDO();
+    $results = $res->fetchAll(PDO::FETCH_ASSOC);
 
-        $req = 'UPDATE rapport_visite
-                SET RAP_DATE = :RAP_DATE,
-                    PRA_NUM = :PRA_NUM,
-                    RAP_MOTIF = :RAP_MOTIF,
-                    RAP_DATESAISIE = :RAP_DATESAISIE,
-                    RAP_BILAN = :RAP_BILAN,
-                    MEDICAMENT1 = :MEDICAMENT1,
-                    DEFINITIF = :DEFINITIF
-                WHERE RAP_NUM = :RAP_NUM
-                AND COL_MATRICULE = :COL_MATRICULE';
-
-        $res = $monPdo->prepare($req);
-
-        $res->bindValue(':RAP_DATE', $dateVis);
-        $res->bindValue(':PRA_NUM', $praticien);
-        $res->bindValue(':RAP_MOTIF', $motif);
-        $res->bindValue(':RAP_DATESAISIE', $dateSaisie);
-        $res->bindValue(':RAP_BILAN', $bilan);
-        $res->bindValue(':MEDICAMENT1', $medicament1);
-        $res->bindValue(':DEFINITIF', $definitif);
-        $res->bindValue(':RAP_NUM', $numRapport);
-        $res->bindValue(':COL_MATRICULE', $matrCol);
-
-        $res->execute();
-    }
-    catch (PDOException $e)
-    {
-        print "Erreur !: " . $e->getMessage();
-        die();
-    }
+    return $results;
 }

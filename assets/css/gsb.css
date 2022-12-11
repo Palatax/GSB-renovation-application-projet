@@ -340,7 +340,7 @@ abbr {
 	text-align: center;
 }
 .form-rapport-container {
-	width: 725px;
+	width: 925px;
 	height: auto;
 }
 .bloc-center {
@@ -358,11 +358,4 @@ abbr {
 	height: 300px;
 	margin: 10px;
 	border-radius: 10px;
-}
-.choice {
-	width: 500px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 200px;
-	margin-bottom: 200px;
 }

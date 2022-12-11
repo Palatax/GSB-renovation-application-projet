@@ -8,14 +8,12 @@ if(isset($_SESSION['login']))
     {
         case 'choixRedaction':
         {
-            if(count(getRapports()) > 0)
-            {
-                include('vues/v_choixRedaction.php');
-            }
-            else 
-            {
+            $rapports = getRapportsNonDef($_SESSION['matricule']);
+
+            if(count($rapports) == 0)
                 header('Location:index.php?uc=rapportdevisite&action=redigerrapport');
-            }
+
+            include('vues/v_choixRedaction.php');
 
             break;
         }
@@ -36,31 +34,28 @@ if(isset($_SESSION['login']))
         }
         case 'confirmerRapport':
         {
-            var_dump($_POST);
-
+            // Données à choisir dans le formulaire
             $motifs = getMotifs();
             $medicaments = getAllNomMedicament();
             $praticiens = getAllNomPraticien();
 
+            // Données non choisies
             $matricule = $_SESSION['matricule'];
-            $numRapport = getRapportNum($matricule);
+            $numRapport = $_POST['rapport'];
+            
+            // Données obligatoires remplies
             $praticien = $_POST['praticien'];
             $dateSaisie = $_POST['dateSaisie'];
             $bilan = $_POST['bilan'];
             $dateVisite = $_POST['dateVisite'];
-            $medicament1 = $_POST['medicament1'];
-            $motif = $_POST['motifNormal'];
-            $motifAutre = '';
-            if(isset($_POST['motif-autre'])) $motifAutre = $_POST['motif-autre'];
-            $saisieDefinitive = 0;
+            $_POST['motifNormal'] != 'autre' && $_POST['motifNormal'] != '' ? $motif = $_POST['motifNormal'] : $motif = null;
+            isset($_POST['motif-autre']) ? $motifAutre = $_POST['motif-autre'] : $motifAutre = null;
 
-            // Mise à null des valeurs non renseignées
-            if($medicament1 == '') { $medicament1 = null; }
-
-            if(isset($_POST['saisieDefinitive']))
-            {
-                $saisieDefinitive = 1;
-            }
+            // Données non obligatoires remplies
+            $_POST['medicament1'] != '' ? $medicament1 = $_POST['medicament1'] : $medicament1 = null;
+            isset($_POST['medicament2']) ? $medicament2 = $_POST['medicament2'] : $medicament2 = null;
+            isset($_POST['saisieDefinitive']) ? $saisieDefinitive = 1 : $saisieDefinitive = 0;
+            $_POST['remplacant'] != '' ? $remplacant = $_POST['remplacant'] : $remplacant = null;
 
             $erreurs = getErreurs($praticien, $dateVisite, $dateSaisie, $motif, $motifAutre, $bilan);
 
@@ -70,13 +65,21 @@ if(isset($_SESSION['login']))
                     $numRapport, 
                     $matricule, 
                     $dateVisite, 
-                    $praticien, 
-                    $motif, 
+                    $praticien,
+                    $remplacant,
+                    $motif,
+                    $motifAutre,
                     $dateSaisie, 
                     $bilan, 
-                    $medicament1, 
+                    $medicament1,
+                    $medicament2,
                     $saisieDefinitive
                 );
+
+                if(isset($_POST['echantillonadd']))
+                {
+                    insererEchantillons($numRapport, $_POST['echantillonadd'], $_POST['nbEchantillon'], $matricule);
+                }
             }
             else 
             {
@@ -87,25 +90,18 @@ if(isset($_SESSION['login']))
 
             break;
         }
-        case 'choixModifierRapport':
-        {
-            $rapports = getRapports();
-            include('vues/v_choixRapport.php');
-
-            break;
-        }
         case 'modifierRapport':
         {
-            if(!isset($_GET['id']))
+            if(!isset($_POST['rapport']))
                 header('Location:index.php?uc=rapportdevisite&action=choixModifierRapport');
 
             // Récupération des données générales
-            $numRapport = $_GET['id'];
+            $numRapport = $_POST['rapport'];
             $matricule = $_SESSION['matricule'];
             $motifs = getMotifs();
             $medicaments = getAllNomMedicament();
             $praticiens = getAllNomPraticien();
-            
+
             // Récupère les données depuis le rapport à modifier
             $rapport = getRapport($numRapport, $matricule);
             $dateSaisie = $rapport['RAP_DATESAISIE'];
@@ -113,8 +109,13 @@ if(isset($_SESSION['login']))
             $dateVisite = $rapport['RAP_DATE'];
             $praticien = $rapport['PRA_NUM'];
             $medicament1 = $rapport['MEDICAMENT1'];
+            $remplacant = $rapport['PRA_REMP'];
+            $motif = $rapport['MOTIF_NUM'];
+            $motifAutre = $rapport['RAP_MOTIF'];
             
             if($dateSaisie == null) $dateSaisie = date('Y-m-d', time());
+
+            $echantillons = getEchantillons($numRapport, $matricule);
 
             $url = 'index.php?uc=rapportdevisite&action=confirmerModification';
 
@@ -124,38 +125,61 @@ if(isset($_SESSION['login']))
         }
         case 'confirmerModification':
         {
+            // Données à choisir dans le formulaire
+            $motifs = getMotifs();
+            $medicaments = getAllNomMedicament();
+            $praticiens = getAllNomPraticien();
+
+            // Données non choisies
             $matricule = $_SESSION['matricule'];
-            $numRapport = getRapportNum($matricule) - 1;
+            $numRapport = $_POST['rapport'];
+            
+            // Données obligatoires remplies
             $praticien = $_POST['praticien'];
             $dateSaisie = $_POST['dateSaisie'];
             $bilan = $_POST['bilan'];
             $dateVisite = $_POST['dateVisite'];
-            $medicament1 = $_POST['medicament1'];
-            $motif = $_POST['motifNormal'];
-            $saisieDefinitive = 0;
-            
-            // Mise à null des valeurs non renseignées
-            if($dateSaisie == '') { $dateSaisie = null; }
-            if($dateVisite == '') { $dateVisite = null; }
-            if($praticien == '') { $praticien = null; }
-            if($medicament1 == '') { $medicament1 = null; }
-            
-            if(isset($_POST['saisieDefinitive']))
-            {
-                $saisieDefinitive = 1;
-            }
+            $_POST['motifNormal'] != 'autre' && $_POST['motifNormal'] != '' ? $motif = $_POST['motifNormal'] : $motif = null;
+            isset($_POST['motif-autre']) ? $motifAutre = $_POST['motif-autre'] : $motifAutre = null;
 
-            modifierRapport(
-                $numRapport, 
-                $matricule, 
-                $dateVisite, 
-                $praticien, 
-                $motif, 
-                $dateSaisie,
-                $bilan, 
-                $medicament1, 
-                $saisieDefinitive
-            );
+            // Données non obligatoires remplies
+            $_POST['medicament1'] != '' ? $medicament1 = $_POST['medicament1'] : $medicament1 = null;
+            isset($_POST['medicament2']) && $_POST['medicament2'] != 'default' ? $medicament2 = $_POST['medicament2'] : $medicament2 = null;
+            isset($_POST['saisieDefinitive']) ? $saisieDefinitive = 1 : $saisieDefinitive = 0;
+            $_POST['remplacant'] != '' ? $remplacant = $_POST['remplacant'] : $remplacant = null;
+
+            $erreurs = getErreurs($praticien, $dateVisite, $dateSaisie, $motif, $motifAutre, $bilan);
+
+            if(empty($erreurs))
+            {
+                modifierRapport(
+                    $numRapport, 
+                    $matricule, 
+                    $dateVisite, 
+                    $praticien,
+                    $remplacant,
+                    $motif, 
+                    $motifAutre,
+                    $dateSaisie,
+                    $bilan, 
+                    $medicament1,
+                    $medicament2,
+                    $saisieDefinitive
+                );
+
+                supprimerEchantillons($numRapport, $matricule);
+
+                if(isset($_POST['echantillonadd']))
+                {
+                    insererEchantillons($numRapport, $_POST['echantillonadd'], $_POST['nbEchantillon'], $matricule);
+                }
+            }
+            else 
+            {
+                $url = 'index.php?uc=rapportdevisite&action=confirmerModification';
+            
+                include('vues/v_saisieRapport.php');
+            }
         }
         case 'mesrapports' :
         {
@@ -168,11 +192,11 @@ if(isset($_SESSION['login']))
         }
         case 'confirmerRapportRegion':
         {
-          include("vues/v_afficherRapportRegion.php");
-          break;
+            include("vues/v_afficherRapportRegion.php");
+            break;
         }
         default:
-          header('Location: index.php?uc=accueil');
-          break;
+            header('Location: index.php?uc=accueil');
+            break;
     }
 }
