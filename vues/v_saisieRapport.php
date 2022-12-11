@@ -105,11 +105,24 @@
                                     }
                                     ?>
 
-									<option value="autre">Autre</option>
+									<option value="autre" <?php if(isset($motifAutre) && $motifAutre != null) echo 'selected'; ?>>Autre</option>
                                 </select>
                             </div>
 
-                            <div id="divmotifautre" name="divmotifautre" hidden></div>
+                            <?php
+                                if(isset($motifAutre) && $motifAutre != null)
+                                {
+                                    echo '
+                                    <div id="divmotifautre" name="divmotifautre">
+                                        <textarea id="motif-autre" class="form-control m-0 mt-2" name="motif-autre" placeholder="Veuillez saisir le motif autre">'.$motifAutre.'
+                                        </textarea>
+                                    </div>';
+                                }
+                                else 
+                                {
+                                    echo '<div id="divmotifautre" name="divmotifautre" hidden></div>';
+                                }
+                            ?>
                             
                             <div id="medoc" class="form-group">
                                 <label for="medicament1">1er médicament présenté:</label>
@@ -132,7 +145,7 @@
                             </div>
 
                             <div class="bloc-center form-check form-switch">
-                                <input <?php if($echantillons) echo "checked"; ?> id="check-echantillon" class="form-check-input" type="checkbox" onchange="addEchantillon(this, medicaments)" >
+                                <input <?php if(isset($echantillons) && $echantillons) echo "checked"; ?> id="check-echantillon" class="form-check-input" type="checkbox" onchange="addEchantillon(this, medicaments)" >
                                 <label for="check-echantillon">Echantillon</label>
                             </div>
 
@@ -140,7 +153,7 @@
                             </div>
 
                             <?php
-                                if($echantillons)
+                                if(isset($echantillons) && $echantillons)
                                 {
                                     echo "<div class=\"col-10 d-flex flex-column justify-content-center align-items-center mt-3 mb-5 mx-auto\" id=\"addechantillon\">";
 

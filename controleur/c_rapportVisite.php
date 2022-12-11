@@ -48,7 +48,7 @@ if(isset($_SESSION['login']))
             $dateSaisie = $_POST['dateSaisie'];
             $bilan = $_POST['bilan'];
             $dateVisite = $_POST['dateVisite'];
-            $motif = $_POST['motifNormal'];
+            $_POST['motifNormal'] != 'autre' && $_POST['motifNormal'] != '' ? $motif = $_POST['motifNormal'] : $motif = null;
             isset($_POST['motif-autre']) ? $motifAutre = $_POST['motif-autre'] : $motifAutre = null;
 
             // Données non obligatoires remplies
@@ -67,7 +67,8 @@ if(isset($_SESSION['login']))
                     $dateVisite, 
                     $praticien,
                     $remplacant,
-                    $motif, 
+                    $motif,
+                    $motifAutre,
                     $dateSaisie, 
                     $bilan, 
                     $medicament1,
@@ -110,11 +111,11 @@ if(isset($_SESSION['login']))
             $medicament1 = $rapport['MEDICAMENT1'];
             $remplacant = $rapport['PRA_REMP'];
             $motif = $rapport['MOTIF_NUM'];
+            $motifAutre = $rapport['RAP_MOTIF'];
             
             if($dateSaisie == null) $dateSaisie = date('Y-m-d', time());
 
             $echantillons = getEchantillons($numRapport, $matricule);
-            var_dump($echantillons);
 
             $url = 'index.php?uc=rapportdevisite&action=confirmerModification';
 
@@ -138,12 +139,12 @@ if(isset($_SESSION['login']))
             $dateSaisie = $_POST['dateSaisie'];
             $bilan = $_POST['bilan'];
             $dateVisite = $_POST['dateVisite'];
-            $motif = $_POST['motifNormal'];
+            $_POST['motifNormal'] != 'autre' && $_POST['motifNormal'] != '' ? $motif = $_POST['motifNormal'] : $motif = null;
             isset($_POST['motif-autre']) ? $motifAutre = $_POST['motif-autre'] : $motifAutre = null;
 
             // Données non obligatoires remplies
             $_POST['medicament1'] != '' ? $medicament1 = $_POST['medicament1'] : $medicament1 = null;
-            isset($_POST['medicament2']) ? $medicament2 = $_POST['medicament2'] : $medicament2 = null;
+            isset($_POST['medicament2']) && $_POST['medicament2'] != 'default' ? $medicament2 = $_POST['medicament2'] : $medicament2 = null;
             isset($_POST['saisieDefinitive']) ? $saisieDefinitive = 1 : $saisieDefinitive = 0;
             $_POST['remplacant'] != '' ? $remplacant = $_POST['remplacant'] : $remplacant = null;
 
@@ -158,6 +159,7 @@ if(isset($_SESSION['login']))
                     $praticien,
                     $remplacant,
                     $motif, 
+                    $motifAutre,
                     $dateSaisie,
                     $bilan, 
                     $medicament1,
