@@ -132,12 +132,73 @@
                             </div>
 
                             <div class="bloc-center form-check form-switch">
-                                <input id="check-echantillon" class="form-check-input" type="checkbox" onchange="addEchantillon(this, medicaments)" >
+                                <input <?php if($echantillons) echo "checked"; ?> id="check-echantillon" class="form-check-input" type="checkbox" onchange="addEchantillon(this, medicaments)" >
                                 <label for="check-echantillon">Echantillon</label>
                             </div>
 
                             <div id="redigerEtEchantillon" hidden>
                             </div>
+
+                            <?php
+                                if($echantillons)
+                                {
+                                    echo "<div class=\"col-10 d-flex flex-column justify-content-center align-items-center mt-3 mb-5 mx-auto\" id=\"addechantillon\">";
+
+                                    foreach($echantillons as $key => $ech)
+                                    {
+                                        $echNb = $key + 1;
+
+                                        echo 
+                                        "
+                                            <div id=\"Echantillon$echNb\" class=\" mb-1 d-flex flex-row\">
+                                                <select name=\"echantillonadd[]\" id=\"echantillonadd$echNb\" class=\"form-select m-0 me-1\" required>
+                                                    <option value=\"\">- Choisissez un échantillon -</option>
+                                        ";
+
+                                        foreach($medicaments as $medicament)
+                                        {
+                                        ?>
+                                            <option value="<?= $medicament['MED_DEPOTLEGAL'] ?>" 
+                                                <?php if(isset($medicament1) && $medicament['MED_DEPOTLEGAL'] == $medicament1) echo 'selected'?>
+                                            >
+                                                <?= $medicament['MED_NOMCOMMERCIAL'] ?>
+                                            </option>
+                                        <?php
+                                        }
+
+                                        echo 
+                                        "
+                                                </select>
+
+                                                <input name=\"nbEchantillon[]\" required min=\"1\" value=\"1\" class=\"form-control me-1 rounded w-25 text-center\" id=\"nbEchantillon$echNb\" type=\"number\">
+                                        ";
+                                        if($key == count($echantillons))
+                                        {
+                                            echo
+                                            "
+                                            <button type=\"button\" id=\"button\" value=\"$echNb\" onclick=\"addOtherEchantillon();\" class=\"btn btn-outline-secondary\">
+                                                <i class=\"bi bi-plus-lg\"></i>
+                                            </button>
+                                            ";
+                                        }
+                                        if($echNb > 1)
+                                        {
+                                            echo "
+                                                <button type=\"button\" id=\"buttonMinus\" value=\"$echNb\" onclick=\"minusEchantillon(this);\" class=\"btn btn-outline-secondary\">
+                                                    <i class=\"bi bi-dash-lg\"></i>
+                                                </button>
+                                            ";
+                                        }
+
+                                        echo 
+                                        "
+                                            </div>
+                                        ";
+                                    }
+
+                                    echo "</div>";
+                                }
+                            ?>
                         </div>
 
                     </fieldset>

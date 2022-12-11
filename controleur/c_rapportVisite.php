@@ -40,8 +40,8 @@ if(isset($_SESSION['login']))
             $praticiens = getAllNomPraticien();
 
             // Données non choisies
-            $matricule = $_POST['rapport'];
-            $numRapport = getRapportNum($matricule);
+            $matricule = $_SESSION['matricule'];
+            $numRapport = $_POST['rapport'];
             
             // Données obligatoires remplies
             $praticien = $_POST['praticien'];
@@ -112,6 +112,9 @@ if(isset($_SESSION['login']))
             $motif = $rapport['MOTIF_NUM'];
             
             if($dateSaisie == null) $dateSaisie = date('Y-m-d', time());
+
+            $echantillons = getEchantillons($numRapport, $matricule);
+            var_dump($echantillons);
 
             $url = 'index.php?uc=rapportdevisite&action=confirmerModification';
 

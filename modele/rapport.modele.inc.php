@@ -226,3 +226,24 @@ function insererEchantillons($numRapport, $tabEchantillons, $nbEchantillons, $ma
         $res->execute();
     }
 }
+
+function getEchantillons($numRapport, $matricule)
+{
+    $monPdo = connexionPDO();
+
+    $req = 'SELECT MED_DEPOTLEGAL, OFF_QTE
+            FROM offrir
+            WHERE RAP_NUM = :RAP_NUM
+            AND COL_MATRICULE = :COL_MATRICULE';
+    
+    $res = $monPdo->prepare($req);
+
+    $res->bindValue(':RAP_NUM', $numRapport);
+    $res->bindValue(':COL_MATRICULE', $matricule);
+
+    $res->execute();
+
+    $results = $res->fetchAll(PDO::FETCH_ASSOC);
+
+    return $results;
+}
