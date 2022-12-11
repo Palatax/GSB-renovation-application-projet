@@ -159,7 +159,7 @@
                                         {
                                         ?>
                                             <option value="<?= $medicament['MED_DEPOTLEGAL'] ?>" 
-                                                <?php if(isset($medicament1) && $medicament['MED_DEPOTLEGAL'] == $medicament1) echo 'selected'?>
+                                                <?php if($medicament['MED_DEPOTLEGAL'] == $ech['MED_DEPOTLEGAL']) echo 'selected'?>
                                             >
                                                 <?= $medicament['MED_NOMCOMMERCIAL'] ?>
                                             </option>
@@ -167,12 +167,11 @@
                                         }
 
                                         echo 
-                                        "
+                                        '
                                                 </select>
-
-                                                <input name=\"nbEchantillon[]\" required min=\"1\" value=\"1\" class=\"form-control me-1 rounded w-25 text-center\" id=\"nbEchantillon$echNb\" type=\"number\">
-                                        ";
-                                        if($key == count($echantillons))
+                                                <input name="nbEchantillon[]" required min="1" value="'.$ech['OFF_QTE'].'" class="form-control me-1 rounded w-25 text-center" id="nbEchantillon$echNb" type="number">
+                                        ';
+                                        if($key == count($echantillons) - 1)
                                         {
                                             echo
                                             "
