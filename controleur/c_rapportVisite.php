@@ -183,6 +183,11 @@ if(isset($_SESSION['login']))
         }
         case 'mesrapports' :
         {
+            $matricule = $_SESSION['matricule'];
+            $praticiens = getAllNomPraticienCol($matricule);
+            
+            include('vues/v_consulterRapports.php');
+
             break;
         }
         case 'rapportregion' :
