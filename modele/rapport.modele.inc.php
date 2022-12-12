@@ -196,59 +196,62 @@ function modifierRapport($numRapport, $matrCol, $dateVis, $praticien, $remplacan
     $res->execute();
 }
 
-function supprimerEchantillons($numRapport, $matricule)
-{
-    $monPdo = connexionPDO();
-    
-    $req = 'DELETE FROM offrir 
-            WHERE RAP_NUM = :RAP_NUM 
-            AND COL_MATRICULE = :COL_MATRICULE';
-    
-    $res = $monPdo->prepare($req);
-
-    $res->bindValue(':RAP_NUM', $numRapport, PDO::PARAM_INT);
-    $res->bindValue(':COL_MATRICULE', $matricule, PDO::PARAM_STR);
-
-    $res->execute();
-}
-
-function insererEchantillons($numRapport, $tabEchantillons, $nbEchantillons, $matricule)
-{
-    for($i = 0; $i < count($tabEchantillons); $i++)
-    {
-        $monPdo = connexionPDO();
-
-        $req = 'INSERT INTO offrir VALUES
-                (:RAP_NUM, :MED_DEPOTLEGAL, :OFF_QTE, :COL_MATRICULE)';
-
-        $res = $monPdo->prepare($req);
-
-        $res->bindValue(':RAP_NUM', $numRapport);
-        $res->bindValue(':MED_DEPOTLEGAL', $tabEchantillons[$i]);
-        $res->bindValue(':OFF_QTE', $nbEchantillons[$i]);
-        $res->bindValue(':COL_MATRICULE', $matricule);
-
-        $res->execute();
-    }
-}
-
-function getEchantillons($numRapport, $matricule)
+function getRapportsEntre($dateDebut, $dateFin)
 {
     $monPdo = connexionPDO();
 
-    $req = 'SELECT MED_DEPOTLEGAL, OFF_QTE
-            FROM offrir
-            WHERE RAP_NUM = :RAP_NUM
-            AND COL_MATRICULE = :COL_MATRICULE';
-    
+    $req = 'SELECT RAP_NUM,
+                   RAP_DATE, 
+                   RAP_BILAN, 
+                   RAP_DATESAISIE, 
+                   RAP_MOTIF,
+                   PRA_NUM,
+                   MOTIF_NUM,
+                   MEDICAMENT1,
+                   MEDICAMENT2,
+                   PRA_REMP
+            FROM rapport_visite
+            WHERE RAP_DATESAISIE >= :DATE_DEBUT
+            AND RAP_DATESAISIE <= :DATE_FIN';
+
     $res = $monPdo->prepare($req);
 
-    $res->bindValue(':RAP_NUM', $numRapport);
-    $res->bindValue(':COL_MATRICULE', $matricule);
+    $res->bindValue(':DATE_DEBUT', $dateDebut, PDO::PARAM_STR);
+    $res->bindValue(':DATE_FIN', $dateFin, PDO::PARAM_STR);
 
     $res->execute();
 
     $results = $res->fetchAll(PDO::FETCH_ASSOC);
+    return $results;
+}
 
+function getRapportsEntrePra($dateDebut, $dateFin, $praticien)
+{
+    $monPdo = connexionPDO();
+
+    $req = 'SELECT RAP_NUM,
+                   RAP_DATE, 
+                   RAP_BILAN, 
+                   RAP_DATESAISIE, 
+                   RAP_MOTIF,
+                   PRA_NUM,
+                   MOTIF_NUM,
+                   MEDICAMENT1,
+                   MEDICAMENT2,
+                   PRA_REMP
+            FROM rapport_visite
+            WHERE RAP_DATESAISIE >= :DATE_DEBUT
+            AND RAP_DATESAISIE <= :DATE_FIN
+            AND PRA_NUM = :PRA_NUM';
+
+    $res = $monPdo->prepare($req);
+
+    $res->bindValue(':DATE_DEBUT', $dateDebut, PDO::PARAM_STR);
+    $res->bindValue(':DATE_FIN', $dateFin, PDO::PARAM_STR);
+    $res->bindValue(':PRA_NUM', $praticien, PDO::PARAM_INT);
+
+    $res->execute();
+
+    $results = $res->fetchAll(PDO::FETCH_ASSOC);
     return $results;
 }

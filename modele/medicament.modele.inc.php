@@ -41,3 +41,60 @@ function getNbMedicament(){
     $result = $res->fetch();    
     return $result;
 }
+
+function supprimerEchantillons($numRapport, $matricule)
+{
+    $monPdo = connexionPDO();
+    
+    $req = 'DELETE FROM offrir 
+            WHERE RAP_NUM = :RAP_NUM 
+            AND COL_MATRICULE = :COL_MATRICULE';
+    
+    $res = $monPdo->prepare($req);
+
+    $res->bindValue(':RAP_NUM', $numRapport, PDO::PARAM_INT);
+    $res->bindValue(':COL_MATRICULE', $matricule, PDO::PARAM_STR);
+
+    $res->execute();
+}
+
+function insererEchantillons($numRapport, $tabEchantillons, $nbEchantillons, $matricule)
+{
+    for($i = 0; $i < count($tabEchantillons); $i++)
+    {
+        $monPdo = connexionPDO();
+
+        $req = 'INSERT INTO offrir VALUES
+                (:RAP_NUM, :MED_DEPOTLEGAL, :OFF_QTE, :COL_MATRICULE)';
+
+        $res = $monPdo->prepare($req);
+
+        $res->bindValue(':RAP_NUM', $numRapport);
+        $res->bindValue(':MED_DEPOTLEGAL', $tabEchantillons[$i]);
+        $res->bindValue(':OFF_QTE', $nbEchantillons[$i]);
+        $res->bindValue(':COL_MATRICULE', $matricule);
+
+        $res->execute();
+    }
+}
+
+function getEchantillons($numRapport, $matricule)
+{
+    $monPdo = connexionPDO();
+
+    $req = 'SELECT MED_DEPOTLEGAL, OFF_QTE
+            FROM offrir
+            WHERE RAP_NUM = :RAP_NUM
+            AND COL_MATRICULE = :COL_MATRICULE';
+    
+    $res = $monPdo->prepare($req);
+
+    $res->bindValue(':RAP_NUM', $numRapport);
+    $res->bindValue(':COL_MATRICULE', $matricule);
+
+    $res->execute();
+
+    $results = $res->fetchAll(PDO::FETCH_ASSOC);
+
+    return $results;
+}

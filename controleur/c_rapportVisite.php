@@ -185,6 +185,22 @@ if(isset($_SESSION['login']))
         {
             $matricule = $_SESSION['matricule'];
             $praticiens = getAllNomPraticienCol($matricule);
+
+            if(isset($_POST['dateDebut']) && isset($_POST['dateFin']))
+            {
+                $dateDebut = $_POST['dateDebut'];
+                $dateFin = $_POST['dateFin'];
+
+                if(isset($_POST['praticien']))
+                {
+                    $praticien = $_POST['praticien'];
+                    $rapports = getRapportsEntrePra($dateDebut, $dateFin, $praticien);
+                }
+                else
+                {
+                    $rapports = getRapportsEntre($dateDebut, $dateFin);
+                }
+            }
             
             include('vues/v_consulterRapports.php');
 
