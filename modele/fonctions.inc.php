@@ -17,3 +17,14 @@ function getErreurs($praticien, $dateVis, $dateSaisie, $motif, $motifAutre, $bil
 
     return $erreurs;
 }
+
+function getMotifLibelle($rapport)
+{
+    $motifNum = $rapport['MOTIF_NUM'];
+
+    $motifNum != null ? 
+        $motif = getMotifLibelleFromNum($motifNum) : 
+        $motif = $rapport['RAP_MOTIF'];
+
+    return $motif;
+}

@@ -315,3 +315,24 @@ function getRapportsCol($matrCol)
     $results = $res->fetchAll(PDO::FETCH_ASSOC);
     return $results;
 }
+
+function getMotifLibelleFromNum($motifNum)
+{
+    $monPdo = connexionPDO();
+
+    $req = 'SELECT MOTIF_LIBELLE
+            FROM motif
+            WHERE MOTIF_NUM = :MOTIF_NUM';
+
+    $res = $monPdo->prepare($req);
+
+    $res->bindValue(':MOTIF_NUM', $motifNum);
+
+    $res->execute();
+
+    $motif = $res->fetch(PDO::FETCH_ASSOC);
+
+    $result = $motif['MOTIF_LIBELLE'];
+
+    return $result;
+}

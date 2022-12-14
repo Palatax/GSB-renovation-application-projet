@@ -180,6 +180,8 @@ if(isset($_SESSION['login']))
             
                 include('vues/v_saisieRapport.php');
             }
+
+            break;
         }
         case 'mesrapports' :
         {
@@ -199,7 +201,7 @@ if(isset($_SESSION['login']))
                 }
                 else
                 {
-                    $rapports = getRapportsEntre($dateDebut, $dateFin);
+                    $rapports = getRapportsEntre($dateDebut, $dateFin, $matricule);
                 }
             }
             else if(isset($praticien))
@@ -210,8 +212,6 @@ if(isset($_SESSION['login']))
             {
                 $rapports = getRapportsCol($matricule);
             }
-
-            var_dump($rapports);
             
             include('vues/v_consulterRapports.php');
 
