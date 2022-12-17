@@ -195,7 +195,15 @@ if(isset($_SESSION['login']))
             // Récupération des rapports
             $rapports = getRapports($matricule, $praticien, $dateDebut, $dateFin);
             
-            include('vues/v_consulterRapports.php');
+            include('vues/v_selectionRapports.php');
+
+            if ($rapports)
+                include('vues/v_listeRapports.php');
+            else 
+            {
+                $erreurs[] = 'Aucun rapport trouvé';
+                include('vues/v_afficherErreurs.php');
+            }
 
             break;
         }
