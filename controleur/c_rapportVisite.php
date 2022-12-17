@@ -188,30 +188,12 @@ if(isset($_SESSION['login']))
             $matricule = $_SESSION['matricule'];
             $praticiens = getAllNomPraticienCol($matricule);
 
-            if(isset($_POST['praticien']) && $_POST['praticien'] != '') $praticien = $_POST['praticien'];
-            if(isset($_POST['dateDebut']) && $_POST['dateDebut'] != '') $dateDebut = $_POST['dateDebut'];
-            if(isset($_POST['dateFin']) && $_POST['dateFin'] != '') $dateFin = $_POST['dateFin'];
+            isset($_POST['praticien']) && $_POST['praticien'] != '' ? $praticien = $_POST['praticien'] : $praticien = null;
+            isset($_POST['dateDebut']) && $_POST['dateDebut'] != '' ? $dateDebut = $_POST['dateDebut'] : $dateDebut = null;
+            isset($_POST['dateFin']) && $_POST['dateFin'] != '' ? $dateFin = $_POST['dateFin'] : $dateFin = null;
 
             // Récupération des rapports
-            if(isset($dateDebut) && isset($dateFin))
-            {
-                if(isset($praticien))
-                {
-                    $rapports = getRapportsEntrePra($dateDebut, $dateFin, $praticien, $matricule);
-                }
-                else
-                {
-                    $rapports = getRapportsEntre($dateDebut, $dateFin, $matricule);
-                }
-            }
-            else if(isset($praticien))
-            {
-                $rapports = getRapportsPra($matricule, $praticien);
-            }
-            else 
-            {
-                $rapports = getRapportsCol($matricule);
-            }
+            $rapports = getRapports($matricule, $praticien, $dateDebut, $dateFin);
             
             include('vues/v_consulterRapports.php');
 

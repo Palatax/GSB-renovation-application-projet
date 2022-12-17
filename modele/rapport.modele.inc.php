@@ -12,29 +12,6 @@ function getMotifs()
     return $result;
 }
 
-function getRapports()
-{
-    $monPdo = connexionPDO();
-    $req = 'SELECT RAP_NUM, 
-                   RAP_DATE, 
-                   RAP_BILAN, 
-                   RAP_DATESAISIE, 
-                   RAP_MOTIF,
-                   PRA_NUM,
-                   MOTIF_NUM,
-                   COL_MATRICULE,
-                   MEDICAMENT1,
-                   MEDICAMENT2,
-                   PRA_REMP
-            FROM rapport_visite';
-
-    $res = $monPdo->prepare($req);
-    $res->execute();
-    $result = $res->fetchAll(PDO::FETCH_ASSOC);
-
-    return $result;
-}
-
 function getRapport($id, $matricule)
 {
     $monPdo = connexionPDO();
@@ -196,71 +173,7 @@ function modifierRapport($numRapport, $matrCol, $dateVis, $praticien, $remplacan
     $res->execute();
 }
 
-function getRapportsEntre($dateDebut, $dateFin, $matrCol)
-{
-    $monPdo = connexionPDO();
-
-    $req = 'SELECT RAP_NUM,
-                   RAP_DATE, 
-                   RAP_BILAN, 
-                   RAP_DATESAISIE, 
-                   RAP_MOTIF,
-                   PRA_NUM,
-                   MOTIF_NUM,
-                   MEDICAMENT1,
-                   MEDICAMENT2,
-                   PRA_REMP
-            FROM rapport_visite
-            WHERE RAP_DATESAISIE >= :DATE_DEBUT
-            AND RAP_DATESAISIE <= :DATE_FIN
-            AND COL_MATRICULE = :COL_MATRICULE';
-
-    $res = $monPdo->prepare($req);
-
-    $res->bindValue(':DATE_DEBUT', $dateDebut, PDO::PARAM_STR);
-    $res->bindValue(':DATE_FIN', $dateFin, PDO::PARAM_STR);
-    $res->bindValue(':COL_MATRICULE', $matrCol, PDO::PARAM_STR);
-
-    $res->execute();
-
-    $results = $res->fetchAll(PDO::FETCH_ASSOC);
-    return $results;
-}
-
-function getRapportsEntrePra($dateDebut, $dateFin, $praticien, $matrCol)
-{
-    $monPdo = connexionPDO();
-
-    $req = 'SELECT RAP_NUM,
-                   RAP_DATE, 
-                   RAP_BILAN, 
-                   RAP_DATESAISIE, 
-                   RAP_MOTIF,
-                   PRA_NUM,
-                   MOTIF_NUM,
-                   MEDICAMENT1,
-                   MEDICAMENT2,
-                   PRA_REMP
-            FROM rapport_visite
-            WHERE RAP_DATESAISIE >= :DATE_DEBUT
-            AND RAP_DATESAISIE <= :DATE_FIN
-            AND PRA_NUM = :PRA_NUM
-            AND COL_MATRICULE = :COL_MATRICULE';
-
-    $res = $monPdo->prepare($req);
-
-    $res->bindValue(':DATE_DEBUT', $dateDebut, PDO::PARAM_STR);
-    $res->bindValue(':DATE_FIN', $dateFin, PDO::PARAM_STR);
-    $res->bindValue(':PRA_NUM', $praticien, PDO::PARAM_INT);
-    $res->bindValue(':COL_MATRICULE', $matrCol, PDO::PARAM_STR);
-
-    $res->execute();
-
-    $results = $res->fetchAll(PDO::FETCH_ASSOC);
-    return $results;
-}
-
-function getRapportsPra($matrCol, $praticien)
+function getRapports($matrCol, $pranum, $dateDebut, $dateFin)
 {
     $monPdo = connexionPDO();
 
@@ -275,13 +188,26 @@ function getRapportsPra($matrCol, $praticien)
                 MEDICAMENT2,
                 PRA_REMP
             FROM rapport_visite
-            WHERE COL_MATRICULE = :COL_MATRICULE
-            AND PRA_NUM = :PRA_NUM';
-    
+            WHERE COL_MATRICULE = :COL_MATRICULE ';
+
+    // Sélectionne uniquement les rapports concernant un praticien ou un interval si précisé
+    if ($pranum != null)
+        $req .= 'AND PRA_NUM = :PRA_NUM ';
+    if ($dateDebut != null && $dateFin != null)
+        $req .= ' AND RAP_DATESAISIE >= :DATE_DEBUT AND RAP_DATESAISIE <= :DATE_FIN';
+
     $res = $monPdo->prepare($req);
 
     $res->bindValue(':COL_MATRICULE', $matrCol, PDO::PARAM_STR);
-    $res->bindValue(':PRA_NUM', $praticien, PDO::PARAM_INT);
+
+    if ($pranum != null)
+        $res->bindValue(':PRA_NUM', $pranum, PDO::PARAM_INT);
+
+    if($dateDebut != null && $dateFin != null) 
+    {
+        $res->bindValue(':DATE_DEBUT', $dateDebut, PDO::PARAM_STR);
+        $res->bindValue(':DATE_FIN', $dateFin, PDO::PARAM_STR);
+    }
 
     $res->execute();
 
@@ -289,34 +215,7 @@ function getRapportsPra($matrCol, $praticien)
     return $results;
 }
 
-function getRapportsCol($matrCol)
-{
-    $monPdo = connexionPDO();
-
-    $req = 'SELECT RAP_NUM,
-                RAP_DATE, 
-                RAP_BILAN, 
-                RAP_DATESAISIE, 
-                RAP_MOTIF,
-                PRA_NUM,
-                MOTIF_NUM,
-                MEDICAMENT1,
-                MEDICAMENT2,
-                PRA_REMP
-            FROM rapport_visite
-            WHERE COL_MATRICULE = :COL_MATRICULE';
-
-    $res = $monPdo->prepare($req);
-
-    $res->bindValue(':COL_MATRICULE', $matrCol, PDO::PARAM_STR);
-
-    $res->execute();
-
-    $results = $res->fetchAll(PDO::FETCH_ASSOC);
-    return $results;
-}
-
-function getMotifLibelleFromNum($motifNum)
+function getMotif($motifNum)
 {
     $monPdo = connexionPDO();
 
