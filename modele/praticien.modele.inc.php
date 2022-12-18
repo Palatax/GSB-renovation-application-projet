@@ -55,6 +55,23 @@ function getAllNomPraticienCol($matricule)
     return $results;
 }
 
+function getPraticien($praNum)
+{
+    $monPdo = connexionPDO();
+
+    $req = 'SELECT PRA_NOM,
+                   PRA_PRENOM
+            FROM praticien
+            WHERE PRA_NUM = :PRA_NUM';
+
+    $res = $monPdo->prepare($req);
+    $res->bindValue(':PRA_NUM', $praNum, PDO::PARAM_INT);
+    $res->execute();
+
+    $result = $res->fetch();
+    return $result;
+}
+
 /*function getAllInformationPraticienNom($nom){
     $monPdo = connexionPDO();
     $req = 'SELECT m.MED_DEPOTLEGAL as \'depotlegal\', m.MED_NOMCOMMERCIAL as \'nomcom\', m.MED_COMPOSITION as \'compo\', m.MED_EFFETS as \'effet\', m.MED_CONTREINDIC as \'contreindic\', m.MED_PRIXECHANTILLON as \'prixechan\', f.FAM_LIBELLE as \'famille\' FROM medicament m INNER JOIN famille f ON f.FAM_CODE = m.FAM_CODE WHERE MED_NOMCOMMERCIAL = "'.$nom.'"';

@@ -10,9 +10,35 @@ function getAllNomMedicament() {
     return $result;
 }
 
+function getNomMedicament($medDepotLegal)
+{
+    $monPdo = connexionPDO();
+    $req = 'SELECT MED_NOMCOMMERCIAL
+            FROM medicament
+            WHERE MED_DEPOTLEGAL = :MED_DEPOTLEGAL';
+
+    $res = $monPdo->prepare($req);
+    $res->bindValue(':MED_DEPOTLEGAL', $medDepotLegal, PDO::PARAM_STR);
+    $res->execute();
+
+    $result = $res->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
+
 function getAllInformationMedicamentDepot($depot) {
     $monPdo = connexionPDO();
-    $req = 'SELECT m.MED_DEPOTLEGAL as \'depotlegal\', m.MED_NOMCOMMERCIAL as \'nomcom\', m.MED_COMPOSITION as \'compo\', m.MED_EFFETS as \'effet\', m.MED_CONTREINDIC as \'contreindic\', m.MED_PRIXECHANTILLON as \'prixechan\', f.FAM_LIBELLE as \'famille\' FROM medicament m INNER JOIN famille f ON f.FAM_CODE = m.FAM_CODE WHERE MED_DEPOTLEGAL = "'.$depot.'"';
+    $req = 'SELECT m.MED_DEPOTLEGAL as \'depotlegal\', 
+                   m.MED_NOMCOMMERCIAL as \'nomcom\', 
+                   m.MED_COMPOSITION as \'compo\', 
+                   m.MED_EFFETS as \'effet\', 
+                   m.MED_CONTREINDIC as \'contreindic\', 
+                   m.MED_PRIXECHANTILLON as \'prixechan\', 
+                   f.FAM_LIBELLE as \'famille\' 
+            FROM medicament m 
+            INNER JOIN famille f 
+            ON f.FAM_CODE = m.FAM_CODE 
+            WHERE MED_DEPOTLEGAL = "'.$depot.'"';
+            
     $res = $monPdo->query($req);
     $result = $res->fetch();    
     return $result;
@@ -82,8 +108,10 @@ function getEchantillons($numRapport, $matricule)
 {
     $monPdo = connexionPDO();
 
-    $req = 'SELECT MED_DEPOTLEGAL, OFF_QTE
-            FROM offrir
+    $req = 'SELECT o.MED_DEPOTLEGAL, o.OFF_QTE, m.MED_NOMCOMMERCIAL
+            FROM offrir o
+            INNER JOIN medicament m
+            ON o.MED_DEPOTLEGAL = m.MED_DEPOTLEGAL
             WHERE RAP_NUM = :RAP_NUM
             AND COL_MATRICULE = :COL_MATRICULE';
     

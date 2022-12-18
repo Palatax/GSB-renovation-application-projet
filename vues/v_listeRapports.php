@@ -15,8 +15,6 @@
                 $motif = getMotifLibelle($rapport);
                 $praticien = getAllInformationPraticien($rapport['PRA_NUM']);
             ?>
-
-              <a href="index.php">
                 <tr>
                   <td>
                     <?= $rapport['RAP_NUM'] ?>
@@ -32,10 +30,11 @@
                   </td>
                   <td>
                     <?= date('d-m-Y', strtotime($rapport['RAP_DATE'])) ?>
+                  </td> 
+                  <td>
+                    <a href="index.php?uc=rapportdevisite&action=consulterRapport&rapNum=<?= $rapport['RAP_NUM'] ?>" class="my-auto btn btn-lg btn-info btn-block text-light">Consulter</a>
                   </td>
                 </tr>
-              </a>
-
             <?php } ?>
           </tbody>
         </table>

@@ -207,18 +207,38 @@ if(isset($_SESSION['login']))
 
             break;
         }
+        case 'consulterRapport' :
+        {
+            $rapNum = $_GET['rapNum'];
+            $matricule = $_SESSION['matricule'];
+
+            $rapport = getRapport($rapNum, $matricule);
+            $motif = getMotifLibelle($rapport);
+            $praticien = getPraticien($rapport['PRA_NUM']);
+
+            $rapport['MEDICAMENT1'] != null ? $medicament1 = getNomMedicament($rapport['MEDICAMENT1']) : $medicament1 = null;
+            $rapport['MEDICAMENT2'] != null ? $medicament2 = getNomMedicament($rapport['MEDICAMENT2']) : $medicament2 = null;
+
+            $echantillons = getEchantillons($rapNum, $matricule);
+
+            include('vues/v_consulterRapport.php');
+
+            break;
+        }
         case 'rapportregion' :
         {
             include("vues/v_formulaireRapportRegion.php");
             break;
         }
-        case 'confirmerRapportRegion':
+        case 'confirmerRapportRegion' :
         {
             include("vues/v_afficherRapportRegion.php");
             break;
         }
-        default:
+        default :
+        {
             header('Location: index.php?uc=accueil');
             break;
+        }
     }
 }

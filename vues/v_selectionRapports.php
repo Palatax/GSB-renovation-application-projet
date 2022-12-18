@@ -9,6 +9,7 @@
                 <th>Choix praticien</th>
                 <th>Depuis</th>
                 <th>Jusqu'à</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
