@@ -12,29 +12,6 @@ function getMotifs()
     return $result;
 }
 
-function getRapports()
-{
-    $monPdo = connexionPDO();
-    $req = 'SELECT RAP_NUM, 
-                   RAP_DATE, 
-                   RAP_BILAN, 
-                   RAP_DATESAISIE, 
-                   RAP_MOTIF,
-                   PRA_NUM,
-                   MOTIF_NUM,
-                   COL_MATRICULE,
-                   MEDICAMENT1,
-                   MEDICAMENT2,
-                   PRA_REMP
-            FROM rapport_visite';
-
-    $res = $monPdo->prepare($req);
-    $res->execute();
-    $result = $res->fetchAll(PDO::FETCH_ASSOC);
-
-    return $result;
-}
-
 function getRapport($id, $matricule)
 {
     $monPdo = connexionPDO();
@@ -196,59 +173,65 @@ function modifierRapport($numRapport, $matrCol, $dateVis, $praticien, $remplacan
     $res->execute();
 }
 
-function supprimerEchantillons($numRapport, $matricule)
+function getRapports($matrCol, $pranum, $dateDebut, $dateFin)
 {
     $monPdo = connexionPDO();
-    
-    $req = 'DELETE FROM offrir 
-            WHERE RAP_NUM = :RAP_NUM 
-            AND COL_MATRICULE = :COL_MATRICULE';
-    
+
+    $req = 'SELECT RAP_NUM,
+                RAP_DATE, 
+                RAP_BILAN, 
+                RAP_DATESAISIE, 
+                RAP_MOTIF,
+                PRA_NUM,
+                MOTIF_NUM,
+                MEDICAMENT1,
+                MEDICAMENT2,
+                PRA_REMP
+            FROM rapport_visite
+            WHERE COL_MATRICULE = :COL_MATRICULE ';
+
+    // Sélectionne uniquement les rapports concernant un praticien ou un interval si précisé
+    if ($pranum != null)
+        $req .= 'AND PRA_NUM = :PRA_NUM ';
+    if ($dateDebut != null && $dateFin != null)
+        $req .= ' AND RAP_DATESAISIE >= :DATE_DEBUT AND RAP_DATESAISIE <= :DATE_FIN';
+
     $res = $monPdo->prepare($req);
 
-    $res->bindValue(':RAP_NUM', $numRapport, PDO::PARAM_INT);
-    $res->bindValue(':COL_MATRICULE', $matricule, PDO::PARAM_STR);
+    $res->bindValue(':COL_MATRICULE', $matrCol, PDO::PARAM_STR);
 
-    $res->execute();
-}
+    if ($pranum != null)
+        $res->bindValue(':PRA_NUM', $pranum, PDO::PARAM_INT);
 
-function insererEchantillons($numRapport, $tabEchantillons, $nbEchantillons, $matricule)
-{
-    for($i = 0; $i < count($tabEchantillons); $i++)
+    if($dateDebut != null && $dateFin != null) 
     {
-        $monPdo = connexionPDO();
-
-        $req = 'INSERT INTO offrir VALUES
-                (:RAP_NUM, :MED_DEPOTLEGAL, :OFF_QTE, :COL_MATRICULE)';
-
-        $res = $monPdo->prepare($req);
-
-        $res->bindValue(':RAP_NUM', $numRapport);
-        $res->bindValue(':MED_DEPOTLEGAL', $tabEchantillons[$i]);
-        $res->bindValue(':OFF_QTE', $nbEchantillons[$i]);
-        $res->bindValue(':COL_MATRICULE', $matricule);
-
-        $res->execute();
+        $res->bindValue(':DATE_DEBUT', $dateDebut, PDO::PARAM_STR);
+        $res->bindValue(':DATE_FIN', $dateFin, PDO::PARAM_STR);
     }
-}
-
-function getEchantillons($numRapport, $matricule)
-{
-    $monPdo = connexionPDO();
-
-    $req = 'SELECT MED_DEPOTLEGAL, OFF_QTE
-            FROM offrir
-            WHERE RAP_NUM = :RAP_NUM
-            AND COL_MATRICULE = :COL_MATRICULE';
-    
-    $res = $monPdo->prepare($req);
-
-    $res->bindValue(':RAP_NUM', $numRapport);
-    $res->bindValue(':COL_MATRICULE', $matricule);
 
     $res->execute();
 
     $results = $res->fetchAll(PDO::FETCH_ASSOC);
-
     return $results;
+}
+
+function getMotif($motifNum)
+{
+    $monPdo = connexionPDO();
+
+    $req = 'SELECT MOTIF_LIBELLE
+            FROM motif
+            WHERE MOTIF_NUM = :MOTIF_NUM';
+
+    $res = $monPdo->prepare($req);
+
+    $res->bindValue(':MOTIF_NUM', $motifNum);
+
+    $res->execute();
+
+    $motif = $res->fetch(PDO::FETCH_ASSOC);
+
+    $result = $motif['MOTIF_LIBELLE'];
+
+    return $result;
 }

@@ -25,10 +25,50 @@ function getAllInformationPraticien($praticien) {
             FROM praticien p 
             INNER JOIN type_praticien t 
             ON t.TYP_CODE = p.TYP_CODE 
-            WHERE PRA_NUM = "'.$praticien.'"';
+            WHERE PRA_NUM = :PRA_NUM';
 
-    $res = $monPdo->query($req);
-    $result = $res->fetch();    
+    $res = $monPdo->prepare($req);
+    $res->bindValue(':PRA_NUM', $praticien, PDO::PARAM_INT);
+    $res->execute();
+
+    $result = $res->fetch();   
+    
+    return $result;
+}
+
+function getAllNomPraticienCol($matricule)
+{
+    $monPdo = connexionPDO();
+
+    $req = 'SELECT DISTINCT p.PRA_NUM, p.PRA_NOM, p.PRA_PRENOM
+            FROM PRATICIEN p
+            INNER JOIN RAPPORT_VISITE rp
+            ON p.PRA_NUM = rp.PRA_NUM
+            WHERE rp.COL_MATRICULE = :COL_MATRICULE';
+
+    $res = $monPdo->prepare($req);
+    $res->bindValue(':COL_MATRICULE', $matricule);
+    $res->execute();
+
+    $results = $res->fetchAll(PDO::FETCH_ASSOC);
+
+    return $results;
+}
+
+function getPraticien($praNum)
+{
+    $monPdo = connexionPDO();
+
+    $req = 'SELECT PRA_NOM,
+                   PRA_PRENOM
+            FROM praticien
+            WHERE PRA_NUM = :PRA_NUM';
+
+    $res = $monPdo->prepare($req);
+    $res->bindValue(':PRA_NUM', $praNum, PDO::PARAM_INT);
+    $res->execute();
+
+    $result = $res->fetch();
     return $result;
 }
 
@@ -40,4 +80,3 @@ function getAllInformationPraticien($praticien) {
     return $result;
 }
 */
-?>
