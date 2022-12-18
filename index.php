@@ -1,4 +1,5 @@
 <?php
+require_once('modele/Modele.php');
 require_once ('modele/medicament.modele.inc.php');
 require_once ('modele/praticien.modele.inc.php');
 require_once ('modele/connexion.modele.inc.php');

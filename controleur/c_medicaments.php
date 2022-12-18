@@ -7,7 +7,7 @@ if (!isset($_REQUEST['action']) || empty($_REQUEST['action'])) {
 switch ($action) {
 	case 'formulairemedoc': {
 
-			$result = getAllNomMedicament();
+			$result = (new Medicament())->getAllNomMedicament();
 			include("vues/v_formulaireMedicament.php");
 			break;
 		}

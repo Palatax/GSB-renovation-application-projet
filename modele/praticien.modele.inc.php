@@ -1,8 +1,4 @@
 <?php
-	
-include_once 'bd.inc.php';
-
-
 function getAllNomPraticien(){
     $monPdo = connexionPDO();
     $req = 'SELECT PRA_NUM, PRA_NOM, PRA_PRENOM FROM praticien ORDER BY PRA_PRENOM';
