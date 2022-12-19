@@ -28,13 +28,13 @@ class PraticienControleur
 		}
 	}
 
-	public function formulairePraticien()
+	private function formulairePraticien()
 	{
 		$result = $this->praticienModele->getAllNomPraticien();
 		include('vues/v_formulairePraticien.php');
 	}
 
-	public function afficherPraticien()
+	private function afficherPraticien()
 	{
 		isset($_POST['praticien']) ? $pra = $_POST['praticien'] : $pra = null;
 

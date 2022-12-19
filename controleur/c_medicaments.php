@@ -28,13 +28,13 @@ class MedicamentControleur
 		}
 	}
 
-	public function formulaireMedoc()
+	private function formulaireMedoc()
 	{
 		$result = $this->medicamentModel->getAllNomMedicament();
 		include('vues/v_formulaireMedicament.php');
 	}
 
-	public function afficherMedoc($medicament)
+	private function afficherMedoc($medicament)
 	{
 		if ($medicament !== null)
 			$carac = $this->medicamentModel->getAllInformationMedicamentDepot($medicament);

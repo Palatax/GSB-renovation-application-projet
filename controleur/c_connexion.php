@@ -34,14 +34,14 @@ Class ConnexionControleur
 		}
 	}
 
-	public function connexion()
+	private function connexion()
 	{
 		isset($_SESSION['login']) ? $login = $_SESSION['login'] : $login = null;
 
 		$login !== null ? $this->profil() : include('vues/v_connexion.php');
 	}
 
-	public function confirmerConnexion()
+	private function confirmerConnexion()
 	{
 		$erreurs = [];
 
@@ -75,13 +75,13 @@ Class ConnexionControleur
 		}
 	}
 
-	public function deconnexion()
+	private function deconnexion()
 	{
 		session_destroy();
 		header('Location:index.php?uc=accueil');
 	}
 
-	public function profil()
+	private function profil()
 	{
 		!isset($_SESSION['matricule']) ? header('Location:index.php?uc=connexion&action=connexion') : $matricule = $_SESSION['matricule'];
 
