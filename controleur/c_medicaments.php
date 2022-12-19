@@ -1,5 +1,5 @@
 <?php
-class MedicamentController
+class MedicamentControleur
 {
 	private $medicamentModel;
 	private $action;

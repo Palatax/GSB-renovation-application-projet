@@ -36,7 +36,7 @@ class Modele
 
         $res->execute();
 
-        if($res->rowCount() > 0)
+        if($res->rowCount() > 1)
             $result = $res->fetchAll(PDO::FETCH_ASSOC);
         else
             $result = $res->fetch(PDO::FETCH_ASSOC);

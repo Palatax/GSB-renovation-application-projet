@@ -1,10 +1,13 @@
 <?php
+session_start();
+
 require_once('modele/Modele.php');
 require_once('modele/medicament.modele.inc.php');
 require_once('modele/praticien.modele.inc.php');
 require_once('modele/connexion.modele.inc.php');
 require_once('modele/rapport.modele.inc.php');
 require_once('modele/fonctions.inc.php');
+require_once('controleur/c_connexion.php');
 
 !isset($_GET['uc']) || empty($_GET['uc']) ? $uc = 'accueil' : $uc = $_GET['uc'];
 !isset($_GET['action']) || empty($_GET['action']) ? $action = null : $action = $_GET['action'];
@@ -43,8 +46,8 @@ try
 
         }
         case 'connexion' :
-        {   
-            include("controleur/c_connexion.php");
+        {
+            (new ConnexionControleur($action))->routeAction();
             break; 
         }
         
