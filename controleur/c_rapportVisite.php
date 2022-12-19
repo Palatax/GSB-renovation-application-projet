@@ -1,4 +1,7 @@
 <?php
+require_once('modele/rapport.modele.inc.php');
+require_once('modele/medicament.modele.inc.php');
+require_once('modele/praticien.modele.inc.php');
 
 if(isset($_SESSION['login']))
 {

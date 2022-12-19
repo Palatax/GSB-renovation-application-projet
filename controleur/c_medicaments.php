@@ -1,4 +1,6 @@
 <?php
+require_once('modele/medicament.modele.inc.php');
+
 class MedicamentControleur
 {
 	private $medicamentModel;
@@ -18,7 +20,7 @@ class MedicamentControleur
 				$this->formulaireMedoc();
 				break;
 			case 'affichermedoc':
-				$this->afficherMedoc();
+				$this->afficherMedoc($_POST['medicament']);
 				break;
 			default:
 				$this->formulaireMedoc();

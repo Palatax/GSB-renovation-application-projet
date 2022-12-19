@@ -1,39 +1,55 @@
 <?php
-if (!isset($_REQUEST['action']) || empty($_REQUEST['action'])) {
-	$action = "connexion";
-} else {
-	$action = $_REQUEST['action'];
-}
-switch ($action) {
-	case 'formulairePraticien': {
+require_once('modele/praticien.modele.inc.php');
 
-			$result = getAllNomPraticien();
-			include("vues/v_formulairePraticien.php");
-			break;
-		}
-	
-	case 'afficherPraticien': {
+class PraticienControleur
+{
+	private $praticienModele;
+	private $action;
 
-		if (isset($_REQUEST['praticien']) && getAllInformationPraticien($_REQUEST['praticien'])) {
-			$pra = $_REQUEST['praticien'];
-
-			$carac = getAllInformationPraticien($pra);
-
-			if (empty($carac[7])) {
-				$carac[7] = 'Non défini(e)';
-			}
-			include("vues/v_afficherPraticien.php");
-		} else {
-			$_SESSION['erreur'] = "prati-true";
-			header("Location: index.php?uc=praticien&action=formulairePraticien");
-		}
-		break;
+	public function __construct($action)
+	{
+		$this->praticienModele = new Praticien();
+		$this->action = $action;
 	}
 
-	default: {
-
-			header('Location: index.php?uc=praticien&action=formulairePraticien');
-			break;
+	public function routeAction()
+	{
+		switch($this->action)
+		{
+			case 'formulairePraticien':
+				$this->formulairePraticien();
+				break;
+			case 'afficherPraticien':
+				$this->afficherPraticien();
+				break;
+			default:
+				$this->formulairePraticien();
+				break;
 		}
+	}
+
+	public function formulairePraticien()
+	{
+		$result = $this->praticienModele->getAllNomPraticien();
+		include('vues/v_formulairePraticien.php');
+	}
+
+	public function afficherPraticien()
+	{
+		isset($_POST['praticien']) ? $pra = $_POST['praticien'] : $pra = null;
+
+		if($pra === null || !$this->praticienModele->getAllInformationPraticien($pra))
+		{
+			$_SESSION['erreur'] = 'prati-true';
+			header('Location:index.php?uc=praticien&action=formulairePraticien');
+		}
+
+		$carac = $this->praticienModele->getAllInformationPraticien($pra);
+		
+		if (empty($carac[7])) {
+			$carac[7] = 'Non défini(e)';
+		}
+		include("vues/v_afficherPraticien.php");
+
+	}
 }
-?>

@@ -1,4 +1,6 @@
 <?php
+require_once('modele/connexion.modele.inc.php');
+
 Class ConnexionControleur
 {
 	private $connexionModel;
@@ -69,7 +71,7 @@ Class ConnexionControleur
 			$_SESSION['erreur'] = false;
 	
 			// On affiche sa page de profil
-			$this->profil();
+			header('Location: index.php?uc=connexion&action=profil');
 		}
 	}
 

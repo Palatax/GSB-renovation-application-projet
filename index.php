@@ -2,12 +2,11 @@
 session_start();
 
 require_once('modele/Modele.php');
-require_once('modele/medicament.modele.inc.php');
-require_once('modele/praticien.modele.inc.php');
-require_once('modele/connexion.modele.inc.php');
-require_once('modele/rapport.modele.inc.php');
-require_once('modele/fonctions.inc.php');
+
 require_once('controleur/c_connexion.php');
+require_once('controleur/c_medicaments.php');
+require_once('controleur/c_praticien.php');
+// require_once('controleur/c_rapportVisite.php');
 
 !isset($_GET['uc']) || empty($_GET['uc']) ? $uc = 'accueil' : $uc = $_GET['uc'];
 !isset($_GET['action']) || empty($_GET['action']) ? $action = null : $action = $_GET['action'];
@@ -27,9 +26,9 @@ try
             break;
         }
         case 'medicaments' :
-        {   
+        {
             if(!empty($_SESSION['login'])){
-                include("controleur/c_medicaments.php");
+                (new MedicamentControleur($action))->routeAction();
             }else{
                 include("vues/v_accesInterdit.php");
             }
@@ -37,8 +36,8 @@ try
         }
         case 'praticien' :
         {          
-          if(!empty($_SESSION['login'])){
-                include("controleur/c_praticien.php");
+            if(!empty($_SESSION['login'])){
+                (new PraticienControleur($action))->routeAction();
             }else{
                 include("vues/v_accesInterdit.php");
             }
