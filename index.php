@@ -1,16 +1,13 @@
 <?php
 require_once('modele/Modele.php');
-require_once ('modele/medicament.modele.inc.php');
-require_once ('modele/praticien.modele.inc.php');
-require_once ('modele/connexion.modele.inc.php');
-require_once ('modele/rapport.modele.inc.php');
+require_once('modele/medicament.modele.inc.php');
+require_once('modele/praticien.modele.inc.php');
+require_once('modele/connexion.modele.inc.php');
+require_once('modele/rapport.modele.inc.php');
 require_once('modele/fonctions.inc.php');
 
-if(!isset($_REQUEST['uc']) || empty($_REQUEST['uc']))
-    $uc = 'accueil';
-else{
-    $uc = $_REQUEST['uc'];
-}
+!isset($_GET['uc']) || empty($_GET['uc']) ? $uc = 'accueil' : $uc = $_GET['uc'];
+!isset($_GET['action']) || empty($_GET['action']) ? $action = null : $action = $_GET['action'];
 
 try 
 {

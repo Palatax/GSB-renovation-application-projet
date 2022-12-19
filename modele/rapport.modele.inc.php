@@ -2,7 +2,7 @@
 
 class Rapport extends Modele 
 {
-    function getMotifs()
+    public function getMotifs()
     {
         $req = 'SELECT MOTIF_NUM, MOTIF_LIBELLE
                 FROM motif';
@@ -11,7 +11,7 @@ class Rapport extends Modele
         return $results;
     }
     
-    function getRapport($rapNum, $matricule)
+    public function getRapport($rapNum, $matricule)
     {
         $req = 'SELECT RAP_DATE, 
                        RAP_BILAN, 
@@ -34,7 +34,7 @@ class Rapport extends Modele
         return $result;
     }
     
-    function getRapportsNonDef($matricule)
+    public function getRapportsNonDef($matricule)
     {
         $req = 'SELECT RAP_NUM,
                        RAP_DATE, 
@@ -57,7 +57,7 @@ class Rapport extends Modele
         return $result;
     }
     
-    function getRapportNum($colMatricule)
+    public function getRapportNum($colMatricule)
     {
         $req = 'SELECT MAX(RAP_NUM)
                 FROM rapport_visite
@@ -72,7 +72,7 @@ class Rapport extends Modele
         return $rapNum;
     }
     
-    function ajouterRapport($numRapport, $matrCol, $dateVis, $praticien, $remplacant, $motif, $motifAutre, $dateSaisie, $bilan, $medicament1, $medicament2, $definitif)
+    public function ajouterRapport($numRapport, $matrCol, $dateVis, $praticien, $remplacant, $motif, $motifAutre, $dateSaisie, $bilan, $medicament1, $medicament2, $definitif)
     {
         $req = 'INSERT INTO rapport_visite (
             RAP_NUM, 
@@ -119,7 +119,7 @@ class Rapport extends Modele
         ]);
     }
     
-    function modifierRapport($numRapport, $matrCol, $dateVis, $praticien, $remplacant, $motif, $motifAutre, $dateSaisie, $bilan, $medicament1, $medicament2, $definitif)
+    public function modifierRapport($numRapport, $matrCol, $dateVis, $praticien, $remplacant, $motif, $motifAutre, $dateSaisie, $bilan, $medicament1, $medicament2, $definitif)
     {
         $req = 'UPDATE rapport_visite
                 SET RAP_DATE = :RAP_DATE,
@@ -136,20 +136,20 @@ class Rapport extends Modele
                 AND COL_MATRICULE = :COL_MATRICULE';
 
         parent::executeRequest($req, [
-            'RAP_DATE' => $dateVis,
-            'PRA_NUM' => $praticien,
-            'PRA_REMP' => $remplacant,
-            'MOTIF_NUM' => $motif,
-            'RAP_MOTIF' => $motifAutre,
-            'RAP_DATESAISIE' => $dateSaisie,
-            'RAP_BILAN' => $bilan,
-            'MEDICAMENT1' => $medicament1,
-            'MEDICAMENT2' => $medicament2,
-            'DEFINITIF' => $definitif
+            ':RAP_DATE' => $dateVis,
+            ':PRA_NUM' => $praticien,
+            ':PRA_REMP' => $remplacant,
+            ':MOTIF_NUM' => $motif,
+            ':RAP_MOTIF' => $motifAutre,
+            ':RAP_DATESAISIE' => $dateSaisie,
+            ':RAP_BILAN' => $bilan,
+            ':MEDICAMENT1' => $medicament1,
+            ':MEDICAMENT2' => $medicament2,
+            ':DEFINITIF' => $definitif
         ]);
     }
     
-    function getRapports($matrCol, $pranum, $dateDebut, $dateFin)
+    public function getRapports($matrCol, $pranum, $dateDebut, $dateFin)
     {
         $req = 'SELECT RAP_NUM,
                     RAP_DATE, 
@@ -185,7 +185,7 @@ class Rapport extends Modele
         return $results;
     }
     
-    function getMotif($motifNum)
+    public function getMotif($motifNum)
     {
         $req = 'SELECT MOTIF_LIBELLE
                 FROM motif

@@ -1,39 +1,51 @@
 <?php
-if (!isset($_REQUEST['action']) || empty($_REQUEST['action'])) {
-	$action = "formulairemedoc";
-} else {
-	$action = $_REQUEST['action'];
-}
-switch ($action) {
-	case 'formulairemedoc': {
+class MedicamentController
+{
+	private $medicamentModel;
+	private $action;
 
-			$result = (new Medicament())->getAllNomMedicament();
-			include("vues/v_formulaireMedicament.php");
-			break;
-		}
+	public function __construct($action)
+	{
+		$this->medicamentModel = new Medicament();
+		$this->action = $action;
+	}
 
-	case 'affichermedoc': {
-
-		if (isset($_REQUEST['medicament']) && getAllInformationMedicamentDepot($_REQUEST['medicament'])) 
+	public function routeAction()
+	{
+		switch($this->action)
 		{
-			$med = $_REQUEST['medicament'];
-			
-			$carac = getAllInformationMedicamentDepot($med);
-			if (empty($carac[7])) {
-				$carac[7] = 'Non défini(e)';
-			}
-			include("vues/v_afficherMedicament.php");
-		} else {
+			case 'formulairemedoc':
+				$this->formulaireMedoc();
+				break;
+			case 'affichermedoc':
+				$this->afficherMedoc();
+				break;
+			default:
+				$this->formulaireMedoc();
+				break;
+		}
+	}
+
+	public function formulaireMedoc()
+	{
+		$result = $this->medicamentModel->getAllNomMedicament();
+		include('vues/v_formulaireMedicament.php');
+	}
+
+	public function afficherMedoc($medicament)
+	{
+		if ($medicament !== null)
+			$carac = $this->medicamentModel->getAllInformationMedicamentDepot($medicament);
+
+		if(!isset($carac)) 
+		{
 			$_SESSION['erreur'] = "medic-true";
 			header("Location: index.php?uc=medicaments&action=formulairemedoc");
 		}
-		break;
+
+		if (empty($carac[7]))
+			$carac[7] = 'Non défini(e)';
+
+		include('vues/v_afficherMedicament.php');
 	}
-
-	default: {
-
-			header('Location: index.php?uc=medicaments&action=formulairemedoc');
-			break;
-		}
 }
-?>
