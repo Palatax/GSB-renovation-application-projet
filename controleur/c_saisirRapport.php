@@ -4,12 +4,35 @@ require_once('controleur/c_rapport.php');
 class SaisirRapportControleur extends RapportControleur
 {
     private $action;
+    private $matricule;
+    private $motifs;
+    private $medicaments;
+    private $praticiens;
+    private $paramsVue;
 
     public function __construct($action)
     {
+        parent::__construct();
+
         $this->action = $action;
+
+        $this->matricule = $_SESSION['matricule'];
+        $this->motifs = $this->rapportModele->getMotifs();
+        $this->medicaments = $this->medicamentModele->getAllNomMedicament();
+        $this->praticiens = $this->praticienModele->getAllNomPraticien();
+
+        $this->paramsVue = [
+            'matricule' => $this->matricule,
+            'motifs' => $this->motifs,
+            'medicaments' => $this->medicaments,
+            'praticiens' => $this->praticiens
+        ];
     }
 
+    /**
+     * Permet de choisir l'action à effectuer
+     * @return void
+     */
     public function routeAction()
     {
         switch($this->action)
@@ -27,165 +50,196 @@ class SaisirRapportControleur extends RapportControleur
                 $this->modifierRapport();
                 break;
             case 'confirmerModification':
-                $this->confirmerModification();
+                $this->confirmerRapport();
                 break;
             default:
-                header('Location: index.php?uc=accueil');
+                header('Location:index.php?uc=accueil');
                 break;
         }
     }
 
+    /**
+     * Affiche le formulaire permettant de choisir entre modifier un rapport ou en saisir un nouveau
+     * @return void
+     */
     private function choixRedaction()
     {
-        $rapports = parent::$rapportModele->getRapportsNonDef($_SESSION['matricule']);
+        $rapports = $this->rapportModele->getRapportsNonDef($this->matricule);
 
-        if(count($rapports) == 0)
-            header('Location:index.php?uc=rapportdevisite&action=redigerrapport');
+        if(!$rapports)
+            header('Location:index.php?uc=saisirRapport&action=redigerRapport');
 
-        include('vues/v_choixRedaction.php');
+        $this->render('v_choixRedaction', ['rapports' => $rapports]);
     }
 
+    /**
+     * Affiche un formulaire de saisie vide pour saisir un nouveau rapport
+     * @return void
+     */
     private function redigerRapport()
     {
-        $this->getValeursNonChoisies($motifs, $medicaments, $praticiens, $matricule, $numRapport);
-
+        $numRapport = $this->rapportModele->getRapportNum($this->matricule);
         $dateSaisie = date('Y-m-d', time());
+        $url = 'index.php?uc=saisirRapport&action=confirmerRapport';
 
-        $url = 'index.php?uc=rapportdevisite&action=confirmerRapport';
-        
-        include('vues/v_saisieRapport.php');
+        $this->paramsVue += [
+            'numRapport' => $numRapport,
+            'dateSaisie' => $dateSaisie,
+            'url' => $url
+        ];
+
+        $this->render('v_saisieRapport', $this->paramsVue);
     }
 
+    /**
+     * Vérifie les données du formulaire rempli 
+     * -Si elles sont correctes, les enregistre en BDD
+     * -Sinon, réaffiche le formulaire avec la liste des erreurs
+     * @return void
+     */
     private function confirmerRapport()
     {
-        $this->getValeursNonChoisies($motifs, $medicaments, $praticiens, $matricule, $numRapport);
+        $numRapport = $_POST['rapport'];
 
-        $this->getValeursForm($praticien, $dateSaisie, $bilan, $dateVisite, $motif, $motifAutre, $medicament1, $medicament2, $saisieDefinitive, $remplacant);
-    
-        $erreurs = getErreurs($praticien, $dateVisite, $dateSaisie, $motif, $motifAutre, $bilan);
+        $valeursForm = $this->getValeursForm();
+        extract($valeursForm);
+        
+        $erreurs = $this->getErreurs($praticien, $dateVisite, $dateSaisie, $motif, $motifAutre, $bilan);
 
         if(empty($erreurs))
         {
-            parent::$rapportModele->ajouterRapport(
-                $numRapport, 
-                $matricule, 
-                $dateVisite, 
-                $praticien,
-                $remplacant,
-                $motif,
-                $motifAutre,
-                $dateSaisie, 
-                $bilan, 
-                $medicament1,
-                $medicament2,
-                $saisieDefinitive
-            );
+            if($this->action === 'confirmerRapport')
+                $this->rapportModele->ajouterRapport(
+                    $numRapport, $this->matricule, $dateVisite, $praticien, 
+                    $remplacant, $motif, $motifAutre, $dateSaisie, $bilan, 
+                    $medicament1, $medicament2, $saisieDefinitive
+                );
+            else if($this->action === 'confirmerModification')
+            {
+                $this->rapportModele->modifierRapport(
+                    $numRapport, $this->matricule, $dateVisite, $praticien, 
+                    $remplacant, $motif, $motifAutre, $dateSaisie, $bilan, 
+                    $medicament1, $medicament2, $saisieDefinitive
+                );
+                $this->medicamentModele->supprimerEchantillons($numRapport, $this->matricule);
+            }
 
             if(isset($_POST['echantillonadd']))
             {
-                parent::$medicamentModele->insererEchantillons($numRapport, $_POST['echantillonadd'], $_POST['nbEchantillon'], $matricule);
+                $this->medicamentModele->insererEchantillons(
+                    $numRapport, $_POST['echantillonadd'], $_POST['nbEchantillon'], $this->matricule
+                );
             }
         }
         else 
         {
-            $url = 'index.php?uc=rapportdevisite&action=confirmerRapport';
-            
-            include('vues/v_saisieRapport.php');
+            $this->paramsVue += $valeursForm;
+
+            $this->paramsVue += [
+                'numRapport' => $numRapport,
+                'url' => 'index.php?uc=saisirRapport&action='.$this->action,
+                'erreurs' => $erreurs
+            ];
+
+            $this->render('v_saisieRapport', $this->paramsVue);
         }
     }
     
+    /**
+     * Permet de modifier un rapport existant depuis le formulaire pré-rempli
+     * @return void
+     */
     private function modifierRapport()
     {
         if(!isset($_POST['rapport']))
-            header('Location:index.php?uc=rapportdevisite&action=choixModifierRapport');
+            header('Location:index.php?uc=saisirRapport&action=choixModifierRapport');
 
-        $this->getValeursNonChoisies($motifs, $medicaments, $praticiens, $matricule, $numRapport);
+        $numRapport = $_POST['rapport'];
 
         // Récupère les données depuis le rapport à modifier
-        $rapport = parent::$rapportModele->getRapport($numRapport, $matricule);
+        $rapport = $this->rapportModele->getRapport($numRapport, $this->matricule);
         $dateSaisie = $rapport['RAP_DATESAISIE'];
-        $bilan = $rapport['RAP_BILAN'];
-        $dateVisite = $rapport['RAP_DATE'];
-        $praticien = $rapport['PRA_NUM'];
-        $medicament1 = $rapport['MEDICAMENT1'];
-        $remplacant = $rapport['PRA_REMP'];
-        $motif = $rapport['MOTIF_NUM'];
-        $motifAutre = $rapport['RAP_MOTIF'];
             
         if($dateSaisie == null) $dateSaisie = date('Y-m-d', time());
 
-        $echantillons = parent::$medicamentModele->getEchantillons($numRapport, $matricule);
+        $rapport['RAP_DATESAISIE'] == null ? $dateSaisie = date('Y-m-d', time()) : $dateSaisie = $rapport['RAP_DATESAISIE'];
 
-        $url = 'index.php?uc=rapportdevisite&action=confirmerModification';
+        $echantillons = $this->medicamentModele->getEchantillons($numRapport, $this->matricule);
 
-        include('vues/v_saisieRapport.php');
+        $url = 'index.php?uc=saisirRapport&action=confirmerModification';
+
+        $this->paramsVue += [
+            'numRapport' => $numRapport,
+            'dateSaisie' => $dateSaisie,
+            'bilan' => $rapport['RAP_BILAN'],
+            'dateVisite' => $rapport['RAP_DATE'],
+            'praticien' => $rapport['PRA_NUM'],
+            'medicament1' => $rapport['MEDICAMENT1'],
+            'remplacant' => $rapport['PRA_REMP'],
+            'motif' => $rapport['MOTIF_NUM'],
+            'motifAutre' => $rapport['RAP_MOTIF'],
+            'echantillons' => $echantillons,
+            'url' => $url
+        ];
+
+        $this->render('v_saisieRapport', $this->paramsVue);
     }
     
-    private function confirmerModification()
+    /**
+     * Récupère tous les champs depuis le formulaire
+     * @return array
+     */
+    private function getValeursForm()
     {
-        $this->getValeursNonChoisies($motifs, $medicaments, $praticiens, $matricule, $numRapport);
-        $this->getValeursForm($praticien, $dateSaisie, $bilan, $dateVisite, $motif, $motifAutre, $medicament1, $medicament2, $saisieDefinitive, $remplacant);
-    
-        $erreurs = getErreurs($praticien, $dateVisite, $dateSaisie, $motif, $motifAutre, $bilan);
-
-        if(empty($erreurs))
-        {
-            parent::$rapportModele->modifierRapport(
-                $numRapport, 
-                $matricule, 
-                $dateVisite, 
-                $praticien,
-                $remplacant,
-                $motif, 
-                $motifAutre,
-                $dateSaisie,
-                $bilan, 
-                $medicament1,
-                $medicament2,
-                $saisieDefinitive
-            );
-
-            parent::$medicamentModele->supprimerEchantillons($numRapport, $matricule);
-
-            if(isset($_POST['echantillonadd']))
-            {
-                parent::$medicamentModele->insererEchantillons($numRapport, $_POST['echantillonadd'], $_POST['nbEchantillon'], $matricule);
-            }
-        }
-        else 
-        {
-            $url = 'index.php?uc=rapportdevisite&action=confirmerModification';
-            
-            include('vues/v_saisieRapport.php');
-        }
-    }
-
-    private function getValeursNonChoisies(&$motifs, &$medicaments, &$praticiens, &$matricule, &$numRapport)
-    {
-        // Données à choisir dans le formulaire
-        $motifs = parent::$rapportModele->getMotifs();
-        $medicaments = parent::$medicamentModele->getAllNomMedicament();
-        $praticiens = parent::$praticienModele->getAllNomPraticien();
-
-        // Données non choisies
-        $matricule = $_SESSION['matricule'];
-        $numRapport = $_POST['rapport'];
-    }
-
-    private function getValeursForm(&$praticien, &$dateSaisie, &$bilan, &$dateVisite, &$motif, &$motifAutre, &$medicament1, &$medicament2, &$saisieDefinitive, &$remplacant)
-    {
-        // Données obligatoires remplies
-        $praticien = $_POST['praticien'];
-        $dateSaisie = $_POST['dateSaisie'];
-        $bilan = $_POST['bilan'];
-        $dateVisite = $_POST['dateVisite'];
+        // Gestion des champs non obligatoires
         $_POST['motifNormal'] != 'autre' && $_POST['motifNormal'] != '' ? $motif = $_POST['motifNormal'] : $motif = null;
         isset($_POST['motif-autre']) ? $motifAutre = $_POST['motif-autre'] : $motifAutre = null;
-
-        // Données non obligatoires remplies
         $_POST['medicament1'] != '' ? $medicament1 = $_POST['medicament1'] : $medicament1 = null;
         isset($_POST['medicament2']) ? $medicament2 = $_POST['medicament2'] : $medicament2 = null;
         isset($_POST['saisieDefinitive']) ? $saisieDefinitive = 1 : $saisieDefinitive = 0;
         $_POST['remplacant'] != '' ? $remplacant = $_POST['remplacant'] : $remplacant = null;
+
+        $tab = [
+            'praticien' => $_POST['praticien'],
+            'dateSaisie' => $_POST['dateSaisie'],
+            'bilan' => $_POST['bilan'],
+            'dateVisite' => $_POST['dateVisite'],
+            'motif' => $motif,
+            'motifAutre' => $motifAutre,
+            'medicament1' => $medicament1,
+            'medicament2' => $medicament2,
+            'saisieDefinitive' => $saisieDefinitive,
+            'remplacant' => $remplacant
+        ];
+
+        return $tab;
+    }
+
+    /**
+     * Retourne un tableau contenant les erreurs de saisie du formulaire
+     * @param mixed $praticien l'identifiant du praticien
+     * @param mixed $dateVis la date de la visite
+     * @param mixed $dateSaisie la date de saisie du rapport
+     * @param mixed $motif l'identifiant du motif (s'il est habituel)
+     * @param mixed $motifAutre le motif spécial (si le motif n'est pas habituel)
+     * @param mixed $bilan le bilan de la visite
+     * @return array<string> La liste des erreurs de saisie du formulaire
+     */
+    private function getErreurs($praticien, $dateVis, $dateSaisie, $motif, $motifAutre, $bilan)
+    {
+        $erreurs = [];
+    
+        if($praticien == '')
+            $erreurs[] = 'Vous devez choisir un praticien';
+        if($dateVis == '')
+            $erreurs[] = 'Vous devez choisir une date de visite';
+        if($dateSaisie == '')
+            $erreurs[] = 'Vous devez choisir une dateDeSaisie';
+        if(($motif == '' || $motif == 'autre') && $motifAutre == '')
+            $erreurs[] = 'Veuillez saisir un motif';
+        if($bilan == '')
+            $erreurs[] = 'Vous devez rédiger un bilan';
+    
+        return $erreurs;
     }
 }

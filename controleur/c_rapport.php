@@ -1,9 +1,10 @@
 <?php
+require_once('controleur/c_controleur.php');
 require_once('modele/rapport.modele.inc.php');
 require_once('modele/medicament.modele.inc.php');
 require_once('modele/praticien.modele.inc.php');
 
-class RapportControleur
+class RapportControleur extends Controleur
 {
     protected $rapportModele;
     protected $medicamentModele;

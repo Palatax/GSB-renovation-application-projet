@@ -39,7 +39,7 @@ class Praticien extends Modele
 
         $results = parent::getRequestResults($req, [
             ':COL_MATRICULE' => $matricule
-        ]);
+        ], 'fetchAll');
     
         return $results;
     }

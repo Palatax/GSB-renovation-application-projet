@@ -25,7 +25,7 @@ class Modele
         return $conn;
     }
 
-    protected function getRequestResults($request, $params) : array
+    protected function getRequestResults($request, $params, $forceFetchAll=null)
     {
         $res = $this->PDOConnexion->prepare($request);
 
@@ -36,7 +36,7 @@ class Modele
 
         $res->execute();
 
-        if($res->rowCount() > 1)
+        if($forceFetchAll != null || $res->rowCount() > 1)
             $result = $res->fetchAll(PDO::FETCH_ASSOC);
         else
             $result = $res->fetch(PDO::FETCH_ASSOC);

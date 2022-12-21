@@ -1,7 +1,7 @@
 <?php
 require_once('controleur/c_rapport.php');
 
-class consulterRapportsRegionControleur
+class consulterRapportsRegionControleur extends RapportControleur
 {
     private $action;
 

@@ -57,7 +57,7 @@ class Medicament extends Modele
 
         $result = parent::getRequestResults($req, [
             ':MED_NOMCOMMERCIAL' => $nom
-        ]);    
+        ]);
         return $result;
     }
     

@@ -1,7 +1,8 @@
 <?php
+require_once('controleur/c_controleur.php');
 require_once('modele/medicament.modele.inc.php');
 
-class MedicamentControleur
+class MedicamentControleur extends Controleur
 {
 	private $medicamentModel;
 	private $action;
@@ -31,7 +32,10 @@ class MedicamentControleur
 	private function formulaireMedoc()
 	{
 		$result = $this->medicamentModel->getAllNomMedicament();
-		include('vues/v_formulaireMedicament.php');
+
+		$this->render('v_formulaireMedicament', [
+			'result' => $result
+		]);
 	}
 
 	private function afficherMedoc($medicament)
@@ -45,9 +49,8 @@ class MedicamentControleur
 			header("Location: index.php?uc=medicaments&action=formulairemedoc");
 		}
 
-		if (empty($carac[7]))
-			$carac[7] = 'Non défini(e)';
-
-		include('vues/v_afficherMedicament.php');
+		$this->render('v_afficherMedicament', [
+			'carac' => $carac
+		]);
 	}
 }

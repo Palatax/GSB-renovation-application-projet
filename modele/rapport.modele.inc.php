@@ -52,8 +52,8 @@ class Rapport extends Modele
 
         $result = parent::getRequestResults($req, [
             ':COL_MATRICULE' => $matricule
-        ]);
-    
+        ], 'fetchAll');
+
         return $result;
     }
     
@@ -67,7 +67,7 @@ class Rapport extends Modele
             ':COL_MATRICULE' => $colMatricule
         ]);
 
-        $result ? $rapNum = $result['MAX(RAP_NUM'] + 1 : $rapNum = 0;
+        $result && $result['MAX(RAP_NUM)'] !== null ? $rapNum = $result['MAX(RAP_NUM)'] + 1 : $rapNum = 1;
     
         return $rapNum;
     }
@@ -145,7 +145,9 @@ class Rapport extends Modele
             ':RAP_BILAN' => $bilan,
             ':MEDICAMENT1' => $medicament1,
             ':MEDICAMENT2' => $medicament2,
-            ':DEFINITIF' => $definitif
+            ':DEFINITIF' => $definitif,
+            ':RAP_NUM' => $numRapport,
+            ':COL_MATRICULE' => $matrCol
         ]);
     }
     
