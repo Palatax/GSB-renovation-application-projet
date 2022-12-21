@@ -183,7 +183,7 @@ class Rapport extends Modele
             $params[':DATE_FIN'] = $dateFin;
         }
 
-        $results = parent::getRequestResults($req, $params);
+        $results = parent::getRequestResults($req, $params, 'fetchAll');
         return $results;
     }
     

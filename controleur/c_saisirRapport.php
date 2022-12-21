@@ -158,9 +158,6 @@ class SaisirRapportControleur extends RapportControleur
 
         // Récupère les données depuis le rapport à modifier
         $rapport = $this->rapportModele->getRapport($numRapport, $this->matricule);
-        $dateSaisie = $rapport['RAP_DATESAISIE'];
-            
-        if($dateSaisie == null) $dateSaisie = date('Y-m-d', time());
 
         $rapport['RAP_DATESAISIE'] == null ? $dateSaisie = date('Y-m-d', time()) : $dateSaisie = $rapport['RAP_DATESAISIE'];
 
