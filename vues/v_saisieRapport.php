@@ -11,7 +11,7 @@
         <div class="row align-items-center justify-content-center">
             <div class="form-rapport-container col-12 col-sm-8 col-lg-6 col-xl-55 col-xxl-4 py-lg-5 py-3">
                 <?php
-                    if(!empty($erreurs))
+                    if(isset($erreurs) && $erreurs)
                     {
                         include('vues/v_afficherErreurs.php');
                     }

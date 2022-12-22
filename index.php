@@ -1,23 +1,22 @@
 <?php
-require_once ('modele/medicament.modele.inc.php');
-require_once ('modele/praticien.modele.inc.php');
-require_once ('modele/connexion.modele.inc.php');
-require_once ('modele/rapport.modele.inc.php');
-require_once('modele/fonctions.inc.php');
+session_start();
 
-if(!isset($_REQUEST['uc']) || empty($_REQUEST['uc']))
-    $uc = 'accueil';
-else{
-    $uc = $_REQUEST['uc'];
-}
+require_once('modele/Modele.php');
+
+require_once('controleur/c_connexion.php');
+require_once('controleur/c_medicaments.php');
+require_once('controleur/c_praticien.php');
+require_once('controleur/c_saisirRapport.php');
+require_once('controleur/c_consulterRapports.php');
+require_once('controleur/c_consulterRapportsRegion.php');
+
+!isset($_GET['uc']) || empty($_GET['uc']) ? $uc = 'accueil' : $uc = $_GET['uc'];
+!isset($_GET['action']) || empty($_GET['action']) ? $action = null : $action = $_GET['action'];
 
 try 
 {
-    if(empty($_SESSION['login'])){
-        include("vues/v_headerDeconnexion.php");
-    }else{
-        include("vues/v_header.php");
-    }    
+    empty($_SESSION['login']) ? include('vues/v_headerDeconnexion.php') : include('vues/v_header.php');
+
     switch($uc)
     {
         case 'accueil':
@@ -26,18 +25,18 @@ try
             break;
         }
         case 'medicaments' :
-        {   
+        {
             if(!empty($_SESSION['login'])){
-                include("controleur/c_medicaments.php");
+                (new MedicamentControleur($action))->routeAction();
             }else{
                 include("vues/v_accesInterdit.php");
             }
             break;
         }
-        case 'praticien' :
+        case 'praticien':
         {          
-          if(!empty($_SESSION['login'])){
-                include("controleur/c_praticien.php");
+            if(!empty($_SESSION['login'])){
+                (new PraticienControleur($action))->routeAction();
             }else{
                 include("vues/v_accesInterdit.php");
             }
@@ -45,19 +44,43 @@ try
 
         }
         case 'connexion' :
-        {   
-            include("controleur/c_connexion.php");
+        {
+            (new ConnexionControleur($action))->routeAction();
             break; 
         }
         
-        case 'rapportdevisite' :
+        case 'saisirRapport' :
         {
-            include("controleur/c_rapportVisite.php");
+            if(!empty($_SESSION['login'])){
+                (new SaisirRapportControleur($action))->routeAction();
+            }else{
+                include("vues/v_accesInterdit.php");
+            }
+            break;
+        }
+
+        case 'consulterRapports' :
+        {
+            if(!empty($_SESSION['login'])){
+                (new ConsulterRapportsControleur($action))->routeAction();
+            }else{
+                include("vues/v_accesInterdit.php");
+            }
+            break;
+        }
+
+        case 'consulterRapportsRegionControleur' :
+        {
+            if(!empty($_SESSION['login'])){
+                (new consulterRapportsRegionControleur($action))->routeAction();
+            }else{
+                include("vues/v_accesInterdit.php");
+            }
             break;
         }
 
         default :
-        {   
+        {
             include("vues/v_accueil.php");
             break;
         }
@@ -68,6 +91,6 @@ try
 }
 catch(PDOException $e)
 {
-    print "Erreur !: " . $e->getMessage();
+    print "Erreur : " . $e->getMessage();
     die();
 }

@@ -11,9 +11,9 @@
             <th>Date de la visite</th>
           </thead>
           <tbody>
-            <?php foreach ($rapports as $rapport) {
-                $motif = getMotifLibelle($rapport);
-                $praticien = getAllInformationPraticien($rapport['PRA_NUM']);
+            <?php foreach ($rapports as $key => $rapport) {
+                $motif = $motifs[$key];
+                $praticien = $praticiensRap[$key];
             ?>
                 <tr>
                   <td>
@@ -32,7 +32,7 @@
                     <?= date('d-m-Y', strtotime($rapport['RAP_DATE'])) ?>
                   </td> 
                   <td>
-                    <a href="index.php?uc=rapportdevisite&action=consulterRapport&rapNum=<?= $rapport['RAP_NUM'] ?>" class="my-auto btn btn-lg btn-info btn-block text-light">Consulter</a>
+                    <a href="index.php?uc=consulterRapports&action=consulterRapport&rapNum=<?= $rapport['RAP_NUM'] ?>" class="my-auto btn btn-lg btn-info btn-block text-light">Consulter</a>
                   </td>
                 </tr>
             <?php } ?>
