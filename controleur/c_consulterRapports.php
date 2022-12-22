@@ -25,16 +25,20 @@ class ConsulterRapportsControleur extends RapportControleur
         }
     }
 
+    /**
+     * Permet d'afficher la liste des rapports de visite du visiteur actuellement authentifié
+     * @return void
+     */
     private function mesRapports()
     {
         $matricule = $_SESSION['matricule'];
         $praticiens = $this->praticienModele->getAllNomPraticienCol($matricule);
     
         // Récupération des champs du formulaire de filtre
-        isset($_POST['praticien']) && $_POST['praticien'] != '' ? $praticien = $_POST['praticien'] : $praticien = null;
-        isset($_POST['dateDebut']) && $_POST['dateDebut'] != '' ? $dateDebut = $_POST['dateDebut'] : $dateDebut = null;
-        isset($_POST['dateFin']) && $_POST['dateFin'] != '' ? $dateFin = $_POST['dateFin'] : $dateFin = null;
-    
+        $praticien = $_POST['praticien'] ?? null;
+        $dateDebut = $_POST['dateDebut'] ?? null;
+        $dateFin = $_POST['dateFin'] ?? null;
+
         // Récupération des rapports
         $rapports = $this->rapportModele->getRapports($matricule, $praticien, $dateDebut, $dateFin);
 
@@ -56,6 +60,10 @@ class ConsulterRapportsControleur extends RapportControleur
         }
     }
     
+    /**
+     * Permet d'afficher toutes les informations concernant un rapport de la liste
+     * @return void
+     */
     private function consulterRapport()
     {
         $rapNum = $_GET['rapNum'];
@@ -67,7 +75,7 @@ class ConsulterRapportsControleur extends RapportControleur
     
         $rapport['MEDICAMENT1'] != null ? $medicament1 = $this->medicamentModele->getNomMedicament($rapport['MEDICAMENT1']) : $medicament1 = null;
         $rapport['MEDICAMENT2'] != null ? $medicament2 = $this->medicamentModele->getNomMedicament($rapport['MEDICAMENT2']) : $medicament2 = null;
-    
+
         $echantillons = $this->medicamentModele->getEchantillons($rapNum, $matricule);
     
         include('vues/v_consulterRapport.php');

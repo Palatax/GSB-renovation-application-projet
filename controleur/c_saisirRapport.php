@@ -90,6 +90,39 @@ class SaisirRapportControleur extends RapportControleur
 
         $this->render('v_saisieRapport', $this->paramsVue);
     }
+    
+    /**
+     * Permet de modifier un rapport existant depuis le formulaire pré-rempli
+     * @return void
+     */
+    private function modifierRapport()
+    {
+        if(!isset($_POST['rapport']))
+            header('Location:index.php?uc=saisirRapport&action=choixModifierRapport');
+
+        $numRapport = $_POST['rapport'];
+
+        // Récupère les données depuis le rapport à modifier
+        $rapport = $this->rapportModele->getRapport($numRapport, $this->matricule);
+        $dateSaisie = $rapport['RAP_DATESAISIE'] ?? date('Y-m-d', time());
+        $echantillons = $this->medicamentModele->getEchantillons($numRapport, $this->matricule);
+
+        $this->paramsVue += [
+            'numRapport' => $numRapport,
+            'dateSaisie' => $dateSaisie,
+            'bilan' => $rapport['RAP_BILAN'],
+            'dateVisite' => $rapport['RAP_DATE'],
+            'praticien' => $rapport['PRA_NUM'],
+            'medicament1' => $rapport['MEDICAMENT1'],
+            'remplacant' => $rapport['PRA_REMP'],
+            'motif' => $rapport['MOTIF_NUM'],
+            'motifAutre' => $rapport['RAP_MOTIF'],
+            'echantillons' => $echantillons,
+            'url' => 'index.php?uc=saisirRapport&action=confirmerModification'
+        ];
+
+        $this->render('v_saisieRapport', $this->paramsVue);
+    }
 
     /**
      * Vérifie les données du formulaire rempli 
@@ -108,12 +141,14 @@ class SaisirRapportControleur extends RapportControleur
 
         if(empty($erreurs))
         {
+            // Si on insère un nouveau rapport
             if($this->action === 'confirmerRapport')
                 $this->rapportModele->ajouterRapport(
                     $numRapport, $this->matricule, $dateVisite, $praticien, 
                     $remplacant, $motif, $motifAutre, $dateSaisie, $bilan, 
                     $medicament1, $medicament2, $saisieDefinitive
                 );
+            // Si on modifie un rapport déjà existant
             else if($this->action === 'confirmerModification')
             {
                 $this->rapportModele->modifierRapport(
@@ -121,9 +156,12 @@ class SaisirRapportControleur extends RapportControleur
                     $remplacant, $motif, $motifAutre, $dateSaisie, $bilan, 
                     $medicament1, $medicament2, $saisieDefinitive
                 );
+
+                // On supprime tous les échantillons pour ne pas créer de conflits avec les potentiels nouveaux à insérer
                 $this->medicamentModele->supprimerEchantillons($numRapport, $this->matricule);
             }
 
+            // On insère les échantillons
             if(isset($_POST['echantillonadd']))
             {
                 $this->medicamentModele->insererEchantillons(
@@ -133,68 +171,36 @@ class SaisirRapportControleur extends RapportControleur
         }
         else 
         {
+            // On ajoute les champs entrés dans le formulaire à la vue pour le pré-remplir
             $this->paramsVue += $valeursForm;
 
+            // On ajoute les paramètres nécessaires pour la vue
             $this->paramsVue += [
                 'numRapport' => $numRapport,
                 'url' => 'index.php?uc=saisirRapport&action='.$this->action,
                 'erreurs' => $erreurs
             ];
 
+            // On affiche la vue avec la liste des erreurs
             $this->render('v_saisieRapport', $this->paramsVue);
         }
     }
     
     /**
-     * Permet de modifier un rapport existant depuis le formulaire pré-rempli
-     * @return void
-     */
-    private function modifierRapport()
-    {
-        if(!isset($_POST['rapport']))
-            header('Location:index.php?uc=saisirRapport&action=choixModifierRapport');
-
-        $numRapport = $_POST['rapport'];
-
-        // Récupère les données depuis le rapport à modifier
-        $rapport = $this->rapportModele->getRapport($numRapport, $this->matricule);
-
-        $rapport['RAP_DATESAISIE'] == null ? $dateSaisie = date('Y-m-d', time()) : $dateSaisie = $rapport['RAP_DATESAISIE'];
-
-        $echantillons = $this->medicamentModele->getEchantillons($numRapport, $this->matricule);
-
-        $url = 'index.php?uc=saisirRapport&action=confirmerModification';
-
-        $this->paramsVue += [
-            'numRapport' => $numRapport,
-            'dateSaisie' => $dateSaisie,
-            'bilan' => $rapport['RAP_BILAN'],
-            'dateVisite' => $rapport['RAP_DATE'],
-            'praticien' => $rapport['PRA_NUM'],
-            'medicament1' => $rapport['MEDICAMENT1'],
-            'remplacant' => $rapport['PRA_REMP'],
-            'motif' => $rapport['MOTIF_NUM'],
-            'motifAutre' => $rapport['RAP_MOTIF'],
-            'echantillons' => $echantillons,
-            'url' => $url
-        ];
-
-        $this->render('v_saisieRapport', $this->paramsVue);
-    }
-    
-    /**
      * Récupère tous les champs depuis le formulaire
-     * @return array
+     * @return array $tab La liste des champs sous forme de tableau associatif
      */
     private function getValeursForm()
     {
         // Gestion des champs non obligatoires
-        $_POST['motifNormal'] != 'autre' && $_POST['motifNormal'] != '' ? $motif = $_POST['motifNormal'] : $motif = null;
-        isset($_POST['motif-autre']) ? $motifAutre = $_POST['motif-autre'] : $motifAutre = null;
-        $_POST['medicament1'] != '' ? $medicament1 = $_POST['medicament1'] : $medicament1 = null;
-        isset($_POST['medicament2']) ? $medicament2 = $_POST['medicament2'] : $medicament2 = null;
+        $_POST['motifNormal'] != 'autre' && $_POST['motifNormal'] != '' ? 
+            $motif = $_POST['motifNormal'] : 
+            $motif = null;
+        $motifAutre = $_POST['motif-autre'] ?? null;
+        $medicament1 = $_POST['medicament1'] == '' ? null : $_POST['medicament1'];
+        $medicament2 = $_POST['medicament2'] ?? null;
         isset($_POST['saisieDefinitive']) ? $saisieDefinitive = 1 : $saisieDefinitive = 0;
-        $_POST['remplacant'] != '' ? $remplacant = $_POST['remplacant'] : $remplacant = null;
+        $remplacant = $_POST['remplacant'] == '' ? null : $_POST['remplacant'];
 
         $tab = [
             'praticien' => $_POST['praticien'],

@@ -154,9 +154,9 @@ class Rapport extends Modele
     public function getRapports($matrCol, $pranum, $dateDebut, $dateFin)
     {
         $req = 'SELECT RAP_NUM,
-                    RAP_DATE, 
-                    RAP_BILAN, 
-                    RAP_DATESAISIE, 
+                    RAP_DATE,
+                    RAP_BILAN,
+                    RAP_DATESAISIE,
                     RAP_MOTIF,
                     PRA_NUM,
                     MOTIF_NUM,
@@ -178,7 +178,7 @@ class Rapport extends Modele
         // Sélectionne uniquement les rapports dans un interval de date si précisé
         if ($dateDebut != null && $dateFin != null)
         {
-            $req .= ' AND RAP_DATESAISIE >= :DATE_DEBUT AND RAP_DATESAISIE <= :DATE_FIN';
+            $req .= ' AND RAP_DATE >= :DATE_DEBUT AND RAP_DATE <= :DATE_FIN';
             $params[':DATE_DEBUT'] = $dateDebut;
             $params[':DATE_FIN'] = $dateFin;
         }
