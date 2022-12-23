@@ -31,7 +31,7 @@ class PraticienControleur
 	private function formulairePraticien()
 	{
 		$result = $this->praticienModele->getAllNomPraticien();
-		include('vues/v_formulairePraticien.php');
+		include('vues/praticien/v_formulairePraticien.php');
 	}
 
 	private function afficherPraticien()
@@ -49,7 +49,7 @@ class PraticienControleur
 		if (empty($carac[7])) {
 			$carac[7] = 'Non défini(e)';
 		}
-		include("vues/v_afficherPraticien.php");
+		include("vues/praticien/v_afficherPraticien.php");
 
 	}
 }

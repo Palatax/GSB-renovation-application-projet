@@ -49,14 +49,14 @@ class ConsulterRapportsControleur extends RapportControleur
             $praticiensRap[] = $this->praticienModele->getAllInformationPraticien($rap['RAP_NUM']);
         }
 
-        include('vues/v_selectionRapports.php');
+        include('vues/consulterRapport/v_selectionRapports.php');
     
         if ($rapports)
-            include('vues/v_listeRapports.php');
+            include('vues/consulterRapport/v_listeRapports.php');
         else 
         {
             $erreurs[] = 'Aucun rapport trouvé';
-            include('vues/v_afficherErreurs.php');
+            include('vues/consulterRapport/v_afficherErreurs.php');
         }
     }
     
@@ -77,7 +77,7 @@ class ConsulterRapportsControleur extends RapportControleur
 
         $echantillons = $this->medicamentModele->getEchantillons($rapNum, $matricule);
     
-        include('vues/v_consulterRapport.php');
+        include('vues/consulterRapport/v_consulterRapport.php');
     }
 
     /**

@@ -33,7 +33,7 @@ class MedicamentControleur extends Controleur
 	{
 		$result = $this->medicamentModel->getAllNomMedicament();
 
-		$this->render('v_formulaireMedicament', [
+		$this->render('medicament/v_formulaireMedicament', [
 			'result' => $result
 		]);
 	}
@@ -49,7 +49,7 @@ class MedicamentControleur extends Controleur
 			header("Location: index.php?uc=medicaments&action=formulairemedoc");
 		}
 
-		$this->render('v_afficherMedicament', [
+		$this->render('medicament/v_afficherMedicament', [
 			'carac' => $carac
 		]);
 	}

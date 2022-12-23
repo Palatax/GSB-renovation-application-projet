@@ -38,7 +38,7 @@ Class ConnexionControleur
 	{
 		isset($_SESSION['login']) ? $login = $_SESSION['login'] : $login = null;
 
-		$login !== null ? $this->profil() : include('vues/v_connexion.php');
+		$login !== null ? $this->profil() : include('vues/connexion/v_connexion.php');
 	}
 
 	private function confirmerConnexion()
@@ -61,7 +61,7 @@ Class ConnexionControleur
 
 		// S'il y a des erreurs, on affiche de nouveau le formulaire de connexion
 		if ($erreurs)
-			include('vues/v_connexion.php');
+			include('vues/connexion/v_connexion.php');
 		else 
 		{
 			// On enregistre en session les informations de l'utilisateur
@@ -94,6 +94,6 @@ Class ConnexionControleur
 			}
 		}
 
-		include("vues/v_profil.php");
+		include("vues/connexion/v_profil.php");
 	}
 }

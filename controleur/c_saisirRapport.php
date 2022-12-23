@@ -69,7 +69,7 @@ class SaisirRapportControleur extends RapportControleur
         if(!$rapports)
             header('Location:index.php?uc=saisirRapport&action=redigerRapport');
 
-        $this->render('v_choixRedaction', ['rapports' => $rapports]);
+        $this->render('saisirRapport/v_choixRedaction', ['rapports' => $rapports]);
     }
 
     /**
@@ -88,7 +88,7 @@ class SaisirRapportControleur extends RapportControleur
             'url' => $url
         ];
 
-        $this->render('v_saisieRapport', $this->paramsVue);
+        $this->render('saisirRapport/v_saisieRapport', $this->paramsVue);
     }
     
     /**
@@ -121,7 +121,7 @@ class SaisirRapportControleur extends RapportControleur
             'url' => 'index.php?uc=saisirRapport&action=confirmerModification'
         ];
 
-        $this->render('v_saisieRapport', $this->paramsVue);
+        $this->render('saisirRapport/v_saisieRapport', $this->paramsVue);
     }
 
     /**
@@ -182,7 +182,7 @@ class SaisirRapportControleur extends RapportControleur
             ];
 
             // On affiche la vue avec la liste des erreurs
-            $this->render('v_saisieRapport', $this->paramsVue);
+            $this->render('saisirRapport/v_saisieRapport', $this->paramsVue);
         }
     }
     
