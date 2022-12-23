@@ -54,6 +54,8 @@
                             ?></div>
                         </div>
                     </div>
+                    
+                    <input class="btn btn-info text-light valider col-6 col-sm-5 col-md-4 col-lg-3" type="button" onclick="history.go(-1)" value="Retour">
                 </div>
             </div>
         </div>
