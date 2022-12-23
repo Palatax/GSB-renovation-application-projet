@@ -36,7 +36,7 @@ class PraticienControleur
 
 	private function afficherPraticien()
 	{
-		isset($_POST['praticien']) ? $pra = $_POST['praticien'] : $pra = null;
+		isset($_REQUEST['praticien']) ? $pra = $_REQUEST['praticien'] : $pra = null;
 
 		if($pra === null || !$this->praticienModele->getAllInformationPraticien($pra))
 		{

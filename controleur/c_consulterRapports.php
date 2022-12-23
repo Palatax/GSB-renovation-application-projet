@@ -72,7 +72,6 @@ class ConsulterRapportsControleur extends RapportControleur
         $rapport = $this->rapportModele->getRapport($rapNum, $matricule);
         $motif = $this->getMotifLibelle($rapport);
         $praticien = $this->praticienModele->getPraticien($rapport['PRA_NUM']);
-    
         $rapport['MEDICAMENT1'] != null ? $medicament1 = $this->medicamentModele->getNomMedicament($rapport['MEDICAMENT1']) : $medicament1 = null;
         $rapport['MEDICAMENT2'] != null ? $medicament2 = $this->medicamentModele->getNomMedicament($rapport['MEDICAMENT2']) : $medicament2 = null;
 

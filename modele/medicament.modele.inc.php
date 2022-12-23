@@ -16,7 +16,7 @@ class Medicament extends Modele
                 WHERE MED_DEPOTLEGAL = :MED_DEPOTLEGAL';
 
         $result = parent::getRequestResults($req, [
-            ':MED_DEPOTlEGAL' => $medDepotLegal
+            ':MED_DEPOTLEGAL' => $medDepotLegal
         ]);
     
         return $result;
@@ -117,7 +117,7 @@ class Medicament extends Modele
         $results = parent::getRequestResults($req, [
             ':RAP_NUM' => $numRapport,
             ':COL_MATRICULE' => $matricule
-        ]);
+        ], 'fetchAll');
     
         return $results;
     }

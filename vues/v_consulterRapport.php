@@ -9,7 +9,11 @@
                         <div class="partie-gauche">
                             <div>Numéro rapport : <?= $rapNum ?> </div>
                             <div>Matricule du collaborateur : <?= $matricule ?></div>
-                            <div>Praticien : <?= $praticien['PRA_NOM'].' '.$praticien['PRA_PRENOM']?></div>
+                            <div> Praticien : 
+                                <a href="index.php?uc=praticien&action=afficherPraticien&praticien=<?= $rapport['PRA_NUM'] ?>">
+                                    <?= $praticien['PRA_NOM'].' '.$praticien['PRA_PRENOM']?>
+                                </a>
+                            </div>
                             <div>Date de saisie du rapport : <?=$rapport['RAP_DATESAISIE']?></div>
                             <div>Bilan de la visiste : <?=$rapport['RAP_BILAN'] ?></div>
                         </div>
@@ -20,15 +24,33 @@
 
                             <?php
                             if (isset($medicament1))
-                                echo '<div>Médicament présenté : ' . $medicament1['MED_NOMCOMMERCIAL'].'</div>';
+                                echo '
+                                <div>Médicament présenté : 
+                                    <a href="index.php?uc=medicaments&action=affichermedoc&medicament='.$rapport['MEDICAMENT1'].'">' 
+                                        . $medicament1['MED_NOMCOMMERCIAL'].
+                                    '</a>
+                                </div>';
 
                             if(isset($medicament2))
-                                echo '<div>Deuxième médicament présenté : ' . $medicament2['MED_NOMCOMMERCIAL'].'</div>';
+                                echo '
+                                <div>Deuxième médicament présenté : 
+                                    <a href="index.php?uc=medicaments&action=affichermedoc&medicament='.$rapport['MEDICAMENT2'].'">' 
+                                        . $medicament2['MED_NOMCOMMERCIAL'].
+                                    '</a>
+                                </div>
+                                ';
                             ?>
 
                             <div><?php
+                            if($echantillons)
+                            {
                                 foreach($echantillons as $key => $ech)
-                                    echo 'Echantillon n°'.($key+1).' : '.$ech['MED_NOMCOMMERCIAL'];
+                                    echo 'Echantillon n°'.($key+1).' : 
+                                    <a href="index.php?uc=medicaments&action=affichermedoc&medicament='.$ech['MED_DEPOTLEGAL'].'">'
+                                        .$ech['MED_NOMCOMMERCIAL'].
+                                    '</a><br>';
+                            } else
+                                echo 'Aucun échantillon offert';
                             ?></div>
                         </div>
                     </div>

@@ -21,7 +21,7 @@ class MedicamentControleur extends Controleur
 				$this->formulaireMedoc();
 				break;
 			case 'affichermedoc':
-				$this->afficherMedoc($_POST['medicament']);
+				$this->afficherMedoc($_REQUEST['medicament']);
 				break;
 			default:
 				$this->formulaireMedoc();
