@@ -15,12 +15,9 @@ class Modele
 
     private function connexionBd() 
     {
-        $login = 'root';
-        $mdp = '';
-        $bd = 'gsbcr';
-        $serveur = 'localhost';
+        include('modele/db-config.php');
 
-        $conn = new PDO("mysql:host=$serveur;port=3307;dbname=$bd",$login,$mdp, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\'')); 
+        $conn = new PDO("mysql:host=$BDD_SERVEUR;port=3307;dbname=$BDD_NOM",$BDD_LOGIN,$BDD_MDP, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\'')); 
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $conn;
     }
