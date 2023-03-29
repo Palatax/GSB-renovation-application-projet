@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3307
--- Généré le : mer. 09 nov. 2022 à 13:29
+-- Généré le : mer. 29 mars 2023 à 07:23
 -- Version du serveur : 10.6.5-MariaDB
 -- Version de PHP : 8.0.13
 
@@ -29,21 +29,21 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `collaborateur`;
 CREATE TABLE IF NOT EXISTS `collaborateur` (
-  `COL_MATRICULE` varchar(10) COLLATE utf8mb4_bin NOT NULL,
-  `COL_NOM` varchar(25) COLLATE utf8mb4_bin DEFAULT NULL,
-  `COL_PRENOM` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
-  `COL_ADRESSE` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
-  `COL_CP` varchar(5) COLLATE utf8mb4_bin DEFAULT NULL,
-  `COL_VILLE` varchar(30) COLLATE utf8mb4_bin DEFAULT NULL,
+  `COL_MATRICULE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `COL_NOM` varchar(25) COLLATE utf8mb3_bin DEFAULT NULL,
+  `COL_PRENOM` varchar(50) COLLATE utf8mb3_bin DEFAULT NULL,
+  `COL_ADRESSE` varchar(50) COLLATE utf8mb3_bin DEFAULT NULL,
+  `COL_CP` varchar(5) COLLATE utf8mb3_bin DEFAULT NULL,
+  `COL_VILLE` varchar(30) COLLATE utf8mb3_bin DEFAULT NULL,
   `COL_DATEEMBAUCHE` datetime DEFAULT NULL,
   `HAB_ID` int(11) DEFAULT NULL,
   `LOG_ID` int(11) DEFAULT NULL,
-  `SEC_CODE` varchar(1) COLLATE utf8mb4_bin DEFAULT NULL,
+  `SEC_CODE` varchar(1) COLLATE utf8mb3_bin DEFAULT NULL,
   PRIMARY KEY (`COL_MATRICULE`),
   UNIQUE KEY `collaborateur_login0_AK` (`LOG_ID`),
   KEY `collaborateur_habilitation0_FK` (`HAB_ID`),
   KEY `collaborateur_secteur0_FK` (`SEC_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 --
 -- Déchargement des données de la table `collaborateur`
@@ -127,11 +127,11 @@ INSERT INTO `collaborateur` (`COL_MATRICULE`, `COL_NOM`, `COL_PRENOM`, `COL_ADRE
 
 DROP TABLE IF EXISTS `dosage`;
 CREATE TABLE IF NOT EXISTS `dosage` (
-  `DOS_CODE` varchar(10) COLLATE utf8mb4_bin NOT NULL,
-  `DOS_QUANTITE` varchar(10) COLLATE utf8mb4_bin DEFAULT NULL,
-  `DOS_UNITE` varchar(10) COLLATE utf8mb4_bin DEFAULT NULL,
+  `DOS_CODE` varchar(10) COLLATE utf8mb3_bin NOT NULL,
+  `DOS_QUANTITE` varchar(10) COLLATE utf8mb3_bin DEFAULT NULL,
+  `DOS_UNITE` varchar(10) COLLATE utf8mb3_bin DEFAULT NULL,
   PRIMARY KEY (`DOS_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 -- --------------------------------------------------------
 
@@ -141,10 +141,10 @@ CREATE TABLE IF NOT EXISTS `dosage` (
 
 DROP TABLE IF EXISTS `famille`;
 CREATE TABLE IF NOT EXISTS `famille` (
-  `FAM_CODE` varchar(3) COLLATE utf8mb4_bin NOT NULL,
-  `FAM_LIBELLE` varchar(80) COLLATE utf8mb4_bin DEFAULT NULL,
+  `FAM_CODE` varchar(3) COLLATE utf8mb3_bin NOT NULL,
+  `FAM_LIBELLE` varchar(80) COLLATE utf8mb3_bin DEFAULT NULL,
   PRIMARY KEY (`FAM_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 --
 -- Déchargement des données de la table `famille`
@@ -180,11 +180,11 @@ INSERT INTO `famille` (`FAM_CODE`, `FAM_LIBELLE`) VALUES
 
 DROP TABLE IF EXISTS `formuler`;
 CREATE TABLE IF NOT EXISTS `formuler` (
-  `MED_DEPOTLEGAL` varchar(10) COLLATE utf8mb4_bin NOT NULL,
-  `PRE_CODE` varchar(2) COLLATE utf8mb4_bin NOT NULL,
+  `MED_DEPOTLEGAL` varchar(10) COLLATE utf8mb3_bin NOT NULL,
+  `PRE_CODE` varchar(2) COLLATE utf8mb3_bin NOT NULL,
   PRIMARY KEY (`MED_DEPOTLEGAL`,`PRE_CODE`),
   KEY `FORMULER_presentation1_FK` (`PRE_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 -- --------------------------------------------------------
 
@@ -195,9 +195,9 @@ CREATE TABLE IF NOT EXISTS `formuler` (
 DROP TABLE IF EXISTS `habilitation`;
 CREATE TABLE IF NOT EXISTS `habilitation` (
   `HAB_ID` int(11) NOT NULL,
-  `HAB_LIB` varchar(30) COLLATE utf8mb4_bin NOT NULL,
+  `HAB_LIB` varchar(30) COLLATE utf8mb3_bin NOT NULL,
   PRIMARY KEY (`HAB_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 --
 -- Déchargement des données de la table `habilitation`
@@ -216,11 +216,11 @@ INSERT INTO `habilitation` (`HAB_ID`, `HAB_LIB`) VALUES
 
 DROP TABLE IF EXISTS `interagir`;
 CREATE TABLE IF NOT EXISTS `interagir` (
-  `MED_DEPOTLEGAL` varchar(10) COLLATE utf8mb4_bin NOT NULL,
-  `MED_DEPOTLEGAL_medicament` varchar(10) COLLATE utf8mb4_bin NOT NULL,
+  `MED_DEPOTLEGAL` varchar(10) COLLATE utf8mb3_bin NOT NULL,
+  `MED_DEPOTLEGAL_medicament` varchar(10) COLLATE utf8mb3_bin NOT NULL,
   PRIMARY KEY (`MED_DEPOTLEGAL`,`MED_DEPOTLEGAL_medicament`),
   KEY `INTERAGIR_medicament1_FK` (`MED_DEPOTLEGAL_medicament`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 -- --------------------------------------------------------
 
@@ -231,12 +231,12 @@ CREATE TABLE IF NOT EXISTS `interagir` (
 DROP TABLE IF EXISTS `login`;
 CREATE TABLE IF NOT EXISTS `login` (
   `LOG_ID` int(11) NOT NULL,
-  `LOG_LOGIN` varchar(50) COLLATE utf8mb4_bin NOT NULL,
-  `LOG_MOTDEPASSE` varchar(255) COLLATE utf8mb4_bin NOT NULL,
-  `COL_MATRICULE` varchar(10) COLLATE utf8mb4_bin NOT NULL,
+  `LOG_LOGIN` varchar(50) COLLATE utf8mb3_bin NOT NULL,
+  `LOG_MOTDEPASSE` varchar(255) COLLATE utf8mb3_bin NOT NULL,
+  `COL_MATRICULE` varchar(10) COLLATE utf8mb3_bin NOT NULL,
   PRIMARY KEY (`LOG_ID`),
   UNIQUE KEY `login_collaborateur0_AK` (`COL_MATRICULE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 --
 -- Déchargement des données de la table `login`
@@ -257,16 +257,16 @@ INSERT INTO `login` (`LOG_ID`, `LOG_LOGIN`, `LOG_MOTDEPASSE`, `COL_MATRICULE`) V
 
 DROP TABLE IF EXISTS `medicament`;
 CREATE TABLE IF NOT EXISTS `medicament` (
-  `MED_DEPOTLEGAL` varchar(10) COLLATE utf8mb4_bin NOT NULL,
-  `MED_NOMCOMMERCIAL` varchar(25) COLLATE utf8mb4_bin DEFAULT NULL,
-  `MED_COMPOSITION` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `MED_EFFETS` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `MED_CONTREINDIC` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `MED_DEPOTLEGAL` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `MED_NOMCOMMERCIAL` varchar(25) COLLATE utf8mb3_bin DEFAULT NULL,
+  `MED_COMPOSITION` varchar(255) COLLATE utf8mb3_bin DEFAULT NULL,
+  `MED_EFFETS` varchar(255) COLLATE utf8mb3_bin DEFAULT NULL,
+  `MED_CONTREINDIC` varchar(255) COLLATE utf8mb3_bin DEFAULT NULL,
   `MED_PRIXECHANTILLON` float DEFAULT NULL,
-  `FAM_CODE` varchar(3) COLLATE utf8mb4_bin NOT NULL,
+  `FAM_CODE` varchar(3) COLLATE utf8mb3_bin NOT NULL,
   PRIMARY KEY (`MED_DEPOTLEGAL`),
   KEY `medicament_famille0_FK` (`FAM_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 --
 -- Déchargement des données de la table `medicament`
@@ -316,6 +316,16 @@ CREATE TABLE IF NOT EXISTS `motif` (
   PRIMARY KEY (`MOTIF_NUM`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
+--
+-- Déchargement des données de la table `motif`
+--
+
+INSERT INTO `motif` (`MOTIF_NUM`, `MOTIF_LIBELLE`, `MOTIF_DESCRIPTION`) VALUES
+(1, 'Périodicité', NULL),
+(2, 'Actualisation', NULL),
+(3, 'Chute de prescription', NULL),
+(4, 'Sollicitation', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -334,6 +344,18 @@ CREATE TABLE IF NOT EXISTS `offrir` (
   KEY `Fk_offrir_rapport` (`RAP_NUM`,`COL_MATRICULE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
+--
+-- Déchargement des données de la table `offrir`
+--
+
+INSERT INTO `offrir` (`RAP_NUM`, `MED_DEPOTLEGAL`, `OFF_QTE`, `COL_MATRICULE`) VALUES
+(1, 'AMOPIL7', 1, 'a131'),
+(3, 'BACTIV13', 99, 'a131'),
+(3, 'DIMIRTAM6', 17, 'a131'),
+(3, 'DOLRIL7', 25, 'a131'),
+(3, 'INSXT5', 45, 'a131'),
+(3, 'URIEG6', 4, 'a131');
+
 -- --------------------------------------------------------
 
 --
@@ -349,7 +371,7 @@ CREATE TABLE IF NOT EXISTS `posseder` (
   PRIMARY KEY (`PRA_NUM`,`SPE_CODE`),
   KEY `PRA_NUM` (`PRA_NUM`),
   KEY `SPE_CODE` (`SPE_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -370,7 +392,7 @@ CREATE TABLE IF NOT EXISTS `praticien` (
   `PRA_COEFCONFIANCE` float DEFAULT NULL,
   PRIMARY KEY (`PRA_NUM`),
   KEY `TYP_CODE` (`TYP_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `praticien`
@@ -472,14 +494,14 @@ INSERT INTO `praticien` (`PRA_NUM`, `PRA_NOM`, `PRA_PRENOM`, `PRA_ADRESSE`, `PRA
 
 DROP TABLE IF EXISTS `prescrire`;
 CREATE TABLE IF NOT EXISTS `prescrire` (
-  `TIN_CODE` varchar(5) COLLATE utf8mb4_bin NOT NULL,
-  `DOS_CODE` varchar(10) COLLATE utf8mb4_bin NOT NULL,
-  `MED_DEPOTLEGAL` varchar(10) COLLATE utf8mb4_bin NOT NULL,
-  `PRE_POSOLOGIE` varchar(50) COLLATE utf8mb4_bin NOT NULL,
+  `TIN_CODE` varchar(5) COLLATE utf8mb3_bin NOT NULL,
+  `DOS_CODE` varchar(10) COLLATE utf8mb3_bin NOT NULL,
+  `MED_DEPOTLEGAL` varchar(10) COLLATE utf8mb3_bin NOT NULL,
+  `PRE_POSOLOGIE` varchar(50) COLLATE utf8mb3_bin NOT NULL,
   PRIMARY KEY (`TIN_CODE`,`DOS_CODE`,`MED_DEPOTLEGAL`),
   KEY `PRESCRIRE_dosage1_FK` (`DOS_CODE`),
   KEY `PRESCRIRE_medicament2_FK` (`MED_DEPOTLEGAL`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 -- --------------------------------------------------------
 
@@ -489,10 +511,10 @@ CREATE TABLE IF NOT EXISTS `prescrire` (
 
 DROP TABLE IF EXISTS `presentation`;
 CREATE TABLE IF NOT EXISTS `presentation` (
-  `PRE_CODE` varchar(2) COLLATE utf8mb4_bin NOT NULL,
-  `PRE_LIBELLE` varchar(20) COLLATE utf8mb4_bin DEFAULT NULL,
+  `PRE_CODE` varchar(2) COLLATE utf8mb3_bin NOT NULL,
+  `PRE_LIBELLE` varchar(20) COLLATE utf8mb3_bin DEFAULT NULL,
   PRIMARY KEY (`PRE_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 -- --------------------------------------------------------
 
@@ -513,6 +535,7 @@ CREATE TABLE IF NOT EXISTS `rapport_visite` (
   `MEDICAMENT1` varchar(10) COLLATE utf8mb4_bin DEFAULT NULL,
   `MEDICAMENT2` varchar(10) COLLATE utf8mb4_bin DEFAULT NULL,
   `PRA_REMP` int(11) DEFAULT NULL,
+  `DEFINITIF` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`RAP_NUM`,`COL_MATRICULE`) USING BTREE,
   KEY `Fk_rapport_praticien` (`PRA_NUM`),
   KEY `Fk_rapport_motif` (`MOTIF_NUM`),
@@ -520,7 +543,17 @@ CREATE TABLE IF NOT EXISTS `rapport_visite` (
   KEY `Fk_rapport_medicament1` (`MEDICAMENT1`),
   KEY `Fk_rapport_medicament2` (`MEDICAMENT2`),
   KEY `PRA_REMP` (`PRA_REMP`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+--
+-- Déchargement des données de la table `rapport_visite`
+--
+
+INSERT INTO `rapport_visite` (`RAP_NUM`, `RAP_DATE`, `RAP_BILAN`, `RAP_DATESAISIE`, `RAP_MOTIF`, `PRA_NUM`, `MOTIF_NUM`, `COL_MATRICULE`, `MEDICAMENT1`, `MEDICAMENT2`, `PRA_REMP`, `DEFINITIF`) VALUES
+(1, '2022-12-01', 'Voici le bilan magnifique du rapport ptdr', '2022-12-14', NULL, 2, 1, 'a131', 'DEPRIL9', NULL, 11, 0),
+(2, '2022-12-01', 'Bilan au pif', '2022-12-14', 'Voici un motif bien particulier', 2, NULL, 'a131', NULL, NULL, NULL, 0),
+(3, '2022-12-08', 'le meucieu il étay koul', '2022-12-14', 'c 1 motif jaynial\r\n                                        \r\n                                        ', 2, NULL, 'a131', NULL, NULL, NULL, 0),
+(4, '2022-12-02', 'Ce rapport numéro 4 fut vraiment très cool péter des airs', '2022-12-15', NULL, 6, 3, 'a131', 'LIDOXY23', 'JOVAI8', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -530,12 +563,12 @@ CREATE TABLE IF NOT EXISTS `rapport_visite` (
 
 DROP TABLE IF EXISTS `region`;
 CREATE TABLE IF NOT EXISTS `region` (
-  `REG_CODE` varchar(2) COLLATE utf8mb4_bin NOT NULL,
-  `REG_NOM` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
-  `SEC_CODE` varchar(1) COLLATE utf8mb4_bin NOT NULL,
+  `REG_CODE` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `REG_NOM` varchar(50) COLLATE utf8mb3_bin DEFAULT NULL,
+  `SEC_CODE` varchar(1) COLLATE utf8mb3_bin NOT NULL,
   PRIMARY KEY (`REG_CODE`),
   KEY `region_secteur0_FK` (`SEC_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 --
 -- Déchargement des données de la table `region`
@@ -573,10 +606,10 @@ INSERT INTO `region` (`REG_CODE`, `REG_NOM`, `SEC_CODE`) VALUES
 
 DROP TABLE IF EXISTS `secteur`;
 CREATE TABLE IF NOT EXISTS `secteur` (
-  `SEC_CODE` varchar(1) COLLATE utf8mb4_bin NOT NULL,
-  `SEC_LIBELLE` varchar(15) COLLATE utf8mb4_bin DEFAULT NULL,
+  `SEC_CODE` varchar(1) COLLATE utf8mb3_bin NOT NULL,
+  `SEC_LIBELLE` varchar(15) COLLATE utf8mb3_bin DEFAULT NULL,
   PRIMARY KEY (`SEC_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 --
 -- Déchargement des données de la table `secteur`
@@ -600,7 +633,7 @@ CREATE TABLE IF NOT EXISTS `specialite` (
   `SPE_CODE` varchar(5) NOT NULL,
   `SPE_LIBELLE` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`SPE_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `specialite`
@@ -667,6 +700,78 @@ CREATE TABLE IF NOT EXISTS `travailler` (
   KEY `Fk_travailler_region` (`REG_CODE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
+--
+-- Déchargement des données de la table `travailler`
+--
+
+INSERT INTO `travailler` (`COL_MATRICULE`, `REG_CODE`, `TRA_ROLE`) VALUES
+('a131', 'BN', 'Visiteur'),
+('a17', 'RA', 'Visiteur'),
+('a55', 'MP', 'Visiteur'),
+('a93', 'PC', 'Visiteur'),
+('b13', 'AL', 'Visiteur'),
+('b16', 'BG', 'Visiteur'),
+('b19', 'PL', 'Visiteur'),
+('b28', 'LG', 'Visiteur'),
+('b34', 'CE', 'Délégué'),
+('b4', 'AQ', 'Visiteur'),
+('b50', 'PA', 'Visiteur'),
+('b59', 'RA', 'Visiteur'),
+('c14', 'PA', 'Visiteur'),
+('c3', 'CA', 'Visiteur'),
+('c54', 'AL', 'Visiteur'),
+('d13', 'PL', 'Visiteur'),
+('d51', 'FC', 'Délégué'),
+('e22', 'AL', 'Visiteur'),
+('e24', 'AL', 'Délégué'),
+('e39', 'IF', 'Visiteur'),
+('e49', 'MP', 'Visiteur'),
+('e5', 'AQ', 'Responsable'),
+('e52', 'HN', 'Visiteur'),
+('f21', 'RA', 'Visiteur'),
+('f39', 'RA', 'Visiteur'),
+('f4', 'MP', 'Visiteur'),
+('g19', 'IF', 'Visiteur'),
+('g30', 'PI', 'Délégué'),
+('g53', 'BG', 'Visiteur'),
+('g7', 'LI', 'Visiteur'),
+('h13', 'LI', 'Visiteur'),
+('h30', 'IF', 'Visiteur'),
+('h35', 'AU', 'Visiteur'),
+('h40', 'CA', 'Visiteur'),
+('j45', 'CA', 'Responsable'),
+('j50', 'NP', 'Visiteur'),
+('j8', 'IF', 'Responsable'),
+('k4', 'LG', 'Visiteur'),
+('k53', 'AL', 'Délégué'),
+('l14', 'PL', 'Visiteur'),
+('l23', 'PC', 'Visiteur'),
+('l46', 'PL', 'Visiteur'),
+('l56', 'FC', 'Visiteur'),
+('m35', 'MP', 'Visiteur'),
+('m45', 'AL', 'Délégué'),
+('n42', 'HN', 'Visiteur'),
+('n58', 'CE', 'Visiteur'),
+('n59', 'PI', 'Visiteur'),
+('o26', 'LG', 'Visiteur'),
+('p32', 'IF', 'Visiteur'),
+('p40', 'BN', 'Responsable'),
+('p41', 'PC', 'Visiteur'),
+('p42', 'PI', 'Visiteur'),
+('p49', 'CE', 'Visiteur'),
+('p6', 'AQ', 'Visiteur'),
+('p7', 'RO', 'Visiteur'),
+('p8', 'BO', 'Visiteur'),
+('q17', 'BN', 'Visiteur'),
+('r24', 'BN', 'Responsable'),
+('r58', 'BG', 'Visiteur'),
+('s10', 'FC', 'Visiteur'),
+('s21', 'LI', 'Visiteur'),
+('t43', 'BO', 'Visiteur'),
+('t47', 'PI', 'Visiteur'),
+('t55', 'MP', 'Visiteur'),
+('t60', 'CE', 'Visiteur');
+
 -- --------------------------------------------------------
 
 --
@@ -675,10 +780,10 @@ CREATE TABLE IF NOT EXISTS `travailler` (
 
 DROP TABLE IF EXISTS `type_individu`;
 CREATE TABLE IF NOT EXISTS `type_individu` (
-  `TIN_CODE` varchar(5) COLLATE utf8mb4_bin NOT NULL,
-  `TIN_LIBELLE` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
+  `TIN_CODE` varchar(5) COLLATE utf8mb3_bin NOT NULL,
+  `TIN_LIBELLE` varchar(50) COLLATE utf8mb3_bin DEFAULT NULL,
   PRIMARY KEY (`TIN_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 
 -- --------------------------------------------------------
 
@@ -692,7 +797,7 @@ CREATE TABLE IF NOT EXISTS `type_praticien` (
   `TYP_LIBELLE` varchar(25) DEFAULT NULL,
   `TYP_LIEU` varchar(35) DEFAULT NULL,
   PRIMARY KEY (`TYP_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `type_praticien`
