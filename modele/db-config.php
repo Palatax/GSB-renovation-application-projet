@@ -1,6 +1,6 @@
 <?php
 
 $BDD_SERVEUR = 'localhost';
-$BDD_NOM = 'gsbcr';
+$BDD_NOM = 'gsb-projet';
 $BDD_LOGIN = 'root';
 $BDD_MDP = '';

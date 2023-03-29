@@ -56,7 +56,7 @@ class ConsulterRapportsControleur extends RapportControleur
         else 
         {
             $erreurs[] = 'Aucun rapport trouvé';
-            include('vues/consulterRapport/v_afficherErreurs.php');
+            include('vues/v_afficherErreurs.php');
         }
     }
     
