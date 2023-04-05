@@ -46,7 +46,7 @@ class ConsulterRapportsControleur extends RapportControleur
         foreach ($rapports as $rap)
         {
             $motifs[] = $this->getMotifLibelle($rap);
-            $praticiensRap[] = $this->praticienModele->getAllInformationPraticien($rap['RAP_NUM']);
+            $praticiensRap[] = $this->praticienModele->getAllInformationPraticien($rap['PRA_NUM']);
         }
 
         include('vues/consulterRapport/v_selectionRapports.php');

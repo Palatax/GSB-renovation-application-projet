@@ -216,4 +216,29 @@ class Rapport extends Modele
 
         return $result;
     }
+
+    public function isRead($matriculeLect,$matriculeAut,$numRap) {
+
+
+
+        $req = 'SELECT COUNT(*) FROM lire WHERE COL_MATRICULE_AUTEUR = :COL_MATRICULE_AUTEUR AND RAP_NUM = :RAP_NUM and COL_MATRICULE_LECTEUR = :COL_MATRICULE_LECTEUR;';
+
+        $result = parent::getRequestResults($req,[            
+
+            ':COL_MATRICULE_AUTEUR' => $matriculeAut,
+            ':RAP_NUM' => $numRap,
+            ':COL_MATRICULE_LECTEUR' => $matriculeLect]);
+
+        return $result['COUNT(*)'];
+
+    }
+    public function lire($matriculeLect,$matriculeAut,$numRap){
+$req = 'INSERT INTO lire (RAP_NUM,COL_MATRICULE_LECTEUR,COL_MATRICULE_AUTEUR) VALUES (:RAP_NUM,:COL_MATRICULE_LECTEUR,:COL_MATRICULE_AUTEUR)';
+
+        parent::executeRequest($req, [
+            ':RAP_NUM' => $numRap,
+            ':COL_MATRICULE_LECTEUR' => $matriculeLect,
+            ':COL_MATRICULE_AUTEUR' => $matriculeAut,
+        ]);
+    }
 }

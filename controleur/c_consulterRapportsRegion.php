@@ -25,6 +25,8 @@ class consulterRapportsRegionControleur extends RapportControleur
             case 'consulterRapportRegion':
                 $this->consulterRapportRegion();
                 break;
+            default :
+                include('vues/v_accueil.php');
         }
     }
 
@@ -36,18 +38,26 @@ class consulterRapportsRegionControleur extends RapportControleur
      */
     private function rapportRegion()
     {
+        if ($_SESSION['habilitation']==2) {
+            
         //récupération du matricule du délégué connécté
         $matricule = $_SESSION['matricule'];
 
         //récupération des rapports via le matricule récupéré auparavant
         $rapports = $this->rapportModele->getRapportRegion($matricule);
+
+        $rapports = $this->getPasLus($matricule,$rapports);
         foreach ($rapports as $rap)
         {
             $motifs[] = $this-> getMotifLibelle($rap);
-            $praticiensRap[] = $this->praticienModele->getAllInformationPraticien($rap['RAP_NUM']);
+            $praticiensRap[] = $this->praticienModele->getAllInformationPraticien($rap['PRA_NUM']);
         }
 
         include('vues/consulterRapport/v_listeRapports.php');
+        }
+        else {
+            include('vues/v_accueil.php');
+        }
     }
     
     private function consulterRapportRegion()
@@ -57,8 +67,6 @@ class consulterRapportsRegionControleur extends RapportControleur
         $matricule = $_GET['matricule'];
 
         $rapport = $this->rapportModele->getRapport($rapNum, $matricule);
-        var_dump($rapNum);
-        var_dump($matricule);
         $motif = $this->getMotifLibelle($rapport);
         $praticien = $this->praticienModele->getPraticien($rapport['PRA_NUM']);
         $rapport['MEDICAMENT1'] != null ? $medicament1 = $this->medicamentModele->getNomMedicament($rapport['MEDICAMENT1']) : $medicament1 = null;
@@ -66,11 +74,33 @@ class consulterRapportsRegionControleur extends RapportControleur
 
         $echantillons = $this->medicamentModele->getEchantillons($rapNum, $matricule);
     
+        $this->rapportModele->lire($_SESSION['matricule'],$matricule,$rapNum);
+
         include('vues/consulterRapport/v_consulterRapport.php');
     
     }
 
 
+
+
+
+
+
+
+
+    private function getPasLus($matricule, $listeRaps) {
+
+
+
+        $tab = array();
+
+        foreach ($listeRaps as $key) {
+            if(!$this->rapportModele->isRead($matricule,$key['COL_MATRICULE'] ,$key['RAP_NUM'])) {
+                $tab[] = $key;
+            }
+        }
+        return $tab;
+    }
 
 
 
