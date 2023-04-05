@@ -203,16 +203,16 @@ class Rapport extends Modele
     }
     public function getRapportRegion($matricule) 
     {
-        $req =  'SELECT r.rap_num, r.col_matricule FROM rapport_visite r
-                WHERE r.col_matricule in (
-                SELECT col_matricule FROM travailler t WHERE reg_code=(
-                SELECT reg_code FROM travailler WHERE col_matricule= :COL_MATRICULE and tra_role="Délégué"
-                ) AND tra_role="Visiteur"
-                )';
+        $req =  'SELECT r.RAP_NUM, r.COL_MATRICULE, r.MOTIF_NUM, r.RAP_MOTIF,r.RAP_DATE, r.PRA_NUM, r.DEFINITIF FROM rapport_visite r
+    WHERE r.col_matricule in (
+        SELECT col_matricule FROM travailler t WHERE reg_code=(
+            SELECT reg_code FROM travailler WHERE col_matricule= :COL_MATRICULE and tra_role="Délégué"
+            ) AND tra_role="Visiteur" AND r.DEFINITIF!=0
+        )';
 
         $result = parent::getRequestResults($req, [
             ':COL_MATRICULE' => $matricule
-        ]);
+        ],'fetchAll');
 
         return $result;
     }

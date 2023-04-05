@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3307
--- Généré le : mer. 29 mars 2023 à 07:23
+-- Généré le : mer. 05 avr. 2023 à 08:51
 -- Version du serveur : 10.6.5-MariaDB
--- Version de PHP : 8.0.13
+-- Version de PHP : 7.4.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `gsbcr`
+-- Base de données : `calvo-gsb_projet`
 --
 
 -- --------------------------------------------------------
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `collaborateur`;
 CREATE TABLE IF NOT EXISTS `collaborateur` (
-  `COL_MATRICULE` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `COL_MATRICULE` varchar(10) COLLATE utf8mb4_bin NOT NULL,
   `COL_NOM` varchar(25) COLLATE utf8mb4_bin DEFAULT NULL,
   `COL_PRENOM` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
   `COL_ADRESSE` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
@@ -247,6 +247,7 @@ INSERT INTO `login` (`LOG_ID`, `LOG_LOGIN`, `LOG_MOTDEPASSE`, `COL_MATRICULE`) V
 (2, 'anddav', 'ff781e873746adf59e3165b217034477ca29d4f2322720e05492ea90d21010378252a85f2d66025874647c6d162d45df2766e8003f33c885bbc3c4dbbe92141f', 'a17'),
 (3, 'bedchr', 'dbb65dd51a8348771883fae9cd7cc40ce1cf33e3756b4ca798bfcdcc37499b7e7236af7bd16d469bdaf8b039f3d5f414cb8a840d3675862675c0dc4a18fb5946', 'a55'),
 (4, 'tuslou', 'd0f2a12b1928e2a54043a3e360b2f9ed7df27b780f668b066ed9de61e0007898a07ff05fbf2f062348d55cb4bf824c8c96e9102050271204713f228034ce709c', 'a93'),
+(5, 'debmic', 'babadi', 'd51'),
 (67, 'tusjos', 'd49fe42f1ce6ebd4d2f147ed3e14fc5816c6ef735c2a3cd7b60e143cafa30db0d835fe37bac1340b7fc6f7cb6f34b307ba869cdf341c2c09e216b21021104d84', 't60');
 
 -- --------------------------------------------------------
@@ -257,7 +258,7 @@ INSERT INTO `login` (`LOG_ID`, `LOG_LOGIN`, `LOG_MOTDEPASSE`, `COL_MATRICULE`) V
 
 DROP TABLE IF EXISTS `medicament`;
 CREATE TABLE IF NOT EXISTS `medicament` (
-  `MED_DEPOTLEGAL` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `MED_DEPOTLEGAL` varchar(10) COLLATE utf8mb4_bin NOT NULL,
   `MED_NOMCOMMERCIAL` varchar(25) COLLATE utf8mb4_bin DEFAULT NULL,
   `MED_COMPOSITION` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
   `MED_EFFETS` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
@@ -365,13 +366,13 @@ INSERT INTO `offrir` (`RAP_NUM`, `MED_DEPOTLEGAL`, `OFF_QTE`, `COL_MATRICULE`) V
 DROP TABLE IF EXISTS `posseder`;
 CREATE TABLE IF NOT EXISTS `posseder` (
   `PRA_NUM` int(11) NOT NULL,
-  `SPE_CODE` varchar(5) NOT NULL,
-  `POS_DIPLOME` varchar(10) DEFAULT NULL,
+  `SPE_CODE` varchar(5) CHARACTER SET utf8mb4 NOT NULL,
+  `POS_DIPLOME` varchar(10) CHARACTER SET utf8mb4 DEFAULT NULL,
   `POS_COEFPRESCRIPTION` float DEFAULT NULL,
   PRIMARY KEY (`PRA_NUM`,`SPE_CODE`),
   KEY `PRA_NUM` (`PRA_NUM`),
   KEY `SPE_CODE` (`SPE_CODE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- --------------------------------------------------------
 
@@ -563,7 +564,7 @@ INSERT INTO `rapport_visite` (`RAP_NUM`, `RAP_DATE`, `RAP_BILAN`, `RAP_DATESAISI
 
 DROP TABLE IF EXISTS `region`;
 CREATE TABLE IF NOT EXISTS `region` (
-  `REG_CODE` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `REG_CODE` varchar(2) COLLATE utf8mb4_bin NOT NULL,
   `REG_NOM` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
   `SEC_CODE` varchar(1) COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`REG_CODE`),
@@ -575,28 +576,19 @@ CREATE TABLE IF NOT EXISTS `region` (
 --
 
 INSERT INTO `region` (`REG_CODE`, `REG_NOM`, `SEC_CODE`) VALUES
-('AL', 'Alsace Lorraine', 'E'),
-('AQ', 'Aquitaine', 'S'),
-('AU', 'Auvergne', 'P'),
+('AA', 'Auvergne Rhône-Alpes', 'S'),
+('BC', 'Bourgogne Franche Compté', 'E'),
 ('BG', 'Bretagne', 'O'),
-('BN', 'Basse Normandie', 'O'),
-('BO', 'Bourgogne', 'E'),
-('CA', 'Champagne Ardennes', 'N'),
-('CE', 'Centre', 'P'),
-('FC', 'Franche Comté', 'E'),
-('HN', 'Haute Normandie', 'N'),
+('CE', 'Centre-Val de Loire', 'P'),
+('CO', 'Corse', 'S'),
+('GE', 'Grand Est', 'E'),
+('HF', 'Hauts-de-France', 'N'),
 ('IF', 'Ile de France', 'P'),
-('LG', 'Languedoc', 'S'),
-('LI', 'Limousin', 'P'),
-('MP', 'Midi Pyrénée', 'S'),
-('NP', 'Nord Pas de Calais', 'N'),
+('NA', 'Nouvelle-Aquitaine', 'S'),
+('NO', 'Normandie', 'O'),
+('OC', 'Occitanie', 'S'),
 ('PA', 'Provence Alpes Cote d\'Azur', 'S'),
-('PC', 'Poitou Charente', 'O'),
-('PI', 'Picardie', 'N'),
-('PL', 'Pays de Loire', 'O'),
-('RA', 'Rhone Alpes', 'E'),
-('RO', 'Roussilon', 'S'),
-('VD', 'Vendée', 'O');
+('PL', 'Pays de Loire', 'O');
 
 -- --------------------------------------------------------
 
@@ -631,7 +623,7 @@ INSERT INTO `secteur` (`SEC_CODE`, `SEC_LIBELLE`) VALUES
 DROP TABLE IF EXISTS `specialite`;
 CREATE TABLE IF NOT EXISTS `specialite` (
   `SPE_CODE` varchar(5) NOT NULL,
-  `SPE_LIBELLE` varchar(150) DEFAULT NULL,
+  `SPE_LIBELLE` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`SPE_CODE`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -705,71 +697,71 @@ CREATE TABLE IF NOT EXISTS `travailler` (
 --
 
 INSERT INTO `travailler` (`COL_MATRICULE`, `REG_CODE`, `TRA_ROLE`) VALUES
-('a131', 'BN', 'Visiteur'),
-('a17', 'RA', 'Visiteur'),
-('a55', 'MP', 'Visiteur'),
-('a93', 'PC', 'Visiteur'),
-('b13', 'AL', 'Visiteur'),
+('a131', 'NO', 'Visiteur'),
+('a17', 'AA', 'Visiteur'),
+('a55', 'OC', 'Visiteur'),
+('a93', 'NA', 'Visiteur'),
+('b13', 'GE', 'Visiteur'),
 ('b16', 'BG', 'Visiteur'),
 ('b19', 'PL', 'Visiteur'),
-('b28', 'LG', 'Visiteur'),
+('b28', 'OC', 'Visiteur'),
 ('b34', 'CE', 'Délégué'),
-('b4', 'AQ', 'Visiteur'),
+('b4', 'NA', 'Visiteur'),
 ('b50', 'PA', 'Visiteur'),
-('b59', 'RA', 'Visiteur'),
+('b59', 'AA', 'Visiteur'),
 ('c14', 'PA', 'Visiteur'),
-('c3', 'CA', 'Visiteur'),
-('c54', 'AL', 'Visiteur'),
+('c3', 'GE', 'Visiteur'),
+('c54', 'GE', 'Visiteur'),
 ('d13', 'PL', 'Visiteur'),
-('d51', 'FC', 'Délégué'),
-('e22', 'AL', 'Visiteur'),
-('e24', 'AL', 'Délégué'),
+('d51', 'BC', 'Délégué'),
+('e22', 'GE', 'Visiteur'),
+('e24', 'GE', 'Délégué'),
 ('e39', 'IF', 'Visiteur'),
-('e49', 'MP', 'Visiteur'),
-('e5', 'AQ', 'Responsable'),
-('e52', 'HN', 'Visiteur'),
-('f21', 'RA', 'Visiteur'),
-('f39', 'RA', 'Visiteur'),
-('f4', 'MP', 'Visiteur'),
+('e49', 'OC', 'Visiteur'),
+('e5', 'NA', 'Responsable'),
+('e52', 'NO', 'Visiteur'),
+('f21', 'AA', 'Visiteur'),
+('f39', 'AA', 'Visiteur'),
+('f4', 'OC', 'Visiteur'),
 ('g19', 'IF', 'Visiteur'),
-('g30', 'PI', 'Délégué'),
+('g30', 'HF', 'Délégué'),
 ('g53', 'BG', 'Visiteur'),
-('g7', 'LI', 'Visiteur'),
-('h13', 'LI', 'Visiteur'),
+('g7', 'NA', 'Visiteur'),
+('h13', 'NA', 'Visiteur'),
 ('h30', 'IF', 'Visiteur'),
-('h35', 'AU', 'Visiteur'),
-('h40', 'CA', 'Visiteur'),
-('j45', 'CA', 'Responsable'),
-('j50', 'NP', 'Visiteur'),
+('h35', 'AA', 'Visiteur'),
+('h40', 'GE', 'Visiteur'),
+('j45', 'GE', 'Responsable'),
+('j50', 'HF', 'Visiteur'),
 ('j8', 'IF', 'Responsable'),
-('k4', 'LG', 'Visiteur'),
-('k53', 'AL', 'Délégué'),
+('k4', 'OC', 'Visiteur'),
+('k53', 'GE', 'Délégué'),
 ('l14', 'PL', 'Visiteur'),
-('l23', 'PC', 'Visiteur'),
+('l23', 'NA', 'Visiteur'),
 ('l46', 'PL', 'Visiteur'),
-('l56', 'FC', 'Visiteur'),
-('m35', 'MP', 'Visiteur'),
-('m45', 'AL', 'Délégué'),
-('n42', 'HN', 'Visiteur'),
+('l56', 'BC', 'Visiteur'),
+('m35', 'OC', 'Visiteur'),
+('m45', 'GE', 'Délégué'),
+('n42', 'NO', 'Visiteur'),
 ('n58', 'CE', 'Visiteur'),
-('n59', 'PI', 'Visiteur'),
-('o26', 'LG', 'Visiteur'),
+('n59', 'HF', 'Visiteur'),
+('o26', 'OC', 'Visiteur'),
 ('p32', 'IF', 'Visiteur'),
-('p40', 'BN', 'Responsable'),
-('p41', 'PC', 'Visiteur'),
-('p42', 'PI', 'Visiteur'),
+('p40', 'NO', 'Responsable'),
+('p41', 'NA', 'Visiteur'),
+('p42', 'HF', 'Visiteur'),
 ('p49', 'CE', 'Visiteur'),
-('p6', 'AQ', 'Visiteur'),
-('p7', 'RO', 'Visiteur'),
-('p8', 'BO', 'Visiteur'),
-('q17', 'BN', 'Visiteur'),
-('r24', 'BN', 'Responsable'),
+('p6', 'NA', 'Visiteur'),
+('p7', 'OC', 'Visiteur'),
+('p8', 'BC', 'Visiteur'),
+('q17', 'NO', 'Visiteur'),
+('r24', 'NO', 'Responsable'),
 ('r58', 'BG', 'Visiteur'),
-('s10', 'FC', 'Visiteur'),
-('s21', 'LI', 'Visiteur'),
-('t43', 'BO', 'Visiteur'),
-('t47', 'PI', 'Visiteur'),
-('t55', 'MP', 'Visiteur'),
+('s10', 'BC', 'Visiteur'),
+('s21', 'NA', 'Visiteur'),
+('t43', 'BC', 'Visiteur'),
+('t47', 'HF', 'Visiteur'),
+('t55', 'OC', 'Visiteur'),
 ('t60', 'CE', 'Visiteur');
 
 -- --------------------------------------------------------
