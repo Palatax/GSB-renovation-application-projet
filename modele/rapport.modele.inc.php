@@ -201,4 +201,44 @@ class Rapport extends Modele
     
         return $result;
     }
+    public function getRapportRegion($matricule) 
+    {
+        $req =  'SELECT r.RAP_NUM, r.COL_MATRICULE, r.MOTIF_NUM, r.RAP_MOTIF,r.RAP_DATE, r.PRA_NUM, r.DEFINITIF FROM rapport_visite r
+    WHERE r.col_matricule in (
+        SELECT col_matricule FROM travailler t WHERE reg_code=(
+            SELECT reg_code FROM travailler WHERE col_matricule= :COL_MATRICULE and tra_role="Délégué"
+            ) AND tra_role="Visiteur" AND r.DEFINITIF!=0
+        )';
+
+        $result = parent::getRequestResults($req, [
+            ':COL_MATRICULE' => $matricule
+        ],'fetchAll');
+
+        return $result;
+    }
+
+    public function isRead($matriculeLect,$matriculeAut,$numRap) {
+
+
+
+        $req = 'SELECT COUNT(*) FROM lire WHERE COL_MATRICULE_AUTEUR = :COL_MATRICULE_AUTEUR AND RAP_NUM = :RAP_NUM and COL_MATRICULE_LECTEUR = :COL_MATRICULE_LECTEUR;';
+
+        $result = parent::getRequestResults($req,[            
+
+            ':COL_MATRICULE_AUTEUR' => $matriculeAut,
+            ':RAP_NUM' => $numRap,
+            ':COL_MATRICULE_LECTEUR' => $matriculeLect]);
+
+        return $result['COUNT(*)'];
+
+    }
+    public function lire($matriculeLect,$matriculeAut,$numRap){
+$req = 'INSERT INTO lire (RAP_NUM,COL_MATRICULE_LECTEUR,COL_MATRICULE_AUTEUR) VALUES (:RAP_NUM,:COL_MATRICULE_LECTEUR,:COL_MATRICULE_AUTEUR)';
+
+        parent::executeRequest($req, [
+            ':RAP_NUM' => $numRap,
+            ':COL_MATRICULE_LECTEUR' => $matriculeLect,
+            ':COL_MATRICULE_AUTEUR' => $matriculeAut,
+        ]);
+    }
 }

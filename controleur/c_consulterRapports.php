@@ -46,7 +46,7 @@ class ConsulterRapportsControleur extends RapportControleur
         foreach ($rapports as $rap)
         {
             $motifs[] = $this->getMotifLibelle($rap);
-            $praticiensRap[] = $this->praticienModele->getAllInformationPraticien($rap['RAP_NUM']);
+            $praticiensRap[] = $this->praticienModele->getAllInformationPraticien($rap['PRA_NUM']);
         }
 
         include('vues/consulterRapport/v_selectionRapports.php');
@@ -56,7 +56,7 @@ class ConsulterRapportsControleur extends RapportControleur
         else 
         {
             $erreurs[] = 'Aucun rapport trouvé';
-            include('vues/consulterRapport/v_afficherErreurs.php');
+            include('vues/v_afficherErreurs.php');
         }
     }
     
@@ -66,10 +66,15 @@ class ConsulterRapportsControleur extends RapportControleur
      */
     private function consulterRapport()
     {
+
+       
+
         $rapNum = $_GET['rapNum'];
         $matricule = $_SESSION['matricule'];
     
         $rapport = $this->rapportModele->getRapport($rapNum, $matricule);
+        var_dump($rapNum);
+        var_dump($matricule);
         $motif = $this->getMotifLibelle($rapport);
         $praticien = $this->praticienModele->getPraticien($rapport['PRA_NUM']);
         $rapport['MEDICAMENT1'] != null ? $medicament1 = $this->medicamentModele->getNomMedicament($rapport['MEDICAMENT1']) : $medicament1 = null;

@@ -1,0 +1,8 @@
+TODO :
+
+Option de l'historique des rapports de sa région avec liste déroulante pour rédacteur + fourchette de dates
+
+Retirer le bouton Mes rapports pour les délégués + rédiger rapports
+
+gérer la faille de sécurité url sur les rapports 
+

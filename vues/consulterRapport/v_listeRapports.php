@@ -32,7 +32,18 @@
                     <?= date('d-m-Y', strtotime($rapport['RAP_DATE'])) ?>
                   </td> 
                   <td>
-                    <a href="index.php?uc=consulterRapports&action=consulterRapport&rapNum=<?= $rapport['RAP_NUM'] ?>" class="my-auto btn btn-lg btn-info btn-block text-light">Consulter</a>
+                    <?php 
+                      if ($_GET['uc']=='consulterRapportsRegion') {
+
+                        $url = 'index.php?uc=consulterRapportsRegion&action=consulterRapportRegion&rapNum='.$rapport['RAP_NUM'].'&matricule='.$rapport['COL_MATRICULE'];
+
+                      } else {
+
+                        $url = 'index.php?uc=consulterRapports&action=consulterRapport&rapNum='.$rapport['RAP_NUM'];
+
+                      }
+                    ?>
+                    <a href= "<?php echo $url;  ?>" class= "my-auto btn btn-lg btn-info btn-block text-light">Consulter</a>
                   </td>
                 </tr>
             <?php } ?>

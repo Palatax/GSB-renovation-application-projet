@@ -69,7 +69,7 @@ try
             break;
         }
 
-        case 'consulterRapportsRegionControleur' :
+        case 'consulterRapportsRegion' :
         {
             if(!empty($_SESSION['login'])){
                 (new consulterRapportsRegionControleur($action))->routeAction();
