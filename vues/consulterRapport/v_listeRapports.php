@@ -35,7 +35,11 @@
                     <?php 
                       if ($_GET['uc']=='consulterRapportsRegion') {
 
-                        $url = 'index.php?uc=consulterRapportsRegion&action=consulterRapportRegion&rapNum='.$rapport['RAP_NUM'].'&matricule='.$rapport['COL_MATRICULE'];
+                        $url = 'index.php?uc=consulterRapportsRegion&action=consulterRapportRegionLecture&rapNum='.$rapport['RAP_NUM'].'&matricule='.$rapport['COL_MATRICULE'];
+
+                        if ($_GET['action']=='historiqueRapport') {
+                          $url = 'index.php?uc=consulterRapportsRegion&action=consulterRapportRegion&rapNum='.$rapport['RAP_NUM'].'&matricule='.$rapport['COL_MATRICULE'];
+                        }
 
                       } else {
 

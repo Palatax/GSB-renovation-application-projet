@@ -22,15 +22,19 @@ class consulterRapportsRegionControleur extends RapportControleur
             case 'rapportRegion':
                 $this->rapportRegion();
                 break;
+            case 'consulterRapportRegionLecture':
+                $this->consulterRapportRegionLecture();
+                break;
             case 'consulterRapportRegion':
                 $this->consulterRapportRegion();
+                break;
+            case 'historiqueRapport':
+                $this->historiqueRapport();
                 break;
             default :
                 include('vues/v_accueil.php');
         }
     }
-
-
 
     /**
      * Permet d'afficher la liste des rapports de visite de la région du délégué actuellement authentifié
@@ -60,9 +64,8 @@ class consulterRapportsRegionControleur extends RapportControleur
         }
     }
     
-    private function consulterRapportRegion()
+    private function consulterRapportRegionLecture()
     {
-
         $rapNum = $_GET['rapNum'];
         $matricule = $_GET['matricule'];
 
@@ -77,17 +80,74 @@ class consulterRapportsRegionControleur extends RapportControleur
         $this->rapportModele->lire($_SESSION['matricule'],$matricule,$rapNum);
 
         include('vues/consulterRapport/v_consulterRapport.php');
+
+    }
+
+    private function consulterRapportRegion()
+    {
+
+       
+
+        $rapNum = $_GET['rapNum'];
+        $matricule = $_GET['matricule'];
     
+        $rapport = $this->rapportModele->getRapport($rapNum, $matricule);
+        var_dump($rapNum);
+        var_dump($matricule);
+        $motif = $this->getMotifLibelle($rapport);
+        $praticien = $this->praticienModele->getPraticien($rapport['PRA_NUM']);
+        $rapport['MEDICAMENT1'] != null ? $medicament1 = $this->medicamentModele->getNomMedicament($rapport['MEDICAMENT1']) : $medicament1 = null;
+        $rapport['MEDICAMENT2'] != null ? $medicament2 = $this->medicamentModele->getNomMedicament($rapport['MEDICAMENT2']) : $medicament2 = null;
+
+        $echantillons = $this->medicamentModele->getEchantillons($rapNum, $matricule);
+    
+        include('vues/consulterRapport/v_consulterRapport.php');
     }
 
 
 
+    /**
+     * Permet d'afficher la liste des rapports de visite de la région du délégué actuellelent authentifié, qu'ils soient 
+     *
+     *@return void
+     */
+    private function historiqueRapport() 
+    {
 
+        $matricule = $_SESSION['matricule'];
+        $praticiens = $this->praticienModele->getAllNomPraticienCol($matricule);
 
+        // Récupération des champs du formulaire de filtre
+        $praticien = $_POST['praticien'] ?? null;
+        $dateDebut = $_POST['dateDebut'] ?? null;
+        $dateFin = $_POST['dateFin'] ?? null;
 
+        // Récupération des rapports
+        $rapports = $this->rapportModele->getRapportRegion($matricule);
 
+        // Récupération des motifs et des praticiens de chaque rapport
+        foreach ($rapports as $rap)
+        {
+            $motifs[] = $this->getMotifLibelle($rap);
+            $praticiensRap[] = $this->praticienModele->getAllInformationPraticien($rap['PRA_NUM']);
+        }
 
+        include('vues/consulterRapport/v_selectionRapports.php');
+        if ($rapports)
+            include('vues/consulterRapport/v_listeRapports.php');
+        else 
+        {
+            $erreurs[] = 'Aucun rapport trouvé';
+            include('vues/v_afficherErreurs.php');
+        }
+    }
 
+    /**
+     *  Retourne un tableau des rapports de visite n'ayant pas été lus
+     * @param $matricule matricule du lecteur des rapports à consulter
+     * @param $listeRaps une liste de rapports à consulter 
+     * @return $tab un tableau contenant les rapports qui n'ont pas été lus
+     */
     private function getPasLus($matricule, $listeRaps) {
 
 
@@ -101,9 +161,6 @@ class consulterRapportsRegionControleur extends RapportControleur
         }
         return $tab;
     }
-
-
-
 
     /**
      * Retourne le libellé du motif d'un rapport

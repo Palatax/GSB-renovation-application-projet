@@ -29,6 +29,9 @@ class Praticien extends Modele
         return $result;
     }
     
+
+
+    
     public function getAllNomPraticienCol($matricule)
     {
         $req = 'SELECT DISTINCT p.PRA_NUM, p.PRA_NOM, p.PRA_PRENOM
