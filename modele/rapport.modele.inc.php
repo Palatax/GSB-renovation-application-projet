@@ -187,6 +187,11 @@ class Rapport extends Modele
         return $results;
     }
     
+
+
+
+
+
     public function getMotif($motifNum)
     {
         $req = 'SELECT MOTIF_LIBELLE
@@ -201,7 +206,44 @@ class Rapport extends Modele
     
         return $result;
     }
+
+
+
+
+    /**
+     * 
+     * Permet de récupérer tous les rapports écrits par tous les collaborateurs de la région du matricule passé en paramètre
+     * 
+     * @param le matricule du collaborateur délégué 
+     * @return le tableau de résultats contenant les rapports 
+     */
     public function getRapportRegion($matricule) 
+    {
+        $req =  'SELECT r.RAP_NUM, r.COL_MATRICULE, r.MOTIF_NUM, r.RAP_MOTIF,r.RAP_DATE, r.PRA_NUM, r.DEFINITIF FROM rapport_visite r
+            WHERE r.col_matricule in (
+            SELECT col_matricule FROM travailler t WHERE reg_code=(
+            SELECT reg_code FROM travailler WHERE col_matricule= :COL_MATRICULE and tra_role="Délégué"
+            ) AND tra_role="Visiteur" AND r.DEFINITIF!=0
+        )';
+
+        $params[':COL_MATRICULE'] = $matricule;
+        $result = parent::getRequestResults($req, $params, 'fetchAll');
+
+        return $result;
+    }
+
+
+
+    /**
+     * Permet de récupérer tous les rapports écrits par tous les collaborateurs de la région du matricule passé en paramètre, ainsi que des filtres donnés
+     * 
+     * @param $matricule le matricule du collaborateur délégué 
+     * @param $pranum Numéro d'idendification d'un praticien dans la base de données
+     * @param $dateDebut une date de début 
+     * @param $dateFin une date de fin
+     * @return le tableau de résultats contenant les rapports 
+     */
+    public function getRapportRegionFiltre($matricule,$pranum, $dateDebut, $dateFin) 
     {
         $req =  'SELECT r.RAP_NUM, r.COL_MATRICULE, r.MOTIF_NUM, r.RAP_MOTIF,r.RAP_DATE, r.PRA_NUM, r.DEFINITIF FROM rapport_visite r
     WHERE r.col_matricule in (
@@ -210,9 +252,26 @@ class Rapport extends Modele
             ) AND tra_role="Visiteur" AND r.DEFINITIF!=0
         )';
 
-        $result = parent::getRequestResults($req, [
-            ':COL_MATRICULE' => $matricule
-        ],'fetchAll');
+
+
+        if ($pranum != null)
+        {
+            $req .= 'AND PRA_NUM = :PRA_NUM ';
+            $params[':PRA_NUM'] = $pranum;
+        }
+
+        // Sélectionne uniquement les rapports dans un interval de date si précisé
+        if ($dateDebut != null && $dateFin != null)
+        {
+            $req .= ' AND RAP_DATE >= :DATE_DEBUT AND RAP_DATE <= :DATE_FIN';
+            $params[':DATE_DEBUT'] = $dateDebut;
+            $params[':DATE_FIN'] = $dateFin;
+        }
+
+        $params[':COL_MATRICULE'] = $matricule;
+
+
+        $result = parent::getRequestResults($req, $params, 'fetchAll');
 
         return $result;
     }

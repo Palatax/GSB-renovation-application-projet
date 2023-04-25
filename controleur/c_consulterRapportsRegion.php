@@ -64,6 +64,13 @@ class consulterRapportsRegionControleur extends RapportControleur
         }
     }
     
+
+
+    /**
+     * Permet d'afficher la page du rapport de visite sur lequel on a cliqué, tout en signalant à la base de donnés que le délégué authentifié à lu le rapport séléctioné 
+     *
+     * @return void
+    */
     private function consulterRapportRegionLecture()
     {
         $rapNum = $_GET['rapNum'];
@@ -83,6 +90,13 @@ class consulterRapportsRegionControleur extends RapportControleur
 
     }
 
+
+
+
+    /**
+     * Permet d'afficher la page du rapport de visite sur lequel on a cliqué
+     * @return void
+    */
     private function consulterRapportRegion()
     {
 
@@ -107,15 +121,20 @@ class consulterRapportsRegionControleur extends RapportControleur
 
 
     /**
-     * Permet d'afficher la liste des rapports de visite de la région du délégué actuellelent authentifié, qu'ils soient 
+     * Permet d'afficher la liste des rapports de visite de la région du délégué actuellelent authentifié
      *
-     *@return void
+     * @return void
      */
     private function historiqueRapport() 
     {
-
+        $praticiens;
         $matricule = $_SESSION['matricule'];
-        $praticiens = $this->praticienModele->getAllNomPraticienCol($matricule);
+        $praNum = $this->praticienModele->getPraticienRapportRegion($matricule);
+
+        foreach ($praNum as $pra) {
+
+            $praticiens[] = $this->praticienModele->getPraticien($pra['PRA_NUM']);
+        }
 
         // Récupération des champs du formulaire de filtre
         $praticien = $_POST['praticien'] ?? null;
@@ -123,7 +142,7 @@ class consulterRapportsRegionControleur extends RapportControleur
         $dateFin = $_POST['dateFin'] ?? null;
 
         // Récupération des rapports
-        $rapports = $this->rapportModele->getRapportRegion($matricule);
+        $rapports = $this->rapportModele->getRapportRegionFiltre($matricule, $praticien, $dateDebut, $dateFin);
 
         // Récupération des motifs et des praticiens de chaque rapport
         foreach ($rapports as $rap)
@@ -131,7 +150,6 @@ class consulterRapportsRegionControleur extends RapportControleur
             $motifs[] = $this->getMotifLibelle($rap);
             $praticiensRap[] = $this->praticienModele->getAllInformationPraticien($rap['PRA_NUM']);
         }
-
         include('vues/consulterRapport/v_selectionRapports.php');
         if ($rapports)
             include('vues/consulterRapport/v_listeRapports.php');

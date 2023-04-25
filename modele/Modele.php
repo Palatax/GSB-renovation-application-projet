@@ -25,7 +25,7 @@ class Modele
     protected function getRequestResults($request, $params, $forceFetchAll=null)
     {
         $res = $this->PDOConnexion->prepare($request);
-
+        //var_dump($params);
         foreach($params as $name => $param)
         {
             $res->bindValue($name, $param);

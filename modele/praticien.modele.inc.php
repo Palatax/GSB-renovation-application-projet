@@ -31,7 +31,11 @@ class Praticien extends Modele
     
 
 
-    
+    /**
+     *  fonction qui renvoie un tableau contenant les informations de tous les praticiens consultés par un collaborateur dans ses rapports de visites 
+     * @param $matricule le matricule du collaborateur
+     * @return $results un tableau contenant les résultats de la reqûete SQL
+     */
     public function getAllNomPraticienCol($matricule)
     {
         $req = 'SELECT DISTINCT p.PRA_NUM, p.PRA_NOM, p.PRA_PRENOM
@@ -46,10 +50,30 @@ class Praticien extends Modele
     
         return $results;
     }
-    
+
+
+    public function getPraticienRapportRegion($matricule)
+    {
+        $req = 'SELECT r.PRA_NUM FROM rapport_visite r
+    WHERE r.col_matricule in (
+        SELECT col_matricule FROM travailler t WHERE reg_code=(
+            SELECT reg_code FROM travailler WHERE col_matricule= :COL_MATRICULE and tra_role="Délégué"
+            ) AND tra_role="Visiteur" AND r.DEFINITIF!=0
+        )';
+
+        $result = parent::getRequestResults($req, [
+            ':COL_MATRICULE' => $matricule
+        ],'fetchAll');
+
+        return $result;
+    }
+
+
+
     public function getPraticien($praNum)
     {
-        $req = 'SELECT PRA_NOM,
+        $req = 'SELECT PRA_NUM,
+                        PRA_NOM,
                        PRA_PRENOM
                 FROM praticien
                 WHERE PRA_NUM = :PRA_NUM';

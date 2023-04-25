@@ -1,6 +1,5 @@
 TODO :
 
-Filtrer par praticien
-
 gérer la faille de sécurité url sur les rapports 
 
+contrainte CHECK sur tra_role dans travailler

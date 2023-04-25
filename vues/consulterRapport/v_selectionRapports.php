@@ -17,11 +17,22 @@
                 <td>
                   <select class="form-select" id="praticien" name="praticien">
                     <option value="">Tous</option>
-                    <?php foreach ($praticiens as $pra) { ?>
+                    <?php foreach ($praticiens as $pra) { 
+
+                      
+
+                      ?>
                       <option value=<?= $pra['PRA_NUM'] ?>
-                        <?php if (isset($praticien) && $pra['PRA_NUM'] == $praticien)
+                        <?php 
+
+
+                        if (isset($praticien) && $pra['PRA_NUM'] == $praticien)
                                               echo 'selected' ?>>
                         <?= $pra['PRA_NOM'] . ' ' . $pra['PRA_PRENOM'] ?>
+
+
+
+
                       </option>
                     <?php } ?>
                   </select>
