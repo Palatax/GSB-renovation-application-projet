@@ -1,6 +1,6 @@
 <?php
 
 $BDD_SERVEUR = 'localhost';
-$BDD_NOM = 'calvo-gsb_projet';
+$BDD_NOM = 'gsbcr';
 $BDD_LOGIN = 'root';
 $BDD_MDP = '';

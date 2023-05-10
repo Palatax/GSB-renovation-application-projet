@@ -22,7 +22,7 @@ function addMedicament(med, medicaments) {
 		);
 		$("#labelMedoc").after(
 			$('<select name="medicament2" id="medicament2" class="form-select m-0">').append(
-				'<option value="default">- Choisissez un médicament -</option>'
+				'<option value="">- Choisissez un médicament -</option>'
 			)
 		);
 

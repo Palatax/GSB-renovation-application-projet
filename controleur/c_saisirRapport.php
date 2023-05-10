@@ -168,6 +168,8 @@ class SaisirRapportControleur extends RapportControleur
                     $numRapport, $_POST['echantillonadd'], $_POST['nbEchantillon'], $this->matricule
                 );
             }
+
+            header('Location:index.php?uc=consulterRapports&action=mesrapports');
         }
         else 
         {
@@ -198,7 +200,7 @@ class SaisirRapportControleur extends RapportControleur
             $motif = null;
         $motifAutre = $_POST['motif-autre'] ?? null;
         $medicament1 = $_POST['medicament1'] == '' ? null : $_POST['medicament1'];
-        $medicament2 = $_POST['medicament2'] ?? null;
+        $medicament2 = $_POST['medicament2'] == '' ? null : $_POST['medicament2'];
         isset($_POST['saisieDefinitive']) ? $saisieDefinitive = 1 : $saisieDefinitive = 0;
         $remplacant = $_POST['remplacant'] == '' ? null : $_POST['remplacant'];
 

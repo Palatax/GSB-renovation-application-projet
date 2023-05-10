@@ -48,7 +48,7 @@
                                     echo 'Echantillon n°'.($key+1).' : 
                                     <a href="index.php?uc=medicaments&action=affichermedoc&medicament='.$ech['MED_DEPOTLEGAL'].'">'
                                         .$ech['MED_NOMCOMMERCIAL'].
-                                    '</a><br>';
+                                    ' x'.$ech['OFF_QTE'].'</a><br>';
                             } else
                                 echo 'Aucun échantillon offert';
                             ?></div>

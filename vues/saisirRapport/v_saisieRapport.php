@@ -144,6 +144,16 @@
                                 </select>
                             </div>
 
+                            <?php if($medicament2 != null) { ?>
+                                <div id=medoc-autre>
+                                    <label id="labelMedoc" for="medicament2">2ème médicament présenté :</label>
+
+                                    <?php
+                                        
+                                    ?>
+                                </div>
+                            <?php } ?>
+
                             <div class="bloc-center form-check form-switch">
                                 <input <?php if(isset($echantillons) && $echantillons) echo "checked"; ?> id="check-echantillon" class="form-check-input" type="checkbox" onchange="addEchantillon(this, medicaments)" >
                                 <label for="check-echantillon">Echantillon</label>

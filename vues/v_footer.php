@@ -28,10 +28,9 @@
                                 <li class="pb-2 dropdown">
                                     <i class=\'bx-fw bx bxs-chevron-right bx-xs\'></i><a class="text-decoration-none text-light py-1" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Rapport de visite</a>
                                     <ul class="dropdown-menu dropdown-menu-dark p-0">';
-                                    if ($_SESSION['habilitation'] == 1){
                                         echo '<li><a class="dropdown-item" href="index.php?uc=saisirRapport&action=choixRedaction">Rédiger un rapport</a></li>
                                         <li><a class="dropdown-item" href="index.php?uc=consulterRapports&action=mesrapports">Mes rapports</a></li>';
-                                    }
+                                    
                                 if ($_SESSION['habilitation'] == 2) {
                                     echo '<li><a class="dropdown-item" href="index.php?uc=consulterRapportsRegion&action=rapportRegion">Nouveaux rapports de ma région</a></li>';
                                     echo '<li><a class="dropdown-item" href="index.php?uc=consulterRapportsRegion&action=historiqueRapport">Historique des Rapports de ma région</a></li>';
