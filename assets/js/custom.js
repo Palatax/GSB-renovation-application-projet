@@ -14,28 +14,28 @@ function addMotifAutre(mot) {
 
 function addMedicament(med, medicaments) {
 	if ($(med).val() != "") {
-		$("#medoc-autre").remove();
-		$("#medoc").after(
-			$('<div class="d-flex flex-column" id="medoc-autre">').append(
-				$('<label for="medicament2" id="labelMedoc">2ème médicament présenté :</label>')
-			)
-		);
-		$("#labelMedoc").after(
-			$('<select name="medicament2" id="medicament2" class="form-select m-0">').append(
-				'<option value="">- Choisissez un médicament -</option>'
-			)
-		);
-
-		for(medoc of medicaments)
+		if(document.getElementById("medoc-autre") == null)
 		{
-			$("#medicament2").append(
-				'<option value='+medoc['MED_DEPOTLEGAL']+'>'+medoc['MED_NOMCOMMERCIAL']+'</option>'
+			$("#medoc-autre").remove();
+	
+			$("#medoc").after(
+				$('<div class="d-flex flex-column" id="medoc-autre">').append(
+					$('<label for="medicament2" id="labelMedoc">2ème médicament présenté :</label>')
+				)
 			);
+			$("#labelMedoc").after(
+				$('<select name="medicament2" id="medicament2" class="form-select m-0">').append(
+					'<option value="">- Choisissez un médicament -</option>'
+				)
+			);
+	
+			for(medoc of medicaments)
+			{
+				$("#medicament2").append(
+					'<option value='+medoc['MED_DEPOTLEGAL']+'>'+medoc['MED_NOMCOMMERCIAL']+'</option>'
+				);
+			}
 		}
-		
-		$("#medicament2").append(
-			'<option value="coucou">uretre</option>'
-		);
 	} else {
 		$("#medoc-autre").remove();
 	}

@@ -148,8 +148,8 @@
                                 <div id="medoc-autre">
                                     <label id="labelMedoc" for="medicament2">2ème médicament présenté :</label>
 
-                                    <select class="form-select" id="medicament1" name="medicament1" onchange="addMedicament(this, medicaments)">
-                                        <option value="">-Aucun-</option>
+                                    <select class="form-select" id="medicament1" name="medicament1">
+                                        <option value="">-Choisissez un médicament-</option>
             
                                         <?php
                                         foreach($medicaments as $medicament)
