@@ -145,12 +145,25 @@
                             </div>
 
                             <?php if($medicament2 != null) { ?>
-                                <div id=medoc-autre>
+                                <div id="medoc-autre">
                                     <label id="labelMedoc" for="medicament2">2ème médicament présenté :</label>
 
-                                    <?php
-                                        
-                                    ?>
+                                    <select class="form-select" id="medicament1" name="medicament1" onchange="addMedicament(this, medicaments)">
+                                        <option value="">-Aucun-</option>
+            
+                                        <?php
+                                        foreach($medicaments as $medicament)
+                                        {
+                                        ?>
+                                            <option value="<?= $medicament['MED_DEPOTLEGAL'] ?>" 
+                                                <?php if(isset($medicament1) && $medicament['MED_DEPOTLEGAL'] == $medicament2) echo 'selected'?>
+                                            >
+                                                <?= $medicament['MED_NOMCOMMERCIAL'] ?>
+                                            </option>
+                                        <?php
+                                        }
+                                        ?>
+                                    </select>
                                 </div>
                             <?php } ?>
 

@@ -1,1 +1,0 @@
-contrainte CHECK sur tra_role dans travailler

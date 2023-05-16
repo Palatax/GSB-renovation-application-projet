@@ -114,6 +114,7 @@ class SaisirRapportControleur extends RapportControleur
             'dateVisite' => $rapport['RAP_DATE'],
             'praticien' => $rapport['PRA_NUM'],
             'medicament1' => $rapport['MEDICAMENT1'],
+            'medicament2' => $rapport['MEDICAMENT2'],
             'remplacant' => $rapport['PRA_REMP'],
             'motif' => $rapport['MOTIF_NUM'],
             'motifAutre' => $rapport['RAP_MOTIF'],
